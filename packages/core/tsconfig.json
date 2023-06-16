@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+      "outDir": "./dist",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+    },
+    "include": [
+      "./src"
+    ]
+   }
