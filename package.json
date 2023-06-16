@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^7.0.2"
+  },
+  "scripts": {
+    "dev:run-cli-chart":"cd ./packages/cli && npm run start -- -u https://api.github.com/octocat -m GET -s chart -n 5 -t 2500 -x parallel",
+    "dev:run-cli-table":"cd ./packages/cli && npm run start -- -u https://api.github.com/octocat -m GET -s table -n 5 -t 2500 -x parallel",
+    "dev:run-cli-simple":"cd ./packages/cli && npm run start -- -u https://api.github.com/octocat",
+    "dev:run-cli-headers":"cd ./packages/cli && npm run start -- -u https://api.github.com/octocat -e '{\"Content-Type\": \"application/json\"}'",
+    "publish": "lerna run tsc && lerna publish",
+    "build": "lerna run tsc"
+  }
+}
