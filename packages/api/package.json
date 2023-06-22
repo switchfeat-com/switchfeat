@@ -1,0 +1,38 @@
+{
+  "name": "@switchfeat/api",
+  "version": "0.0.1",
+  "description": "The api package for switchfeat",
+  "author": "dev-bre <hey@devbre.com>",
+  "homepage": "https://github.com/switchfeat-com/switchfeat#readme",
+  "license": "ISC",
+  "main": "lib/api.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/switchfeat-com/switchfeat.git"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "node ./__tests__/api.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/switchfeat-com/switchfeat/issues"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "multer": "^1.4.5-lts.1",
+    "passport": "^0.6.0",
+    "path": "^0.12.7",
+    "@switchfeat/core": "0.0.1"
+  }
+}

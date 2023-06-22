@@ -1,30 +1,27 @@
 {
-  "name": "core",
-  "version": "0.0.0",
+  "name": "@switchfeat/core",
+  "version": "0.0.1",
   "description": "The core package for switchfeat",
   "keywords": [
     "feature-flags",
     "feature-toggles",
     "switchfeat"
   ],
-  "author": "dev-bre <hello@devbre.com>",
+  "author": "dev-bre <hey@devbre.com>",
   "homepage": "https://switchfeat.com",
   "license": "ISC",
-  "main": "dist/src/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/switchfeat-com/switchfeat.git"
-  },
+  }, 
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "tsc": "tsc",
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "test": "node ./__tests__/core.test.js"
   },
   "bugs": {
