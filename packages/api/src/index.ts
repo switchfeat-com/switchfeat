@@ -5,12 +5,15 @@ import passport from "passport";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
-
+import { mongoManager } from "@switchfeat/core";
 import * as flagsRoutes from "./routes/flagsRoutes";
 
 dotenv.config();
 
 var env = process.env.NODE_ENV;
+
+// connect to mongodb
+mongoManager.connectDB();
  
 const app: Express = express();
 const port = process.env.PORT || 4000;
@@ -45,7 +48,7 @@ if (env !== "dev") {
 
 
 // app.use(authRoutes);
-app.use("/api/flags", flagsRoutes);
+app.use("/api/flags", () => flagsRoutes);
 
 // All other GET requests not handled before will return our React app
 if (env !== "dev") {
