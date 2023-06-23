@@ -1,45 +1,26 @@
-import Router from "express";
+import { Router } from "express";
 
-const router = Router.Router();
-import multer from 'multer';
+export const flagRoutes = Router();
 import { getFlags } from "../services/flagsService";
 
-const upload = multer();
 
+flagRoutes.get("/api/flags", async (req, res) => {
 
-router.get("/", async (req, res) => {
-    if (req.user) {
+    try {
 
-        try {
+        const flags = await getFlags("");
 
-            const flags = getFlags(req.user.id);
-
-            if (req.user === null) {
-                res.status(401).json({
-                    success: false,
-                    message: "user request invalid"
-                });
-
-                return;
-            }
-
-
-
-            res.json({
-                success: true,
-                user: req.user,
-                cookies: req.cookies,
-                flags: flags
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                success: false,
-                message: "unable to retrieve posts"
-            });
-        }
+        res.json({
+            success: true,
+            user: req.user,
+            cookies: req.cookies,
+            flags: flags
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "unable to retrieve flags"
+        });
     }
-
 });
-
-export default router;

@@ -9,7 +9,12 @@ export interface dbManager {
     conditions: Collection<ConditionModel>
 }
 
-export const connectDB = async () : Promise<dbManager> => {
+export const dbManager : dbManager = { 
+    flags: null,
+    conditions: null
+}
+
+export const connectDB = async () => {
 
     try {
         const client: MongoClient = new MongoClient(keys.MONGODB_URI);
@@ -20,10 +25,8 @@ export const connectDB = async () : Promise<dbManager> => {
 
         const db = client.db();
 
-        return ({
-            flags: db.collection("flags"),
-            conditions: db.collection("conditions")
-        });
+        dbManager.flags = db.collection("flags");
+        dbManager.conditions = db.collection("conditions");
 
     } catch (ex) {
         console.log(ex);

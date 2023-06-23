@@ -19,6 +19,7 @@
   },
   "scripts": {
     "tsc": "tsc",
+    "start": "node dist/index.js",
     "test": "node ./__tests__/api.test.js"
   },
   "bugs": {

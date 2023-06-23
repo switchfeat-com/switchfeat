@@ -6,7 +6,7 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import { mongoManager } from "@switchfeat/core";
-import * as flagsRoutes from "./routes/flagsRoutes";
+import {flagRoutes} from "./routes/flagsRoutes";
 
 dotenv.config();
 
@@ -36,7 +36,7 @@ app.use(passport.session());
  
   app.use(
     cors({
-      origin: env !== "http://localhost:3000",  
+      origin: "http://localhost:4000",  
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       credentials: true // allow session cookie from browser to pass through
     }));
@@ -48,7 +48,8 @@ if (env !== "dev") {
 
 
 // app.use(authRoutes);
-app.use("/api/flags", () => flagsRoutes);
+app.use(flagRoutes);
+
 
 // All other GET requests not handled before will return our React app
 if (env !== "dev") {
