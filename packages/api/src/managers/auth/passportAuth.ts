@@ -22,8 +22,8 @@ export const initialise = (app: Express) => {
   });
 
   if (!!keys.GOOGLE_CLIENT_ID) {
-    console.log("aaaaa");
-    passport.use(googleStrategy);
+    console.log(" -> Google auth active");
+    passport.use(googleStrategy());
   }
 };
 
