@@ -8,6 +8,7 @@ import { mongoManager } from "@switchfeat/core";
 import { flagRoutes } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
+import * as passportAuth from "./managers/auth/passportAuth"; 
 
 dotenv.config();
 
@@ -30,7 +31,10 @@ app.use(session({
   saveUninitialized: true,
   secret: "$%£$£DDikdjflieas93mdjk.sldcpes",
 }));
-app.use(passport.initialize());
+
+
+passportAuth.initialise(app);
+
 app.use(passport.session());
 
 // set up cors to allow us to accept requests from our client

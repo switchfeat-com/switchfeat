@@ -39,6 +39,8 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.13",
     "@types/passport": "^1.0.12"
   }
 }
