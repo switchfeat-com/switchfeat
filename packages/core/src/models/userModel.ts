@@ -1,13 +1,12 @@
 import { DateTime } from 'luxon';
-import { ConditionModel } from './conditionModel';
 import { ObjectId } from 'mongodb';
 
-export interface FlagModel {
+export interface UserModel {
     id?: ObjectId,
     name: string;
-    description?: string;
+    email?: string;
     createdOn: DateTime;
     updatedOn: DateTime;
-    status: boolean;
-    condition: ConditionModel;
+    isBlocked: boolean;
+    imageUrl: string;
 }

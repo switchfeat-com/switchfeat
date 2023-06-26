@@ -1,10 +1,12 @@
 import { Router } from "express";
+import { Request, Response } from "express";
 
 export const flagRoutes = Router();
 import { getFlags } from "../services/flagsService";
+import * as auth from "../managers/auth/passportAuth" 
 
 
-flagRoutes.get("/api/flags", async (req, res) => {
+flagRoutes.get("/api/flags",auth.isAuthenticated, async (req : Request, res : Response) => {
 
     try {
 
