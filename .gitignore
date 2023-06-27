@@ -4,3 +4,4 @@ packages/*/lib
 packages/*/dist
 node_modules
 .env
+output.css

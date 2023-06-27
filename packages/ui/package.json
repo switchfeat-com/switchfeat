@@ -22,8 +22,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "tsc": "npm run build:tw & react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:tw": "tailwindcss -i ./src/App.css -o ./src/output.css",
+    "prestart": "npm run build:tw"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "tailwindcss": "^3.3.2"
   }
 }
