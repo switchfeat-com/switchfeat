@@ -48,7 +48,7 @@ app.use(
 
 // Have Node serve the files for our built React app
 if (env !== "dev") {
-  app.use(express.static(path.resolve(__dirname, '../../ui/public')));
+  app.use(express.static(path.resolve(__dirname, '../../ui/build')));
 }
 
 app.use(authRoutes);
@@ -58,7 +58,7 @@ app.use(flagRoutes);
 // All other GET requests not handled before will return our React app
 if (env !== "dev") {
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../ui/public', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../../ui/build', 'index.html'));
   });
 }
 
