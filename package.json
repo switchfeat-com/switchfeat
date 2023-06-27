@@ -16,6 +16,7 @@
   "scripts": {
     "publish": "lerna run tsc && lerna publish",
     "build": "lerna run tsc",
-    "dev:run-api": "cd ./packages/api && npm run start"
+    "dev:run-api": "cd ./packages/api && npm run start",
+    "dev:run-ui": "cd ./packages/ui && npm run start"
   }
 }
