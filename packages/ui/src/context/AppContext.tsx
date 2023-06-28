@@ -1,4 +1,4 @@
-import { UserModel } from "@switchfeat/core"
+import { UserModel } from "../models/UserModel"
 
 export interface AppContext {
    authContext: AuthContext
@@ -6,8 +6,8 @@ export interface AppContext {
 
 export interface AuthContext {
     userData: UserState | undefined,
-    loginClick?: () => void,
-    logoutClick?: () => void
+    loginClick: (provider: string) => void,
+    logoutClick: () => void
 }
 
 export interface UserState  {
@@ -21,5 +21,7 @@ export const initialState: AppContext = {
         userData: {
             authenticated: false
         },
+        loginClick:() => {},
+        logoutClick:() => {}
     }
 }

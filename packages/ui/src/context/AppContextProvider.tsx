@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { AppContext, UserState, initialState } from "./AppContext";
-import { keys } from "@switchfeat/core";
-
+import * as keys from "../config/keys";
 
 const appContext = createContext<AppContext>(initialState);
 
@@ -10,8 +9,8 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => 
     const [userData, setUserData] = useState<UserState>();
     const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
     
-    const handleLoginClick = () => {
-        window.open(`${keys.CLIENT_HOME_PAGE_URL}/auth/login`, "_self");
+    const handleLoginClick = (provider: string) => {
+        window.open(`${keys.CLIENT_HOME_PAGE_URL}/auth/${provider}`, "_self");
     };
 
     const handleLogoutClick = () => {
