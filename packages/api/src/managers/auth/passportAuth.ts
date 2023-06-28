@@ -21,7 +21,7 @@ export const initialise = (app: Express) => {
     done(currentUser === null ? "user not found." : null, { user: currentUser });
   });
 
-  if (!!keys.GOOGLE_CLIENT_ID) {
+  if (keys.AUTH_PROVIDER === "google") {
     console.log(" -> Google auth active");
     passport.use(googleStrategy());
   }

@@ -1,10 +1,10 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { mongoManager } from "@switchfeat/core";
+import { keys, mongoManager } from "@switchfeat/core";
 import { flagRoutes } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
@@ -41,12 +41,11 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:4000",
+    origin: keys.CLIENT_HOME_PAGE_URL,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true // allow session cookie from browser to pass through
   }));
 
-// Have Node serve the files for our built React app
 if (env !== "dev") {
   app.use(express.static(path.resolve(__dirname, '../../ui/build')));
 }
@@ -55,7 +54,6 @@ app.use(authRoutes);
 app.use(flagRoutes);
 
 
-// All other GET requests not handled before will return our React app
 if (env !== "dev") {
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../ui/build', 'index.html'));
@@ -63,5 +61,5 @@ if (env !== "dev") {
 }
 
 app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port} , env: ${env}`);
+  console.log(`⚡️[server]: Server is running at ${keys.API_URL} , env: ${env}`);
 });

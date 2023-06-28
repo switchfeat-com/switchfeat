@@ -5,13 +5,9 @@
   "author": "dev-bre <hey@devbre.com>",
   "homepage": "https://github.com/switchfeat-com/switchfeat#readme",
   "license": "ISC",
-  "main": "lib/api.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "dist/index.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",

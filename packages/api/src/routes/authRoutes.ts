@@ -17,18 +17,28 @@ authRoutes.get("/auth/google/redirect", passport.authenticate("google", {
 
 // when login is successful, retrieve user info
 authRoutes.get("/auth/is-auth", (req: Request, res: Response) => {
-    if (req.isAuthenticated() && !((req.user as any).user as UserModel).isBlocked) {
+
+    if (!keys.AUTH_PROVIDER) {
         res.json({
             success: true,
-            message: "user has successfully authenticated",
-            user: req.user,
+            message: "user always authenticated",
+            user: {},
             cookies: req.cookies
         });
     } else {
-        res.status(401).json({
-            success: false,
-            message: "user failed to authenticate."
-        });
+        if (req.isAuthenticated() && !((req.user as any).user as UserModel).isBlocked) {
+            res.json({
+                success: true,
+                message: "user has successfully authenticated",
+                user: req.user,
+                cookies: req.cookies
+            });
+        } else {
+            res.status(401).json({
+                success: false,
+                message: "user failed to authenticate."
+            });
+        }
     }
 });
 

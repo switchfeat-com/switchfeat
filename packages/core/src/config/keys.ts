@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 var env = process.env.NODE_ENV;
 
-const CLIENT_HOME_PAGE_URL =  "http://localhost:4000";
+const CLIENT_HOME_PAGE_URL =  "http://localhost:3000";
+const API_URL =  "http://localhost:4000";
 
 const AUTH_PROVIDER = (process.env.AuthProvider as string)
 
@@ -20,5 +21,6 @@ export const keys = {
     ...MONGODB,
     ...GOOGLE_AUTH,
     CLIENT_HOME_PAGE_URL,
+    API_URL,
     AUTH_PROVIDER
 };
