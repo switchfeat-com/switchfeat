@@ -54,7 +54,7 @@ export const Login: React.FC = () => {
                                     <div className="ml-3">
                                         <h3 className="text-base font-medium text-green-800">No authentication provider configured</h3>
                                         <div className="mt-2 text-base text-green-700">
-                                            <p>To add the authentication step, please follow the documention.</p>
+                                            <p>To add the authentication step, please follow the documentation.</p>
                                         </div>
                                         <div className="mt-4">
                                             <div className="-mx-2 -my-1.5 flex">
