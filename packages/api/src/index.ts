@@ -4,7 +4,7 @@ import passport from "passport";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { keys, mongoManager } from "@switchfeat/core";
+import { keys, mongoManager, neDbManager } from "@switchfeat/core";
 import { flagRoutes } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
@@ -15,7 +15,7 @@ dotenv.config();
 var env = process.env.NODE_ENV;
 
 // connect to mongodb
-mongoManager.connectDB();
+neDbManager.connectDB();
 
 const app: Express = express();
 const port = process.env.PORT || 4000;

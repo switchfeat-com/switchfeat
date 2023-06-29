@@ -26,5 +26,12 @@
   },
   "bugs": {
     "url": "https://github.com/switchfeat-com/switchfeat/issues"
+  },
+  "dependencies": {
+    "nedb": "^1.8.0",
+    "nedb-async": "^0.1.6"
+  },
+  "devDependencies": {
+    "@types/nedb": "^1.8.13"
   }
 }

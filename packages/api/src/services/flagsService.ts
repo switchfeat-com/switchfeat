@@ -1,5 +1,5 @@
-import { FlagModel, mongoManager } from "@switchfeat/core";
+import { FlagModel, mongoManager, neDbManager } from "@switchfeat/core";
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
-     return await mongoManager.getFlags(userId);
+     return await neDbManager.getFlags(userId);
 }

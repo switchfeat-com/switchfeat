@@ -5,7 +5,7 @@ import { FlagModel } from "../../models/flagModel";
 import { ConditionModel } from "../../models/conditionModel";
 import { UserModel } from "../../models/userModel";
 
-export interface dbManager {
+interface dbManager {
     flags: Collection<FlagModel> | null,
     users: Collection<UserModel> | null,
     conditions: Collection<ConditionModel> | null
@@ -22,7 +22,7 @@ export const connectDB = async () => {
         const client: MongoClient = new MongoClient(keys.MONGODB_URI);
 
         await client.connect();
-        console.log(`connectDB: connected to mongo db on: ${keys.MONGODB_URI}`);
+        console.log(`MongoManager: connectDB: connected to mongo db on: ${keys.MONGODB_URI}`);
 
         const db = client.db();
         dbManager.users = db.collection("users");
@@ -31,7 +31,7 @@ export const connectDB = async () => {
 
     } catch (ex) {
         console.log(ex);
-        throw new Error(`connectDB: Unable to connect to DB: ${ex}`);
+        throw new Error(`MongoManager: connectDB: Unable to connect to DB: ${ex}`);
     }
 };
 
