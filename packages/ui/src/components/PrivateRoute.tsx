@@ -1,9 +1,9 @@
-import React   from "react";
+import React, { ReactElement }   from "react";
 import { Navigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContextProvider";
  
 
-const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+const PrivateRoute: React.FC<{ children: ReactElement }> = ({ children }) => {
 
   const { authContext } =  useAppContext();
   
