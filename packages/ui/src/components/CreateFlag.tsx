@@ -48,6 +48,7 @@ export const CreateFlag: React.FC<{refreshFlagsList: () => void}> = (props) => {
                 } else if (respJson.errorCode === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
+                console.log(msg);
             }
 
         }).catch(error => { console.log(error) });
