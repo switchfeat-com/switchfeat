@@ -30,8 +30,8 @@ export const googleStrategy = () : GoogleStrategy => {
         const newUser = {
           name: profile._json.name,
           imageUrl: profile._json.picture,
-          createdOn: dateHelper.utcNow(),
-          updatedOn: dateHelper.utcNow(),
+          createdOn: dateHelper.utcNow().toJSDate(),
+          updatedOn: dateHelper.utcNow().toJSDate(),
           email: profile._json.email,
           isBlocked: false
         } as UserModel;

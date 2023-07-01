@@ -31,7 +31,7 @@ export const initialise = (app: Express) => {
 
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-  if (req.isAuthenticated()) {
+  if (!keys.AUTH_PROVIDER || req.isAuthenticated()) {
     return next();
   }
   res.redirect("/");

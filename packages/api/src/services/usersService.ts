@@ -1,13 +1,13 @@
 import { UserModel, mongoManager, neDbManager } from "@switchfeat/core";
 
-export const getUser = async (id: { userId?: string, email?: string }): Promise<UserModel | null> => {
+export const getUser = async (search: { userId?: string, email?: string }): Promise<UserModel | null> => {
 
-    if (id.userId) {
-        return await neDbManager.getUser(id.userId);
+    if (search.userId) {
+        return await neDbManager.getUser(search.userId);
     }
 
-    if (id.email) {
-        return await neDbManager.getUserByEmail(id.email);
+    if (search.email) {
+        return await neDbManager.getUserByEmail(search.email);
     }
 
     return null;

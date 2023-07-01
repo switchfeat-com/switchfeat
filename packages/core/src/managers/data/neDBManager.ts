@@ -33,9 +33,46 @@ export const connectDB = async () => {
 
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
-    return await dbManager.flags!.asyncFind({
-        "userId": userId
+    return await dbManager.flags!.asyncFind({});
+};
+
+export const getFlagByName = async (name: string): Promise<FlagModel> => {
+    return await dbManager.flags!.asyncFindOne({
+        "name": name
     });
+};
+
+export const getFlagById = async (id: string): Promise<FlagModel> => {
+    return await dbManager.flags!.asyncFindOne({
+        _id: id
+    });
+};
+
+export const addFlag = async (flag: FlagModel): Promise<boolean> => {
+    try {
+        const response = await dbManager.flags!.asyncInsert(flag);
+        return (!!response);
+    } catch(ex) {
+        return false;
+    }
+};
+
+export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
+    try {
+        const response = await dbManager.flags!.asyncUpdate({ _id: new ObjectId(flag.id) }, { $set: flag } );
+        return (!!response);
+    } catch(ex) {
+        return false;
+    }
+};
+
+export const deleteFlag = async (flag: FlagModel): Promise<boolean> => {
+    try {
+        const response = await dbManager.flags!.asyncRemove({ _id: new ObjectId(flag.id) });
+        return  true;
+    } catch(ex) {
+        return false;
+    }
 };
 
 export const getUser = async (userId: string): Promise<UserModel> => {

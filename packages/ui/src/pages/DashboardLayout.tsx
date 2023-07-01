@@ -13,14 +13,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import logo from "../images/logo.png";
+import { classNames } from '../helpers/classHelper';
 
 export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    function classNames(...classes: string[]) {
-        return classes.filter(Boolean).join(' ')
-    }
 
     const navigation = [
         { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },

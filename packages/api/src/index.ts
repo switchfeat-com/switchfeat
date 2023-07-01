@@ -34,7 +34,6 @@ app.use(session({
 
 
 passportAuth.initialise(app);
-
 app.use(passport.session());
 
 // set up cors to allow us to accept requests from our client
