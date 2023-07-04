@@ -1,63 +1,49 @@
 import { Dialog, Switch, Transition } from '@headlessui/react';
-import { XMarkIcon, PlusIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, PlusIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, ReactNode, useRef, useState } from 'react';
-import * as keys from "../config/keys";
 import { classNames } from '../helpers/classHelper';
+import { useNotifications } from '../services/notifications';
+import { useAPI } from '../utils/api';
 
 export const CreateFlag: React.FC<{refreshFlagsList: () => void}> = (props) => {
     const [open, setOpen] = useState(false);
     const [enabled, setEnabled] = useState(false);
     const nameRef = useRef<any>(null);
     const descriptionRef = useRef<any>(null);
+    const notifications = useNotifications()
+    const api = useAPI()
 
-
-
-    const handleCreateFlag = () => {
-
+    const handleCreateFlag = async () => {
         if (!nameRef.current) {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('flagName', nameRef.current.value);
+        try {
+            await api.post('/api/flags', {
+                flagName: nameRef.current.value,
+                flagDescription: descriptionRef.current ? descriptionRef.current.value : null,
+            })
+            notifications.addNotification({
+                icon: <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />,
+                title: "Flag created",
+                description: `The flag ${nameRef.current.value} was created successfully.`,
+            });
+        } catch (error) {
+            setOpen(false);
+        }
 
-        if (descriptionRef.current)
-            formData.append('flagDescription', descriptionRef.current.value);
-        
+        props.refreshFlagsList();
+        setOpen(false);
+    }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            },
-            body: formData
-        }).then(resp => {
-            return resp.json();
-        }).then(respJson => {
-
-            if (respJson.success) {
-                props.refreshFlagsList();
-                setOpen(false);
-            } else {
-                let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
-                    msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
-                    msg = "There is already a flag with the same name.";
-                }
-                console.log(msg);
-            }
-
-        }).catch(error => { console.log(error) });
+    function onClick() {
+        setOpen(!open)
     }
 
     return (
         <>
             <button
-                onClick={() => setOpen(!open)}
+                onClick={onClick}
                 type="button"
                 className="inline-flex items-center rounded-md border 
                 border-transparent bg-emerald-500 px-3 py-2 

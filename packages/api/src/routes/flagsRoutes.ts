@@ -40,9 +40,10 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
     let flagStatus = req.body.flagStatus;
 
     if (!flagName) {
-        res.status(401).json({
+        res.status(400).json({
             success: false,
-            errorCode: "error_input"
+            code: "error_flag_name_missing",
+            message: "Could not save flag. Flag name is missing."
         });
         return;
     }
@@ -59,14 +60,15 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
             updatedOn: dateHelper.utcNow().toJSDate()
         });
 
-        res.json({
+        res.status(200).json({
             success: true,
-            errorCode: ""
         });
     } else {
-        res.json({
+        // set error code
+        res.status(400).json({
             success: false,
-            errorCode: "error_project_alreadysaved"
+            code: "error_project_alreadysaved",
+            message: "Could not save project. Project already exists."
         });
     }
 });

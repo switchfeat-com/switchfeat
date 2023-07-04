@@ -1,6 +1,9 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { AppContext, UserState, initialState } from "./AppContext";
 import * as keys from "../config/keys";
+import { NotificationsPanel, NotificationsProvider } from "../services/notifications";
+import { Portal } from "@headlessui/react";
+import { fetchGet } from "../utils/api";
 
 const appContext = createContext<AppContext>(initialState);
 
@@ -18,33 +21,20 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => 
     };
 
     useEffect(() => {
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/auth/is-auth`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            }
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json();
-            } 
-            throw new Error("failed to authenticate user");
-        }).then(responseJson => {
+        fetchGet('/auth/is-auth').then((res: any) => {
             setUserData({
                 authenticated: true,
-                userData: responseJson.user
+                userData: res.user
             });
-            
-        }).catch(error => {
-                setUserData({
-                    authenticated: false,
-                    error: "Failed to authenticate user"
-                });
-            })
-            .finally(() => setLoadingInitial(false));
+        }).catch((err: any) => {
+            console.log('Not authenticated');
+            setUserData({
+                authenticated: false,
+                error: "Failed to authenticate user"
+            });
+        }).finally(() => {
+            setLoadingInitial(false);
+        });
     }, []);
 
     return (
@@ -57,7 +47,12 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => 
             }
            
         }}>
-            {!loadingInitial && props.children}
+            <NotificationsProvider>
+                {!loadingInitial && props.children}
+                <Portal>
+                    <NotificationsPanel />
+                </Portal>
+            </NotificationsProvider>
         </appContext.Provider>
     );
     

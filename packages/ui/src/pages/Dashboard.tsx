@@ -6,6 +6,7 @@ import { SectionEmptyState } from "../components/SectionEmptyState";
 import { CreateFlag } from "../components/CreateFlag";
 import { FlagModel } from "../models/FlagModel";
 import * as keys from "../config/keys";
+import { fetchGet } from "../utils/api";
 
 
 export const Dashboard: React.FC = (props) => {
@@ -18,35 +19,19 @@ export const Dashboard: React.FC = (props) => {
     }; 
 
     useEffect(() => {
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            }
-        }).then(resp => {
-            return resp.json();
-        }).then(respJson => {
-            setFlags([]);
-            let allFlags: FlagModel[] = [];
-            respJson.flags.forEach((item: any) => {
-                allFlags.push({
+        fetchGet('/api/flags').then((res: any) => {
+            const allFlags = res.flags.map((item: any) => {
+                return {
                     name: item.name,
                     description: item.description,
                     status: item.status,
                     createdOn: item.createdOn, 
                     updatedOn: item.updatedOn
-                });
-            });
-
+                }
+            })
             setFlags(allFlags);
-
-            console.log(allFlags);
-        }).catch(ex => { console.log(ex)});
-
+            console.log('🏳️', allFlags);
+        })
     }, [refreshFlags]);
 
 
