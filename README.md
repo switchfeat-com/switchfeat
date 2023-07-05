@@ -8,8 +8,7 @@
 <br/>
 
 <div align="center">
- <a href="https://www.npmjs.com/package/@apitrakr/cli" target="_blank">
-      <img src="https://img.shields.io/badge/PR-welcome-brightgreen.svg?style=flat" alt="PR welcome on @apitrakr/cli" /> </a>
+      <img src="https://img.shields.io/badge/PR-welcome-brightgreen.svg?style=flat" alt="PR welcome on @apitrakr/cli" />
   
 </div>
 
