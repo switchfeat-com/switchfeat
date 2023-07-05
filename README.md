@@ -1,5 +1,5 @@
 <div align="center">
-     <img src="https://github.com/apitrakr/apitrakr/assets/905984/09047b1d-f10d-463a-ba50-214d16d42f5a" width=100 />
+     <img src="https://github.com/switchfeat-com/switchfeat/assets/905984/bed8cfa8-0242-4156-b6e5-80240ae400fe" width=100 />
 </div>
 <div align="center">
     <h1 align="center">SwitchFeat</h1>
