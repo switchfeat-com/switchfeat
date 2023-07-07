@@ -25,12 +25,13 @@ export const addFlag = async (flag: FlagModel ) : Promise<boolean> => {
  
      return false;
  }
- 
- export const updateUser = async (flag: FlagModel ) : Promise<boolean> => {
-      
-     if (await getFlag({name: flag.name})) {
-         return await neDbManager.updateFlag(flag);
-     }
- 
-     return false;
- }
+
+ export const updateFlag = async (flag: FlagModel ) : Promise<boolean> => {
+     
+    const flagFromDb = await getFlag({name: flag.name});
+    if (flagFromDb) {
+        return await neDbManager.updateFlag(flagFromDb.id!, flag);
+    }
+
+    return false;
+}

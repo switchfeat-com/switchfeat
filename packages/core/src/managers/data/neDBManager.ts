@@ -57,9 +57,9 @@ export const addFlag = async (flag: FlagModel): Promise<boolean> => {
     }
 };
 
-export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
+export const updateFlag = async (flagId: ObjectId, flag: FlagModel): Promise<boolean> => {
     try {
-        const response = await dbManager.flags!.asyncUpdate({ _id: new ObjectId(flag.id) }, { $set: flag } );
+        const response = await dbManager.flags!.asyncUpdate({ _id: flagId }, { $set: { status: flag.status, description: flag.description} } );
         return (!!response);
     } catch(ex) {
         return false;
