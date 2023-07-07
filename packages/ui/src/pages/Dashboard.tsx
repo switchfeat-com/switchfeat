@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { FlagsList } from "../components/FlagsList";
 import { SectionHeader } from "../components/SectionHeader";
 import { DashboardLayout } from "./DashboardLayout";
 import { SectionEmptyState } from "../components/SectionEmptyState";
 import { CreateFlag } from "../components/CreateFlag";
 import { FlagModel } from "../models/FlagModel";
 import * as keys from "../config/keys";
+import { FlagsItem } from "../components/FlagsItem";
 
 
 export const Dashboard: React.FC = (props) => {
@@ -15,7 +15,7 @@ export const Dashboard: React.FC = (props) => {
 
     const handleRefreshFlags = () => {
         setRefreshFlags(!refreshFlags);
-    }; 
+    };
 
     useEffect(() => {
 
@@ -39,7 +39,7 @@ export const Dashboard: React.FC = (props) => {
                     name: item.name,
                     description: item.description,
                     status: item.status,
-                    createdOn: item.createdOn, 
+                    createdOn: item.createdOn,
                     updatedOn: item.updatedOn,
                     key: item.key
                 });
@@ -48,7 +48,7 @@ export const Dashboard: React.FC = (props) => {
             setFlags(allFlags);
 
             console.log(allFlags);
-        }).catch(ex => { console.log(ex)});
+        }).catch(ex => { console.log(ex) });
 
     }, [refreshFlags]);
 
@@ -61,7 +61,10 @@ export const Dashboard: React.FC = (props) => {
                 {flags.length > 0 &&
                     <>
                         <SectionHeader title="Flags"> <CreateFlag refreshFlagsList={handleRefreshFlags} /></SectionHeader>
-                        <FlagsList flags={flags} />
+                       
+                        {flags.map(flagItem => (
+                            <FlagsItem flag={flagItem} />
+                        ))}
                     </>
                 }
             </>

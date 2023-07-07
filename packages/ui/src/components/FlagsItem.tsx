@@ -1,14 +1,17 @@
 import { Switch } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { classNames } from "../helpers/classHelper";
 import { FlagModel } from "../models/FlagModel";
 import * as dateHelper from "../helpers/dateHelper";
 
 export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
-    const [enabled, setEnabled] = useState(false)
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        setEnabled(props.flag.status);
+    }, [props.flag.status]);
 
     return (
-
 
         <div className="bg-white shadow sm:rounded-lg m-4">
             <Switch.Group as="div" className="px-4 py-5 sm:p-6">

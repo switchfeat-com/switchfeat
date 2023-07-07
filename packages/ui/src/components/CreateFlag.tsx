@@ -20,10 +20,11 @@ export const CreateFlag: React.FC<{refreshFlagsList: () => void}> = (props) => {
 
         const formData = new FormData();
         formData.append('flagName', nameRef.current.value);
+        formData.append('flagStatus', enabled.toString());
 
-        if (descriptionRef.current)
+        if (descriptionRef.current) {
             formData.append('flagDescription', descriptionRef.current.value);
-        
+        }
 
         fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
             method: "POST",
