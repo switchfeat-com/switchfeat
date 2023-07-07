@@ -6,3 +6,4 @@ export * as mongoManager from "./managers/data/mongoManager" ;
 export * as neDbManager from "./managers/data/neDBManager" ;
 export * from "./config/keys";
 export * as dateHelper from "./helpers/dateHelper" 
+export * as entityHelper from "./helpers/entityHelper" 

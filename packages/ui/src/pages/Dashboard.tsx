@@ -18,6 +18,8 @@ export const Dashboard: React.FC = (props) => {
     }; 
 
     useEffect(() => {
+
+
         fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
             method: "GET",
             credentials: "include",
@@ -38,7 +40,8 @@ export const Dashboard: React.FC = (props) => {
                     description: item.description,
                     status: item.status,
                     createdOn: item.createdOn, 
-                    updatedOn: item.updatedOn
+                    updatedOn: item.updatedOn,
+                    key: item.key
                 });
             });
 
@@ -58,7 +61,7 @@ export const Dashboard: React.FC = (props) => {
                 {flags.length > 0 &&
                     <>
                         <SectionHeader title="Flags"> <CreateFlag refreshFlagsList={handleRefreshFlags} /></SectionHeader>
-                        <FlagsList />
+                        <FlagsList flags={flags} />
                     </>
                 }
             </>

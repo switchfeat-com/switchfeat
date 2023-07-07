@@ -1,9 +1,9 @@
-import { DateTime } from "luxon";
 
 export interface FlagModel {
     name: string;
     description?: string;
-    createdOn: DateTime;
-    updatedOn: DateTime;
+    createdOn: string;
+    updatedOn: string;
     status: boolean;
+    key: string;
 }

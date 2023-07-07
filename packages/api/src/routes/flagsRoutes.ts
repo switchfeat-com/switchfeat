@@ -5,7 +5,7 @@ import multer from 'multer';
 export const flagRoutes = Router();
 import * as flagsService from "../services/flagsService";
 import * as auth from "../managers/auth/passportAuth" ;
-import { dateHelper } from "@switchfeat/core";
+import { dateHelper, entityHelper } from "@switchfeat/core";
 
 const upload = multer();
 
@@ -56,7 +56,8 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
             description: flagDescription,
             createdOn: dateHelper.utcNow().toJSDate(),
             status: !!flagStatus,
-            updatedOn: dateHelper.utcNow().toJSDate()
+            updatedOn: dateHelper.utcNow().toJSDate(),
+            key: entityHelper.generateKey(flagName)
         });
 
         res.json({
@@ -66,7 +67,7 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
     } else {
         res.json({
             success: false,
-            errorCode: "error_project_alreadysaved"
+            errorCode: "error_flag_alreadysaved"
         });
     }
 });
