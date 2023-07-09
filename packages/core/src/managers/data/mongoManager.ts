@@ -6,24 +6,29 @@ import { UserModel } from "../../models/userModel";
 import { DataStoreManager, MongoManager, SupportedDb, getDbProvider } from "./dbManager";
 
 
-let mongoDbManager: MongoManager | null = null;
+let mongoDbManager: MongoManager;
+let dataStoreInstance: DataStoreManager;
 
 export const createMongoDataStore = (): DataStoreManager => {
-    return {
-        connectDb: connectDb,
-        addFlag: () => { throw new Error(); },
-        deleteFlag: () => { throw new Error(); },
-        getFlagById: () => { throw new Error(); },
-        getFlagByKey: () => { throw new Error(); },
-        getFlagByName: () => { throw new Error(); },
-        getFlags: () => { throw new Error(); },
-        updateFlag: () => { throw new Error(); },
-        getUser: () => { throw new Error(); },
-        getUserByEmail: () => { throw new Error(); },
-        addUser: () => { throw new Error(); },
-        updateUser: () => { throw new Error(); },
-        deleteUser: () => { throw new Error(); }
-    };
+
+    if (!dataStoreInstance) {
+        dataStoreInstance = {
+            connectDb: connectDb,
+            addFlag: () => { throw new Error(); },
+            deleteFlag: () => { throw new Error(); },
+            getFlagById: () => { throw new Error(); },
+            getFlagByKey: () => { throw new Error(); },
+            getFlagByName: () => { throw new Error(); },
+            getFlags: () => { throw new Error(); },
+            updateFlag: () => { throw new Error(); },
+            getUser: () => { throw new Error(); },
+            getUserByEmail: () => { throw new Error(); },
+            addUser: () => { throw new Error(); },
+            updateUser: () => { throw new Error(); },
+            deleteUser: () => { throw new Error(); }
+        };
+    }
+    return dataStoreInstance;
 }
 
 const connectDb = async () => {
@@ -47,26 +52,26 @@ const connectDb = async () => {
 };
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
-    return (await mongoDbManager!.flags?.find({
+    return (await mongoDbManager.flags?.find({
         "userId": userId
     }).toArray()) as FlagModel[];
 };
 
 export const getUser = async (userId: string): Promise<UserModel> => {
-    return (await mongoDbManager!.users?.findOne({
+    return (await mongoDbManager.users?.findOne({
         _id: new ObjectId(userId)
     })) as UserModel;
 };
 
 export const getUserByEmail = async (email: string): Promise<UserModel> => {
-    return (await mongoDbManager!.users?.findOne({
+    return (await mongoDbManager.users?.findOne({
         email: email
     })) as UserModel;
 };
 
 export const addUser = async (user: UserModel): Promise<boolean> => {
     try {
-        const response = await mongoDbManager!.users?.insertOne(user);
+        const response = await mongoDbManager.users?.insertOne(user);
         return (!!response);
     } catch (ex) {
         return false;
@@ -75,7 +80,7 @@ export const addUser = async (user: UserModel): Promise<boolean> => {
 
 export const updateUser = async (user: UserModel): Promise<boolean> => {
     try {
-        const response = await mongoDbManager!.users?.updateOne({ _id: new ObjectId(user._id) }, { $set: user });
+        const response = await mongoDbManager.users?.updateOne({ _id: new ObjectId(user._id) }, { $set: user });
         return (!!response);
     } catch (ex) {
         return false;
@@ -84,7 +89,7 @@ export const updateUser = async (user: UserModel): Promise<boolean> => {
 
 export const deleteUser = async (user: UserModel): Promise<boolean> => {
     try {
-        const response = await mongoDbManager!.users?.deleteOne({ _id: new ObjectId(user._id) });
+        const response = await mongoDbManager.users?.deleteOne({ _id: new ObjectId(user._id) });
         return (!!response && response.deletedCount > 0);
     } catch (ex) {
         return false;

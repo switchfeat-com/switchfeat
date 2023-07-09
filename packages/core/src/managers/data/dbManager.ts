@@ -29,8 +29,6 @@ export type NeDbManager = {
     conditions: AsyncNedb<ConditionModel> | null,
 };
 
-
-
 export type DataStoreManager = {
     connectDb: () => void;
 
