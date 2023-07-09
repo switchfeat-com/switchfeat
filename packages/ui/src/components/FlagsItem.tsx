@@ -37,7 +37,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
         }).then(respJson => {
 
             if (respJson.success) {
-                setEnabled(true);
+                setEnabled(pendingSwitchEnabled);
                 setShowConfirmation(false);
             } else {
                 let msg = "Generic error occurred, please try again.";
