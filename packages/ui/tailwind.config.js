@@ -43,5 +43,11 @@ module.exports = {
     'Noto Color Emoji'
   ]
     }
-  }
+  },
+  safelist: [
+    {
+      pattern: /(bg|ring)-(red|green|blue|orange|emerald)-(100|500|600|700)/,  
+      variants: ['lg', 'hover', 'focus', 'lg:hover'],   
+    },
+  ]
 } 

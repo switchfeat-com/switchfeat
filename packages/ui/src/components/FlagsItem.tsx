@@ -4,7 +4,8 @@ import { classNames } from "../helpers/classHelper";
 import { FlagModel } from "../models/FlagModel";
 import * as dateHelper from "../helpers/dateHelper";
 import * as keys from "../config/keys";
-import { EllipsisVerticalIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { FlagActions } from "./FlagActions";
 
 export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
     const [enabled, setEnabled] = useState(false);
@@ -101,7 +102,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
                                 </div>
                             </div>
                             <div className="ml-4">
-                                 <ActionMenu />
+                                 <FlagActions flagKey={props.flag.key} />
                             </div>
                            
                         </div>
@@ -182,54 +183,5 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
             </Transition.Root>
 
         </>
-    );
-}
-
-const ActionMenu: React.FC = () => {
-    return (
-        <Menu as="div" className="relative flex-none">
-            <Menu.Button className="  -mr-2    text-gray-500 hover:text-gray-900">
-                <span className="sr-only">Open options</span>
-                <EllipsisVerticalIcon className="h-6 w-6" aria-hidden="true" />
-            </Menu.Button>
-            <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-            >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                    <Menu.Item>
-                        {({ active }) => (
-                            <button
-
-                                className={classNames(
-                                    active ? 'bg-gray-50' : '',
-                                    'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
-                                )}
-                            >
-                                Edit Flag
-                            </button>
-                        )}
-                    </Menu.Item>
-                    <Menu.Item>
-                        {({ active }) => (
-                            <button
-
-                                className={classNames(
-                                    active ? 'bg-gray-50' : '',
-                                    'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
-                                )}
-                            >
-                                Delete Flag
-                            </button>
-                        )}
-                    </Menu.Item>
-                </Menu.Items>
-            </Transition>
-        </Menu>
     );
 }
