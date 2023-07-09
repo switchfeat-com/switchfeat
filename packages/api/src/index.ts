@@ -4,18 +4,21 @@ import passport from "passport";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
-import { keys, mongoManager, neDbManager } from "@switchfeat/core";
+import { keys, dbManager } from "@switchfeat/core";
 import { flagRoutes } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
+import { getDataStoreManager } from './managers/auth/dataStoreManager';
 
 dotenv.config();
 
 var env = process.env.NODE_ENV;
 
 // connect to mongodb
-neDbManager.connectDB();
+const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
+
+dataStoreManager.connectDb();
 
 const app: Express = express();
 const port = process.env.PORT || 4000;
