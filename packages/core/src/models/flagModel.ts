@@ -2,7 +2,7 @@ import { ConditionModel } from './conditionModel';
 import { ObjectId } from 'mongodb';
 
 export interface FlagModel {
-    id?: ObjectId,
+    _id?: ObjectId,
     name: string;
     key: string;
     description?: string;
