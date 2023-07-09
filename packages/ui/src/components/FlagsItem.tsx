@@ -1,10 +1,10 @@
-import { Dialog, Switch, Transition } from "@headlessui/react";
+import { Dialog, Menu, Switch, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { classNames } from "../helpers/classHelper";
 import { FlagModel } from "../models/FlagModel";
-import * as dateHelper from "../helpers/dateHelper"; 
+import * as dateHelper from "../helpers/dateHelper";
 import * as keys from "../config/keys";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
     const [enabled, setEnabled] = useState(false);
@@ -62,55 +62,54 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
     };
 
     return (
-<>
-        <div className="bg-white shadow sm:rounded-lg m-4">
-            <Switch.Group as="div" className="px-4 py-5 sm:p-6">
+        <>
+            <div className="bg-white shadow sm:rounded-lg m-4">
+                <Switch.Group as="div" className="px-4 py-5 sm:p-6">
 
-                <div className=" sm:flex sm:items-start sm:justify-between">
-                    <div className="max-w-xl text-base text-gray-500">
-                        <Switch.Label as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                            {props.flag.name}
-                        </Switch.Label>
-                        <div className="mt-3">
-                            <Switch.Description>
-                                {props.flag.description}
-                            </Switch.Description>
-                        </div>
-                        <div className="mt-3">
-                        <code className="bg-slate-100 px-2 py-1 rounded-md text-sm">{props.flag.key}</code>
-                        </div>
-                        
-
-                    </div>
-                    <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
-                        <div className="flex flex-col">
-                            <div className="text-base text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
-                            <div className="text-right">
-                                <Switch
-                                    checked={enabled}
-                                    onChange={(checked) => {showConfirmationDialog(checked)} }
-                                    className={classNames(
-                                        enabled ? 'bg-green-600' : 'bg-gray-200',
-                                        'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
-                                        'border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
-                                    )}
-                                >
-                                    <span
-                                        aria-hidden="true"
-                                        className={classNames(
-                                            enabled ? 'translate-x-5' : 'translate-x-0',
-                                            'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                        )}
-                                    />
-                                </Switch>
+                    <div className=" sm:flex sm:items-start sm:justify-between">
+                        <div className="max-w-xl text-base text-gray-500">
+                            <div className="text-base  leading-6 text-gray-900">
+                                <span className="font-semibold">{props.flag.name}</span>  <code className="bg-slate-100 px-2 py-1 rounded-md text-sm ml-4">{props.flag.key}</code>
+                            </div>
+                            <div className="mt-3">
+                                <Switch.Description>
+                                    {props.flag.description}
+                                </Switch.Description>
                             </div>
                         </div>
+                        <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
+                            <div className="flex flex-col">
+                                <div className="text-sm text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
+                                <div className="text-right">
+                                    <Switch
+                                        checked={enabled}
+                                        onChange={(checked) => { showConfirmationDialog(checked) }}
+                                        className={classNames(
+                                            enabled ? 'bg-green-600' : 'bg-gray-200',
+                                            'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
+                                            'border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
+                                        )}
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={classNames(
+                                                enabled ? 'translate-x-5' : 'translate-x-0',
+                                                'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                            )}
+                                        />
+                                    </Switch>
+                                </div>
+                            </div>
+                            <div className="ml-4">
+                                 <ActionMenu />
+                            </div>
+                           
+                        </div>
                     </div>
-                </div>
-            </Switch.Group>
-        </div>
+                </Switch.Group>
+            </div>
 
-        <Transition.Root show={showConfirmation} as={Fragment}>
+            <Transition.Root show={showConfirmation} as={Fragment}>
                 <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>
                     <Transition.Child
                         as={Fragment}
@@ -147,9 +146,9 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-base text-gray-500">
-                                                        <span>Are you sure you want to</span> <span className="font-bold"> {`${pendingSwitchEnabled ? 'activate' : 'deactivate' }`}</span>  <span>this feature? Your changes will be immediately applied.</span> 
+                                                        <span>Are you sure you want to</span> <span className="font-bold"> {`${pendingSwitchEnabled ? 'activate' : 'deactivate'}`}</span>  <span>this feature? Your changes will be immediately applied.</span>
                                                     </p>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -181,7 +180,56 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
                     </div>
                 </Dialog>
             </Transition.Root>
-            
+
         </>
+    );
+}
+
+const ActionMenu: React.FC = () => {
+    return (
+        <Menu as="div" className="relative flex-none">
+            <Menu.Button className="  -mr-2    text-gray-500 hover:text-gray-900">
+                <span className="sr-only">Open options</span>
+                <EllipsisVerticalIcon className="h-6 w-6" aria-hidden="true" />
+            </Menu.Button>
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <Menu.Item>
+                        {({ active }) => (
+                            <button
+
+                                className={classNames(
+                                    active ? 'bg-gray-50' : '',
+                                    'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
+                                )}
+                            >
+                                Edit Flag
+                            </button>
+                        )}
+                    </Menu.Item>
+                    <Menu.Item>
+                        {({ active }) => (
+                            <button
+
+                                className={classNames(
+                                    active ? 'bg-gray-50' : '',
+                                    'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
+                                )}
+                            >
+                                Delete Flag
+                            </button>
+                        )}
+                    </Menu.Item>
+                </Menu.Items>
+            </Transition>
+        </Menu>
     );
 }
