@@ -47,8 +47,8 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: R
         return;
     }
 
-
-    let alreadyInDb = await flagsService.getFlag({ name: flagName });
+    const flagKey = entityHelper.generateKey(flagName);
+    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
     if (!alreadyInDb) {
         await flagsService.addFlag({
@@ -57,7 +57,7 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: R
             createdOn: dateHelper.utcNow().toJSDate(),
             status: (flagStatus === "true"),
             updatedOn: dateHelper.utcNow().toJSDate(),
-            key: entityHelper.generateKey(flagName)
+            key: flagKey
         });
 
         res.json({
@@ -105,7 +105,38 @@ flagRoutes.put("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Re
     } else {
         res.json({
             success: false,
-            errorCode: "error_flag_not found"
+            errorCode: "error_flag_notfound"
+        });
+    }
+});
+
+flagRoutes.delete("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+
+    console.log("received delete: " + JSON.stringify(req.body));
+
+    let flagKey = req.body.flagKey;
+
+    if (!flagKey) {
+        res.status(401).json({
+            success: false,
+            errorCode: "error_input"
+        });
+        return;
+    }
+
+    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+
+    if (alreadyInDb) {
+        await flagsService.deleteFlag(alreadyInDb);
+
+        res.json({
+            success: true,
+            errorCode: ""
+        });
+    } else {
+        res.json({
+            success: false,
+            errorCode: "error_flag_notfound"
         });
     }
 });

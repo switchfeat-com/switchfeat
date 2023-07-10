@@ -31,3 +31,7 @@ export const addFlag = async (flag: FlagModel): Promise<boolean> => {
 export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
     return await dataStoreManager.updateFlag(flag);
 }
+
+export const deleteFlag = async (flag: FlagModel): Promise<boolean> => {
+    return await dataStoreManager.deleteFlag(flag);
+}

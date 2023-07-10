@@ -2,8 +2,8 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 import { classNames } from "../helpers/classHelper";
-import { ConfirmationDialog, ConfirmationDialogProps } from "./shared/ConfirmationDialog";
-import { type } from "os";
+import { ConfirmationDialog, ConfirmationDialogProps } from "./shared/ConfirmationDialog"; 
+import * as keys from "../config/keys";
 
 export const FlagActions: React.FC<{flagKey: string}> = (props) => {
 
@@ -12,7 +12,28 @@ export const FlagActions: React.FC<{flagKey: string}> = (props) => {
 
 
     const onConfirmDelete = () => {
-        
+
+        const formData = new FormData();
+        formData.append('flagKey', props.flagKey);
+
+        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "true"
+            },
+            body: formData
+        }).then(resp => {
+            return resp.json();
+        }).then(respJson => {
+
+            if (respJson.success) {
+                setShowDelete(false);
+            }
+
+        }).catch(error => { console.log(error) });
     };
 
 
