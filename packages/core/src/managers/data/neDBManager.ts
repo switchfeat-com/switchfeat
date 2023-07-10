@@ -78,7 +78,7 @@ export const addFlag = async (flag: FlagModel): Promise<boolean> => {
 
 export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
     try {
-        const response = await neDbManager.flags!.asyncUpdate({ _id: flag._id }, { $set: { status: flag.status, description: flag.description } });
+        const response = await neDbManager.flags!.asyncUpdate({ _id: flag._id }, { $set: { status: flag.status, description: flag.description, name: flag.name } });
         return (!!response);
     } catch (ex) {
         console.error(ex);

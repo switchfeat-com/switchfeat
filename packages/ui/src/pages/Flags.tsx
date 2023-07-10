@@ -13,7 +13,7 @@ export const Flags: React.FC = (props) => {
 
     const [flags, setFlags] = useState<FlagModel[]>([]);
     const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
-
+    const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState(false);
 
     const handleRefreshFlags = () => {
@@ -21,7 +21,7 @@ export const Flags: React.FC = (props) => {
     };
 
     useEffect(() => {
-
+        setLoading(true);
         fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
             method: "GET",
             credentials: "include",
@@ -49,7 +49,7 @@ export const Flags: React.FC = (props) => {
 
             setFlags(allFlags);
 
-            console.log(allFlags);
+            setLoading(false);
         }).catch(ex => { console.log(ex) });
 
     }, [refreshFlags]);
@@ -80,17 +80,19 @@ export const Flags: React.FC = (props) => {
 
     return (
         <DashboardLayout>
-            <>
-                {flags.length === 0 && <SectionEmptyState type="flags"> <CreateFlagButton /> </SectionEmptyState>}
-                {flags.length > 0 &&
-                    <>
-                        <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
+            <> {!loading && (
+                <>
+                    {flags.length === 0 && <SectionEmptyState type="flags"> <CreateFlagButton /> </SectionEmptyState>}
+                    {flags.length > 0 &&
+                        <>
+                            <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
 
-                        {flags.map((flagItem, idx) => (
-                            <FlagsItem key={idx} flag={flagItem} refreshFlags={handleRefreshFlags} />
-                        ))}
-                    </>
-                }
+                            {flags.map((flagItem, idx) => (
+                                <FlagsItem key={idx} flag={flagItem} refreshFlags={handleRefreshFlags} />
+                            ))}
+                        </>
+                    } </>
+            )}
                 <CreateOrUpdateFlagDialog  {...createFlagProps} />
             </>
         </DashboardLayout>

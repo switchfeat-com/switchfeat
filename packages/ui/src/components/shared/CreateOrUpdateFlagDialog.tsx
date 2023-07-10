@@ -44,6 +44,10 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         formData.append('flagName', nameRef.current.value);
         formData.append('flagStatus', enabled.toString());
 
+        if (props.flag) {
+            formData.append('flagKey', props.flag.key);
+        }
+
         if (descriptionRef.current) {
             formData.append('flagDescription', descriptionRef.current.value);
         }
