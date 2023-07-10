@@ -59,7 +59,8 @@ export const Flags: React.FC = (props) => {
         setOpen: setOpen,
         onCancel: () => setOpen(false),
         title: "Create flag",
-        description: "Get started by creating your new feature flag."
+        description: "Get started by creating your new feature flag.",
+        refreshFlags: handleRefreshFlags
     };
 
 
@@ -86,7 +87,7 @@ export const Flags: React.FC = (props) => {
                         <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
 
                         {flags.map((flagItem, idx) => (
-                            <FlagsItem key={idx} flag={flagItem} />
+                            <FlagsItem key={idx} flag={flagItem} refreshFlags={handleRefreshFlags} />
                         ))}
                     </>
                 }

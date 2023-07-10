@@ -7,7 +7,7 @@ import * as keys from "../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { FlagActions } from "./FlagActions";
 
-export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
+export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -101,7 +101,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
                                 </div>
                             </div>
                             <div className="ml-4">
-                                 <FlagActions flag={props.flag}  />
+                                 <FlagActions flag={props.flag} refreshFlags={props.refreshFlags}  />
                             </div>
                            
                         </div>

@@ -12,6 +12,7 @@ export interface CreateOrUpdateFlagDialogProps   {
     title: string;
     description: ReactNode;
     flag?: FlagModel;
+    refreshFlags: () => void
 };
 
  
@@ -61,7 +62,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         }).then(respJson => {
 
             if (respJson.success) {
-              //  props.refreshFlagsList();
+                props.refreshFlags();
                 props.setOpen(false);
             } else {
                 let msg = "Generic error occurred, please try again.";
@@ -99,7 +100,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                         <div className="h-0 flex-1 overflow-y-auto">
                                             <div className="bg-emerald-500 px-4 py-6 sm:px-6">
                                                 <div className="flex items-center justify-between">
-                                                    <Dialog.Title className="text-base font-semibold leading-6 text-white">
+                                                    <Dialog.Title className="text-lg font-semibold leading-6 text-white">
                                                         {props.title}
                                                     </Dialog.Title>
                                                     <div className="ml-3 flex h-7 items-center">
@@ -125,7 +126,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                         <FadeIn delay="delay-[200ms]">
                                                             <label
                                                                 htmlFor="project-name"
-                                                                className="block text-sm font-medium leading-6 text-gray-900"
+                                                                className="block text-base font-medium leading-6 text-gray-900"
                                                             >
                                                                 Name
                                                             </label>
@@ -134,15 +135,15 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                     type="text"
                                                                     defaultValue={props.flag?.name}
                                                                     ref={nameRef}
-                                                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 
-                                                                shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                                                                    className="block w-full rounded-md border-0 py-2 px-2 text-gray-900 
+                                                                shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-base sm:leading-6"
                                                                 />
                                                             </div>
                                                         </FadeIn>
                                                         <FadeIn delay="delay-[400ms]">
                                                             <label
                                                                 htmlFor="description"
-                                                                className="block text-sm font-medium leading-6 text-gray-900"
+                                                                className="block text-base font-medium leading-6 text-gray-900"
                                                             >
                                                                 Description
                                                             </label>
@@ -152,14 +153,14 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                     defaultValue={props.flag?.description}
                                                                     rows={4}
                                                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                                                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                                                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-base sm:leading-6"
                                                                 />
                                                             </div>
                                                         </FadeIn>
 
                                                          <FadeIn delay="delay-[600ms]">
                                                             <fieldset>
-                                                                <legend className="text-sm font-medium leading-6 text-gray-900">Enabled</legend>
+                                                                <legend className="text-base font-medium leading-6 text-gray-900">Enabled</legend>
                                                                 <div className="mt-2 space-y-4">
                                                                     <Switch
                                                                         checked={enabled}
@@ -186,7 +187,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                     </div>
                                                     <div className="pb-6 pt-4">
                                                         <FadeIn delay="delay-[800ms]">
-                                                            <div className="mt-4 flex text-sm">
+                                                            <div className="mt-4 flex text-base">
                                                                 <a href="/docs/flags" className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"

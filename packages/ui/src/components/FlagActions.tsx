@@ -7,7 +7,7 @@ import * as keys from "../config/keys";
 import { FlagModel } from "../models/FlagModel";
 import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./shared/CreateOrUpdateFlagDialog";
 
-export const FlagActions: React.FC<{ flag: FlagModel }> = (props) => {
+export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  }> = (props) => {
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -32,6 +32,7 @@ export const FlagActions: React.FC<{ flag: FlagModel }> = (props) => {
 
             if (respJson.success) {
                 setShowDelete(false);
+                props.refreshFlags();
             }
 
         }).catch(error => { console.log(error) });
@@ -60,7 +61,8 @@ export const FlagActions: React.FC<{ flag: FlagModel }> = (props) => {
         onCancel: () => setShowEdit(false),
         title: "Edit flag",
         description: "Update your feature flag.",
-        flag: props.flag
+        flag: props.flag,
+        refreshFlags: props.refreshFlags
     };
 
 
