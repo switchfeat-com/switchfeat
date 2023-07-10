@@ -55,9 +55,9 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = (props) => 
                                             {props.title}
                                         </Dialog.Title>
                                         <div className="mt-2">
-                                            <p className="text-base text-gray-500">
+                                            <div className="text-base text-gray-500">
                                                 {props.description}
-                                            </p>
+                                            </div>
 
                                         </div>
                                     </div>

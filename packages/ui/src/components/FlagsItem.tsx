@@ -1,4 +1,4 @@
-import { Dialog, Menu, Switch, Transition } from "@headlessui/react";
+import { Dialog, Switch, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { classNames } from "../helpers/classHelper";
 import { FlagModel } from "../models/FlagModel";
@@ -18,7 +18,6 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
     }, [props.flag.status]);
 
     const confirmFlagUpdate = () => {
-        console.log(pendingSwitchEnabled);
 
         const formData = new FormData();
         formData.append('flagKey', props.flag.key);
@@ -102,7 +101,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel }> = (props) => {
                                 </div>
                             </div>
                             <div className="ml-4">
-                                 <FlagActions flagKey={props.flag.key} />
+                                 <FlagActions flag={props.flag}  />
                             </div>
                            
                         </div>
