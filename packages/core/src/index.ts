@@ -2,8 +2,7 @@
 export { FlagModel } from "./models/flagModel";
 export { ConditionModel } from "./models/conditionModel";
 export { UserModel } from "./models/userModel";
-export * as mongoManager from "./managers/data/mongoManager" ;
-export * as neDbManager from "./managers/data/neDBManager" ;
+export * as dbManager from "./managers/data/dbManager";
 export * from "./config/keys";
-export * as dateHelper from "./helpers/dateHelper" 
+export * as dateHelper from "./helpers/dateHelper"
 export * as entityHelper from "./helpers/entityHelper" 

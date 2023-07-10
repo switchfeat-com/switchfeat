@@ -1,36 +1,37 @@
-import { FlagModel, mongoManager, neDbManager } from "@switchfeat/core";
+import { FlagModel, dbManager } from "@switchfeat/core";
+import { getDataStoreManager } from "../managers/auth/dataStoreManager";
+
+const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
-     return await neDbManager.getFlags(userId);
+    return await dataStoreManager.getFlags(userId);
 }
 
-export const getFlag = async (search: { name?: string, id?: string }): Promise<FlagModel | null> => {
+export const getFlag = async (search: { name?: string, id?: string, key?: string }): Promise<FlagModel | null> => {
 
-     if (search.name) {
-         return await neDbManager.getFlagByName(search.name);
-     }
- 
-     if (search.id) {
-         return await neDbManager.getFlagById(search.id);
-     }
- 
-     return null;
- }
+    if (search.name) {
+        return await dataStoreManager.getFlagByName(search.name);
+    }
 
-export const addFlag = async (flag: FlagModel ) : Promise<boolean> => {
-     
-     if (!await getFlag({name: flag.name})) {
-         return await neDbManager.addFlag(flag);
-     }
- 
-     return false;
- }
- 
- export const updateUser = async (flag: FlagModel ) : Promise<boolean> => {
-      
-     if (await getFlag({name: flag.name})) {
-         return await neDbManager.updateFlag(flag);
-     }
- 
-     return false;
- }
+    if (search.id) {
+        return await dataStoreManager.getFlagById(search.id);
+    }
+
+    if (search.key) {
+        return await dataStoreManager.getFlagByKey(search.key);
+    }
+
+    return null;
+}
+
+export const addFlag = async (flag: FlagModel): Promise<boolean> => {
+    return await dataStoreManager.addFlag(flag);
+}
+
+export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
+    return await dataStoreManager.updateFlag(flag);
+}
+
+export const deleteFlag = async (flag: FlagModel): Promise<boolean> => {
+    return await dataStoreManager.deleteFlag(flag);
+}

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 export interface UserModel {
-    id?: ObjectId,
+    _id?: ObjectId,
     name: string;
     email?: string;
     createdOn: Date;

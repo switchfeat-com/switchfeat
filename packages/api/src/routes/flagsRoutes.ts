@@ -4,13 +4,13 @@ import multer from 'multer';
 
 export const flagRoutes = Router();
 import * as flagsService from "../services/flagsService";
-import * as auth from "../managers/auth/passportAuth" ;
+import * as auth from "../managers/auth/passportAuth";
 import { dateHelper, entityHelper } from "@switchfeat/core";
 
 const upload = multer();
 
 
-flagRoutes.get("/api/flags/",auth.isAuthenticated, async (req : Request, res : Response) => {
+flagRoutes.get("/api/flags/", auth.isAuthenticated, async (req: Request, res: Response) => {
 
     try {
 
@@ -31,9 +31,9 @@ flagRoutes.get("/api/flags/",auth.isAuthenticated, async (req : Request, res : R
     }
 });
 
-flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : Request, res : Response) => {
+flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-    console.log("received: " + JSON.stringify(req.body));
+    console.log("received add: " + JSON.stringify(req.body));
 
     let flagName = req.body.flagName;
     let flagDescription = req.body.flagDescription;
@@ -47,17 +47,17 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
         return;
     }
 
-
-    let alreadyInDb = await flagsService.getFlag({ name: flagName });
+    const flagKey = entityHelper.generateKey(flagName);
+    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
     if (!alreadyInDb) {
         await flagsService.addFlag({
             name: flagName,
             description: flagDescription,
             createdOn: dateHelper.utcNow().toJSDate(),
-            status: !!flagStatus,
+            status: (flagStatus === "true"),
             updatedOn: dateHelper.utcNow().toJSDate(),
-            key: entityHelper.generateKey(flagName)
+            key: flagKey
         });
 
         res.json({
@@ -68,6 +68,75 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req : 
         res.json({
             success: false,
             errorCode: "error_flag_alreadysaved"
+        });
+    }
+});
+
+flagRoutes.put("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+
+    console.log("received update: " + JSON.stringify(req.body));
+
+    let flagKey = req.body.flagKey;
+    let flagName = req.body.flagName;
+    let flagDescription = req.body.flagDescription;
+    let flagStatus = req.body.flagStatus;
+
+    if (!flagKey) {
+        res.status(401).json({
+            success: false,
+            errorCode: "error_input"
+        });
+        return;
+    }
+
+    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+
+    if (alreadyInDb) {
+        alreadyInDb.status = (flagStatus === "true");
+        alreadyInDb.updatedOn = dateHelper.utcNow().toJSDate();
+        alreadyInDb.description = flagDescription ? flagDescription : alreadyInDb.description;
+        alreadyInDb.name = flagName ? flagName : alreadyInDb.name;
+        await flagsService.updateFlag(alreadyInDb);
+
+        res.json({
+            success: true,
+            errorCode: ""
+        });
+    } else {
+        res.json({
+            success: false,
+            errorCode: "error_flag_notfound"
+        });
+    }
+});
+
+flagRoutes.delete("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+
+    console.log("received delete: " + JSON.stringify(req.body));
+
+    let flagKey = req.body.flagKey;
+
+    if (!flagKey) {
+        res.status(401).json({
+            success: false,
+            errorCode: "error_input"
+        });
+        return;
+    }
+
+    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+
+    if (alreadyInDb) {
+        await flagsService.deleteFlag(alreadyInDb);
+
+        res.json({
+            success: true,
+            errorCode: ""
+        });
+    } else {
+        res.json({
+            success: false,
+            errorCode: "error_flag_notfound"
         });
     }
 });

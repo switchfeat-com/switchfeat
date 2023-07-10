@@ -1,70 +1,47 @@
-import { useEffect, useState } from "react";
-import { FlagsList } from "../components/FlagsList";
-import { SectionHeader } from "../components/SectionHeader";
-import { DashboardLayout } from "./DashboardLayout";
-import { SectionEmptyState } from "../components/SectionEmptyState";
-import { CreateFlag } from "../components/CreateFlag";
-import { FlagModel } from "../models/FlagModel";
-import * as keys from "../config/keys";
+import { DashboardLayout } from "../layout/DashboardLayout";
+import logo from "../images/logo.png";
+import { useNavigate } from 'react-router-dom';
 
+export const Dashboard: React.FC = () => {
 
-export const Dashboard: React.FC = (props) => {
-
-    const [flags, setFlags] = useState<FlagModel[]>([]);
-    const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
-
-    const handleRefreshFlags = () => {
-        setRefreshFlags(!refreshFlags);
-    }; 
-
-    useEffect(() => {
-
-
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            }
-        }).then(resp => {
-            return resp.json();
-        }).then(respJson => {
-            setFlags([]);
-            let allFlags: FlagModel[] = [];
-            respJson.flags.forEach((item: any) => {
-                allFlags.push({
-                    name: item.name,
-                    description: item.description,
-                    status: item.status,
-                    createdOn: item.createdOn, 
-                    updatedOn: item.updatedOn,
-                    key: item.key
-                });
-            });
-
-            setFlags(allFlags);
-
-            console.log(allFlags);
-        }).catch(ex => { console.log(ex)});
-
-    }, [refreshFlags]);
-
-
+    const navigate = useNavigate();
 
     return (
         <DashboardLayout>
-            <>
-                {flags.length === 0 && <SectionEmptyState type="flags"> <CreateFlag refreshFlagsList={handleRefreshFlags} /> </SectionEmptyState>}
-                {flags.length > 0 &&
-                    <>
-                        <SectionHeader title="Flags"> <CreateFlag refreshFlagsList={handleRefreshFlags} /></SectionHeader>
-                        <FlagsList flags={flags} />
-                    </>
-                }
-            </>
-        </DashboardLayout>
-    );
+
+
+            <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+                    <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+
+                        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+
+                            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                                <img
+                                    className="mx-auto h-20 w-20"
+                                    src={logo}
+                                    alt="SwitchFeat"
+                                />
+                                <h2 className="mt-6 text-center text-xl   leading-9 tracking-tight text-gray-900">
+                                    SwitchFeat Dashboard (WIP)
+                                </h2>
+
+                                <div className="mx-auto flex justify-center mt-4">
+                                <button
+                                    onClick={() => navigate("/flags")}
+                                    type="button"
+                                    className="  items-center rounded-md border  
+                                                border-transparent bg-emerald-500 px-3 py-2 
+                                                text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                                >
+
+                                    Start from Flags
+                                </button>
+                                </div>
+                               
+                            </div>
+
+
+                        </div></div></div></div>
+        </DashboardLayout>);
 }
