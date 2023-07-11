@@ -34,7 +34,7 @@ export const Flags: React.FC = () => {
     }).then(respJson => {
       setFlags([]);
       const allFlags: FlagModel[] = [];
-      respJson.flags.forEach((item: any) => {
+      respJson.flags.forEach((item: FlagModel) => {
         allFlags.push({
           name: item.name,
           description: item.description,

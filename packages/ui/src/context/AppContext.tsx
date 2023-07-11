@@ -1,7 +1,7 @@
 import { UserModel } from "../models/UserModel";
 
 export interface AppContext {
-   authContext: AuthContext;
+    authContext: AuthContext;
 }
 
 export interface AuthContext {
@@ -21,7 +21,7 @@ export const initialState: AppContext = {
         userData: {
             authenticated: false,
         },
-        loginClick: () => {},
-        logoutClick: () => {},
+        loginClick: () => { throw Error(); },
+        logoutClick: () => { throw Error(); },
     }
 };
