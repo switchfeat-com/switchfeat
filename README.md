@@ -16,21 +16,23 @@
 
 ## Getting started
 
-The easiest way to start using SwitchFeat is using our pre-made Docker image.
+The easiest way to start using SwitchFeat is using the Docker image.
 
-### Download the image from GitHub registry
+You can either clone the repo and generate the image yourself using our [docker-compose.yml](https://github.com/switchfeat-com/switchfeat/blob/main/docker-compose.yaml) file, like this: 
 
 ```
-docker pull ghcr.io/switchfeat-com/switchfeat:main
+git clone https://github.com/switchfeat-com/switchfeat.git
+cd switchfeat
+docker-compose up -d
 ```
 
-### Start the image in a Docker Container
+Or you can just download the premade image from the official Github Registry like this:
 
 ```
 docker run --name switchfeat-com -d -p 4000:4000 ghcr.io/switchfeat-com/switchfeat:main
 ```
 
-Once the done, SwitchFeat will be availble from: ```http://localhost:4000```
+Once done, SwitchFeat will be available at http://localhost:4000 
 
 
 ## Building the project
@@ -48,3 +50,8 @@ To start the project, simple run:
 npm run start
 ```
 
+Then again, once done, SwitchFeat will be available at http://localhost:4000 
+
+## Contributions
+
+Either it be a bug fix, an update to our documentation, a feature request, contributions are extremely welcome! 
