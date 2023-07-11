@@ -1,10 +1,7 @@
 import { FolderPlusIcon } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
 
-export const SectionEmptyState: React.FC<{ type: string, children: ReactNode  }> = (props) => {
-
-    
-
+export const SectionEmptyState: React.FC<{ type: string, children: ReactNode }> = (props) => {
     return (
         <div className="text-center border-4 border-dashed p-10 m-10">
            <FolderPlusIcon className="h-10 w-10 mx-auto text-gray-400"/>
@@ -14,5 +11,5 @@ export const SectionEmptyState: React.FC<{ type: string, children: ReactNode  }>
                {props.children}
             </div>
         </div>
-    )
-} 
+    );
+};

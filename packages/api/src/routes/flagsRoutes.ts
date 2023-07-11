@@ -35,9 +35,9 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: R
 
     console.log("received add: " + JSON.stringify(req.body));
 
-    let flagName = req.body.flagName;
-    let flagDescription = req.body.flagDescription;
-    let flagStatus = req.body.flagStatus;
+    const flagName = req.body.flagName;
+    const flagDescription = req.body.flagDescription;
+    const flagStatus = req.body.flagStatus;
 
     if (!flagName) {
         res.status(401).json({
@@ -48,7 +48,7 @@ flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: R
     }
 
     const flagKey = entityHelper.generateKey(flagName);
-    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+    const alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
     if (!alreadyInDb) {
         await flagsService.addFlag({
@@ -76,10 +76,10 @@ flagRoutes.put("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Re
 
     console.log("received update: " + JSON.stringify(req.body));
 
-    let flagKey = req.body.flagKey;
-    let flagName = req.body.flagName;
-    let flagDescription = req.body.flagDescription;
-    let flagStatus = req.body.flagStatus;
+    const flagKey = req.body.flagKey;
+    const flagName = req.body.flagName;
+    const flagDescription = req.body.flagDescription;
+    const flagStatus = req.body.flagStatus;
 
     if (!flagKey) {
         res.status(401).json({
@@ -89,7 +89,7 @@ flagRoutes.put("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Re
         return;
     }
 
-    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+    const alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
     if (alreadyInDb) {
         alreadyInDb.status = (flagStatus === "true");
@@ -114,7 +114,7 @@ flagRoutes.delete("/api/flags/", upload.any(), auth.isAuthenticated, async (req:
 
     console.log("received delete: " + JSON.stringify(req.body));
 
-    let flagKey = req.body.flagKey;
+    const flagKey = req.body.flagKey;
 
     if (!flagKey) {
         res.status(401).json({
@@ -124,7 +124,7 @@ flagRoutes.delete("/api/flags/", upload.any(), auth.isAuthenticated, async (req:
         return;
     }
 
-    let alreadyInDb = await flagsService.getFlag({ key: flagKey });
+    const alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
     if (alreadyInDb) {
         await flagsService.deleteFlag(alreadyInDb);

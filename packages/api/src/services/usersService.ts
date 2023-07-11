@@ -14,7 +14,7 @@ export const getUser = async (search: { userId?: string, email?: string }): Prom
     }
 
     return null;
-}
+};
 
 export const addUser = async (user: UserModel ) : Promise<boolean> => {
      
@@ -23,7 +23,7 @@ export const addUser = async (user: UserModel ) : Promise<boolean> => {
     }
 
     return false;
-}
+};
 
 export const updateUser = async (user: UserModel ) : Promise<boolean> => {
      
@@ -32,4 +32,4 @@ export const updateUser = async (user: UserModel ) : Promise<boolean> => {
     }
 
     return false;
-}
+};

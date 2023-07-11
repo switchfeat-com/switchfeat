@@ -1,4 +1,3 @@
-
 import { Fragment, ReactNode, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -7,7 +6,7 @@ import {
     Cog6ToothIcon,
     FlagIcon,
     HomeIcon,
-    XMarkIcon,
+    XMarkIcon
 } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import logo from "../images/logo.png";
@@ -15,13 +14,12 @@ import { classNames } from '../helpers/classHelper';
 import { useLocation } from 'react-router-dom';
 
 export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
-
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
 
     const navigation = [
         { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-        { name: 'Flags', href: '/flags', icon: FlagIcon },
+        { name: 'Flags', href: '/flags', icon: FlagIcon }
         // { name: 'Segments', href: '/segments', icon: FolderIcon },
         // { name: 'Conditions', href: '/conditions', icon: ArrowsRightLeftIcon }
     ];
@@ -65,7 +63,7 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
                                     leaveTo="opacity-0"
                                 >
                                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                                        <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                                        <button type="button" className="-m-2.5 p-2.5" onClick={() => { setSidebarOpen(false); }}>
                                             <span className="sr-only">Close sidebar</span>
                                             <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                                         </button>
@@ -189,7 +187,7 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
             <div className="lg:pl-72 border-r border-gray-200 h-full min-h-screen bg-gray-50">
                 <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4   sm:gap-x-6 sm:px-6 lg:px-8">
-                    <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
+                    <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => { setSidebarOpen(true); }}>
                         <span className="sr-only">Open sidebar</span>
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
@@ -228,4 +226,4 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
             </div>
         </div>
     );
-}
+};

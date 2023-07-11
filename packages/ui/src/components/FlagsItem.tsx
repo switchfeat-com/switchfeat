@@ -17,8 +17,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
         setEnabled(props.flag.status);
     }, [props.flag.status]);
 
-    const confirmFlagUpdate = () => {
-
+    const confirmFlagUpdate = (): void => {
         const formData = new FormData();
         formData.append('flagKey', props.flag.key);
         formData.append('flagStatus', pendingSwitchEnabled.toString());
@@ -32,11 +31,10 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                 "Access-Control-Allow-Origin": "true"
             },
             body: formData
-        }).then(resp => {
+        }).then(async resp => {
             return resp.json();
         }).then(respJson => {
-
-            if (respJson.success) {
+            if (respJson.success as boolean) {
                 setEnabled(pendingSwitchEnabled);
                 setShowConfirmation(false);
             } else {
@@ -48,15 +46,14 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                 }
                 console.log(msg);
             }
-
-        }).catch(error => { console.log(error) });
+        }).catch(error => { console.log(error); });
     };
 
-    const cancelFlagUpdate = () => {
-        setShowConfirmation(false)
+    const cancelFlagUpdate = (): void => {
+        setShowConfirmation(false);
     };
 
-    const showConfirmationDialog = (newStatus: boolean) => {
+    const showConfirmationDialog = (newStatus: boolean): void => {
         setPendingSwitchEnabled(newStatus);
         setShowConfirmation(true);
     };
@@ -83,7 +80,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                                 <div className="text-right">
                                     <Switch
                                         checked={enabled}
-                                        onChange={(checked) => { showConfirmationDialog(checked) }}
+                                        onChange={(checked) => { showConfirmationDialog(checked); }}
                                         className={classNames(
                                             enabled ? 'bg-green-600' : 'bg-gray-200',
                                             'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
@@ -101,9 +98,9 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                                 </div>
                             </div>
                             <div className="ml-4">
-                                 <FlagActions flag={props.flag} refreshFlags={props.refreshFlags}  />
+                                 <FlagActions flag={props.flag} refreshFlags={props.refreshFlags} />
                             </div>
-                           
+
                         </div>
                     </div>
                 </Switch.Group>
@@ -156,19 +153,19 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                         <button
                                             type="button"
-                                            className="inline-flex w-full justify-center rounded-md border border-transparent 
-                                            bg-emerald-600 px-4 py-2 text-base font-medium text-white shadow-sm 
+                                            className="inline-flex w-full justify-center rounded-md border border-transparent
+                                            bg-emerald-600 px-4 py-2 text-base font-medium text-white shadow-sm
                                             hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                            onClick={(e) => confirmFlagUpdate()}
+                                            onClick={() => { confirmFlagUpdate(); }}
                                         >
                                             Apply
                                         </button>
                                         <button
                                             type="button"
-                                            className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 
-                                            text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 
+                                            className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2
+                                            text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2
                                             focus:ring-emerald-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                            onClick={() => cancelFlagUpdate()}
+                                            onClick={() => { cancelFlagUpdate(); }}
                                             ref={cancelButtonRef}
                                         >
                                             Cancel
@@ -183,4 +180,4 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
 
         </>
     );
-}
+};

@@ -13,7 +13,7 @@ import { getDataStoreManager } from './managers/auth/dataStoreManager';
 
 dotenv.config();
 
-var env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 
 // connect to mongodb
 const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();

@@ -54,11 +54,11 @@ type DbManager = MongoManager | NeDbManager;
 export const getDbProvider = (id: SupportedDb): DbManager => {
     switch (id) {
         case SupportedDb.Mongo:
-            return initValues as MongoManager
+            return initValues as MongoManager;
         case SupportedDb.NeDB:
-            return initValues as NeDbManager
+            return initValues as NeDbManager;
     }
-}
+};
 
 export const getDataStore = (id: SupportedDb): DataStoreManager => {
     switch (id) {
@@ -67,4 +67,4 @@ export const getDataStore = (id: SupportedDb): DataStoreManager => {
         case SupportedDb.NeDB:
             return createNeDbDataStore();
     }
-}
+};

@@ -1,0 +1,24 @@
+name: Lint
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+
+    lint:
+        name: "Lint"
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v3
+    
+          - uses: actions/setup-node@v3
+            with:
+              node-version: "18"
+    
+          - name: Lint
+            run: |
+              npm ci
+              npm run lint

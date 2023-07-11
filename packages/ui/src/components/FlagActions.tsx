@@ -2,18 +2,16 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 import { classNames } from "../helpers/classHelper";
-import { ConfirmationDialog, ConfirmationDialogProps } from "./shared/ConfirmationDialog";
+import { ConfirmationDialog, type ConfirmationDialogProps } from "./shared/ConfirmationDialog";
 import * as keys from "../config/keys";
 import { FlagModel } from "../models/FlagModel";
-import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./shared/CreateOrUpdateFlagDialog";
+import { CreateOrUpdateFlagDialog, type CreateOrUpdateFlagDialogProps } from "./shared/CreateOrUpdateFlagDialog";
 
-export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  }> = (props) => {
-
+export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void }> = (props) => {
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
 
-    const onConfirmDelete = () => {
-
+    const onConfirmDelete = (): void => {
         const formData = new FormData();
         formData.append('flagKey', props.flag.key);
 
@@ -23,27 +21,24 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  
             headers: {
                 Accept: "application/json",
                 "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
+                "Access-Control-Allow-Origin": "true",
             },
-            body: formData
-        }).then(resp => {
+            body: formData,
+        }).then(async resp => {
             return resp.json();
         }).then(respJson => {
-
-            if (respJson.success) {
+            if (respJson.success as boolean) {
                 setShowDelete(false);
                 props.refreshFlags();
             }
-
-        }).catch(error => { console.log(error) });
+        }).catch(error => { console.log(error); });
     };
-
 
     const deleteFlagProps: ConfirmationDialogProps = {
         show: showDelete,
         setShow: setShowDelete,
         onConfirm: onConfirmDelete,
-        onCancel: () => setShowDelete(false),
+        onCancel: () => { setShowDelete(false); },
         title: "Confirm flag delete",
         description: <>
             <span>Are you sure you want to </span>
@@ -52,19 +47,18 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  
             <div>Any subsequent API call will return with a <code>NotFound (404)</code> error.</div>
         </>,
         icon: <QuestionMarkCircleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />,
-        accent: "red"
+        accent: "red",
     };
 
     const editFlagProps: CreateOrUpdateFlagDialogProps = {
         open: showEdit,
         setOpen: setShowEdit,
-        onCancel: () => setShowEdit(false),
+        onCancel: () => { setShowEdit(false); },
         title: "Edit flag",
         description: "Update your feature flag.",
         flag: props.flag,
-        refreshFlags: props.refreshFlags
+        refreshFlags: props.refreshFlags,
     };
-
 
     return (
         <>
@@ -87,7 +81,7 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  
 
                             {({ active }) => (
                                 <button
-                                    onClick={() => setShowEdit(true)}
+                                    onClick={() => { setShowEdit(true); }}
                                     className={classNames(
                                         active ? 'bg-gray-50' : '',
                                         'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
@@ -100,7 +94,7 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  
                         <Menu.Item>
                             {({ active }) => (
                                 <button
-                                    onClick={() => setShowDelete(true)}
+                                    onClick={() => { setShowDelete(true); }}
                                     className={classNames(
                                         active ? 'bg-gray-50' : '',
                                         'block px-3 py-1 text-sm leading-6 text-gray-900 w-full text-left'
@@ -113,8 +107,8 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void  
                     </Menu.Items>
                 </Transition>
             </Menu>
-            <ConfirmationDialog  {...deleteFlagProps} />
-            <CreateOrUpdateFlagDialog  {...editFlagProps} />
+            <ConfirmationDialog {...deleteFlagProps} />
+            <CreateOrUpdateFlagDialog {...editFlagProps} />
         </>
     );
-}
+};

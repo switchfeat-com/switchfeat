@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 
-export const SectionHeader: React.FC<{ title: string, children: ReactNode}> = (props) => {
-
+export const SectionHeader: React.FC<{ title: string, children: ReactNode }> = (props) => {
     return (<>
 
         <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between px-4 py-5">
@@ -11,6 +10,4 @@ export const SectionHeader: React.FC<{ title: string, children: ReactNode}> = (p
             </div>
         </div>
     </>);
-}
-
-
+};

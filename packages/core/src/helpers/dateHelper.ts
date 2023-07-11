@@ -1,4 +1,4 @@
-import { DateTime } from "luxon"
+import { DateTime } from "luxon";
 
 // ref: https://www.thisdot.co/blog/how-to-handle-time-zones-using-datetime-and-luxon
 

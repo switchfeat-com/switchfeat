@@ -5,15 +5,14 @@ import * as keys from "../config/keys";
 const appContext = createContext<AppContext>(initialState);
 
 export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => {
-
     const [userData, setUserData] = useState<UserState>();
     const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
-    
-    const handleLoginClick = (provider: string) => {
+
+    const handleLoginClick = (provider: string): void => {
         window.open(`${keys.CLIENT_HOME_PAGE_URL}/auth/${provider}`, "_self");
     };
 
-    const handleLogoutClick = () => {
+    const handleLogoutClick = (): void => {
         window.open(`${keys.CLIENT_HOME_PAGE_URL}/auth/logout`, "_self");
     };
 
@@ -30,37 +29,35 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => 
         }).then(response => {
             if (response.status === 200) {
                 return response.json();
-            } 
+            }
             throw new Error("failed to authenticate user");
         }).then(responseJson => {
             setUserData({
                 authenticated: true,
                 userData: responseJson.user
             });
-            
-        }).catch(error => {
+        }).catch(() => {
                 setUserData({
                     authenticated: false,
                     error: "Failed to authenticate user"
                 });
             })
-            .finally(() => setLoadingInitial(false));
+            .finally(() => { setLoadingInitial(false); });
     }, []);
 
     return (
 
-        <appContext.Provider value={{ 
+        <appContext.Provider value={{
             authContext: {
-                userData: userData,
-                loginClick: handleLoginClick, 
-                logoutClick: handleLogoutClick, 
+                userData,
+                loginClick: handleLoginClick,
+                logoutClick: handleLogoutClick
             }
-           
+
         }}>
             {!loadingInitial && props.children}
         </appContext.Provider>
     );
-    
-}
+};
 
-export const useAppContext = () => useContext(appContext);
+export const useAppContext = (): AppContext => useContext(appContext);

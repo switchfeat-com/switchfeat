@@ -5,7 +5,7 @@ import * as userService from "../../services/usersService";
 
 // https://devpress.csdn.net/mongodb/62f214b07e668234661849d8.html
 
-var env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 
 export const googleStrategy = () : GoogleStrategy => {
   return new GoogleStrategy({
@@ -15,7 +15,7 @@ export const googleStrategy = () : GoogleStrategy => {
     scope: ['profile', 'email'],
     state: true
   },
-    async (accessToken: any, tokenSecret: any, profile: any, done: any) => {
+    async (accessToken, tokenSecret, profile, done) => {
 
       // find current user
       const currentUser = await userService.getUser({ email: profile._json.email });
@@ -57,4 +57,4 @@ export const googleStrategy = () : GoogleStrategy => {
     }
 
   );
-}
+};

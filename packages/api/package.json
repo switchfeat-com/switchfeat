@@ -17,7 +17,8 @@
     "tsc": "tsc",
     "start": "node dist/index.js",
     "dev:start": "SET NODE_ENV=dev& node dist/index.js",
-    "test": "node ./__tests__/api.test.js"
+    "test": "node ./__tests__/api.test.js",
+    "lint": "eslint . --ext .ts"
   },
   "bugs": {
     "url": "https://github.com/switchfeat-com/switchfeat/issues"
@@ -40,6 +41,9 @@
     "@types/cors": "^2.8.13",
     "@types/multer": "^1.4.7",
     "@types/passport": "^1.0.12",
-    "@types/passport-google-oauth20": "^2.0.11"
+    "@types/passport-google-oauth20": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.44.0"
   }
 }

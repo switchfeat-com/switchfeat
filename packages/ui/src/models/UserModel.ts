@@ -3,5 +3,5 @@ export interface UserModel {
     email?: string;
     
     isBlocked: boolean;
-    imageUrl: string;
+    imageUrl: string | undefined;
 }
