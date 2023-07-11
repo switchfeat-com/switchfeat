@@ -11,7 +11,7 @@ export const initialise = (app: Express) => {
 
   // serialize the user.id to save in the cookie session
   // so the browser will remember the user when login
-  passport.serializeUser<any, any>((_req, user, done) => {
+  passport.serializeUser((_req, user, done) => {
     done(null, user);
   });
 

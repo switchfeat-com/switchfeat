@@ -1,6 +1,6 @@
 import { NextFunction, Router } from "express";
 import passport  from "passport";
-import { keys, UserModel } from "@switchfeat/core";
+import { keys } from "@switchfeat/core";
 import { Request, Response } from "express";
 
 export const authRoutes = Router();
@@ -26,7 +26,7 @@ authRoutes.get("/auth/is-auth", (req: Request, res: Response) => {
             cookies: req.cookies
         });
     } else {
-        if (req.isAuthenticated() && !((req.user as any).user as UserModel).isBlocked) {
+        if (req.isAuthenticated()) {
             res.json({
                 success: true,
                 message: "user has successfully authenticated",

@@ -2,15 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContextProvider";
 import logo from "../images/logo.png";
 
-
-
 export const Login: React.FC = () => {
-
     const { authContext } = useAppContext();
     const navigateTo = useNavigate();
 
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">   
+        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
                 <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
 
@@ -25,12 +22,13 @@ export const Login: React.FC = () => {
                         </h2>
                     </div>
 
-                    {!authContext.userData?.authenticated ? (
+                    {!(authContext.userData?.authenticated as boolean)
+                    ? (
                         <div className="mt-20 flex flex-col gap-4 ">
                             <button
-                                onClick={() => authContext.loginClick("google")}
+                                onClick={() => { authContext.loginClick("google"); }}
                                 className="flex w-full items-center justify-center gap-3 rounded-md
-                                  bg-blue-500 px-4 py-2 text-white 
+                                  bg-blue-500 px-4 py-2 text-white
                                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                                    focus-visible:outline-[#1D9BF0] hover:bg-blue-600"
                             >
@@ -43,8 +41,9 @@ export const Login: React.FC = () => {
                                 <span className="text-base font-semibold leading-6">Login with Google</span>
                             </button>
                         </div>
-                    ) : (
-                        <div className="mt-20 flex flex-col gap-4 "> 
+                    )
+                    : (
+                        <div className="mt-20 flex flex-col gap-4 ">
 
                             <div className="rounded-md bg-green-50 p-4">
                                 <div className="flex">
@@ -59,7 +58,7 @@ export const Login: React.FC = () => {
                                                 <button
                                                     type="button"
                                                     className="rounded-md bg-green-50 px-2 py-1.5 text-base font-medium text-green-800
-                                                     hover:bg-green-100 focus:outline-none focus:ring-2 
+                                                     hover:bg-green-100 focus:outline-none focus:ring-2
                                                      focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
                                                 >
                                                     View documentation   <span aria-hidden="true"> &rarr;</span>
@@ -69,12 +68,12 @@ export const Login: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
                             <button
-                                onClick={() => navigateTo("/dashboard")}
+                                onClick={() => { navigateTo("/dashboard"); }}
                                 className="flex w-full items-center justify-center gap-3 rounded-md mt-5
-                              bg-green-500 px-4 py-2 text-white 
+                              bg-green-500 px-4 py-2 text-white
                               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                                focus-visible:outline-green-400 hover:bg-green-600"
                             >
@@ -88,4 +87,3 @@ export const Login: React.FC = () => {
 
     );
 }
-

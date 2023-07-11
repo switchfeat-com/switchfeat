@@ -15,7 +15,7 @@ export const googleStrategy = () : GoogleStrategy => {
     scope: ['profile', 'email'],
     state: true
   },
-    async (accessToken: any, tokenSecret: any, profile: any, done: any) => {
+    async (accessToken, tokenSecret, profile, done) => {
 
       // find current user
       const currentUser = await userService.getUser({ email: profile._json.email });

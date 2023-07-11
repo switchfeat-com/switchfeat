@@ -7,5 +7,5 @@ export interface UserModel {
     createdOn: Date;
     updatedOn: Date;
     isBlocked: boolean;
-    imageUrl: string;
+    imageUrl: string | undefined;
 }
