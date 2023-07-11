@@ -5,7 +5,7 @@ import * as userService from "../../services/usersService";
 
 // https://devpress.csdn.net/mongodb/62f214b07e668234661849d8.html
 
-var env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 
 export const googleStrategy = () : GoogleStrategy => {
   return new GoogleStrategy({

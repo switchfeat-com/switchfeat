@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 dotenv.config();
-var env = process.env.NODE_ENV;
 
 const CLIENT_HOME_PAGE_URL =  "http://localhost:3000";
 const API_URL =  "http://localhost:4000";

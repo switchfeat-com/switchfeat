@@ -44,7 +44,7 @@ export const connectDb = async () => {
     }
 }
 
-export const getFlags = async (userId: string): Promise<FlagModel[]> => {
+export const getFlags = async (): Promise<FlagModel[]> => {
     return await neDbManager.flags!.asyncFind({});
 };
 
@@ -89,7 +89,7 @@ export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
 export const deleteFlag = async (flag: FlagModel): Promise<boolean> => {
     try {
         const response = await neDbManager.flags!.asyncRemove({ _id: flag._id });
-        return true;
+        return (!!response);
     } catch (ex) {
         console.error(ex);
         return false;
@@ -130,7 +130,7 @@ export const updateUser = async (user: UserModel): Promise<boolean> => {
 export const deleteUser = async (user: UserModel): Promise<boolean> => {
     try {
         const response = await neDbManager.users!.asyncRemove({ _id: user._id });
-        return true;
+        return (!!response);
     } catch (ex) {
         return false;
     }
