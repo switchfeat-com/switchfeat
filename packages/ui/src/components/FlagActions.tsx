@@ -31,7 +31,7 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void }
                 setShowDelete(false);
                 props.refreshFlags();
             }
-        }).catch(error => { console.log(error) });
+        }).catch(error => { console.log(error); });
     };
 
     const deleteFlagProps: ConfirmationDialogProps = {
@@ -111,4 +111,4 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void }
             <CreateOrUpdateFlagDialog {...editFlagProps} />
         </>
     );
-}
+};

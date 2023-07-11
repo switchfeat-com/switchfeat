@@ -5,7 +5,7 @@ const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
     return await dataStoreManager.getFlags(userId);
-}
+};
 
 export const getFlag = async (search: { name?: string, id?: string, key?: string }): Promise<FlagModel | null> => {
 
@@ -22,16 +22,16 @@ export const getFlag = async (search: { name?: string, id?: string, key?: string
     }
 
     return null;
-}
+};
 
 export const addFlag = async (flag: FlagModel): Promise<boolean> => {
     return await dataStoreManager.addFlag(flag);
-}
+};
 
 export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
     return await dataStoreManager.updateFlag(flag);
-}
+};
 
 export const deleteFlag = async (flag: FlagModel): Promise<boolean> => {
     return await dataStoreManager.deleteFlag(flag);
-}
+};

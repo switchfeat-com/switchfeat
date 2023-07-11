@@ -46,11 +46,11 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                 }
                 console.log(msg);
             }
-        }).catch(error => { console.log(error) });
+        }).catch(error => { console.log(error); });
     };
 
     const cancelFlagUpdate = (): void => {
-        setShowConfirmation(false)
+        setShowConfirmation(false);
     };
 
     const showConfirmationDialog = (newStatus: boolean): void => {
@@ -80,7 +80,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                                 <div className="text-right">
                                     <Switch
                                         checked={enabled}
-                                        onChange={(checked) => { showConfirmationDialog(checked) }}
+                                        onChange={(checked) => { showConfirmationDialog(checked); }}
                                         className={classNames(
                                             enabled ? 'bg-green-600' : 'bg-gray-200',
                                             'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
@@ -180,4 +180,4 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
 
         </>
     );
-}
+};

@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react"
-import { SectionHeader } from "../components/SectionHeader"
-import { DashboardLayout } from "../layout/DashboardLayout"
-import { SectionEmptyState } from "../components/SectionEmptyState"
-import { FlagModel } from "../models/FlagModel"
-import * as keys from "../config/keys"
-import { FlagsItem } from "../components/FlagsItem"
-import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/shared/CreateOrUpdateFlagDialog"
-import { PlusIcon } from "@heroicons/react/24/outline"
+import { useEffect, useState } from "react";
+import { SectionHeader } from "../components/SectionHeader";
+import { DashboardLayout } from "../layout/DashboardLayout";
+import { SectionEmptyState } from "../components/SectionEmptyState";
+import { FlagModel } from "../models/FlagModel";
+import * as keys from "../config/keys";
+import { FlagsItem } from "../components/FlagsItem";
+import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/shared/CreateOrUpdateFlagDialog";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export const Flags: React.FC = () => {
-  const [flags, setFlags] = useState<FlagModel[]>([])
-  const [refreshFlags, setRefreshFlags] = useState<boolean>(true)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [open, setOpen] = useState(false)
+  const [flags, setFlags] = useState<FlagModel[]>([]);
+  const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
 
   const handleRefreshFlags = (): void => {
-    setRefreshFlags(!refreshFlags)
-  }
+    setRefreshFlags(!refreshFlags);
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
       method: "GET",
       credentials: "include",
@@ -32,8 +32,8 @@ export const Flags: React.FC = () => {
     }).then(async resp => {
       return resp.json();
     }).then(respJson => {
-      setFlags([])
-      const allFlags: FlagModel[] = []
+      setFlags([]);
+      const allFlags: FlagModel[] = [];
       respJson.flags.forEach((item: any) => {
         allFlags.push({
           name: item.name,
@@ -42,28 +42,28 @@ export const Flags: React.FC = () => {
           createdOn: item.createdOn,
           updatedOn: item.updatedOn,
           key: item.key,
-        })
-      })
+        });
+      });
 
-      setFlags(allFlags)
+      setFlags(allFlags);
 
-      setLoading(false)
-    }).catch(ex => { console.log(ex) })
-  }, [refreshFlags])
+      setLoading(false);
+    }).catch(ex => { console.log(ex); });
+  }, [refreshFlags]);
 
   const createFlagProps: CreateOrUpdateFlagDialogProps = {
     open,
     setOpen,
-    onCancel: () => { setOpen(false) },
+    onCancel: () => { setOpen(false); },
     title: "Create flag",
     description: "Get started by creating your new feature flag.",
     refreshFlags: handleRefreshFlags,
-  }
+  };
 
   const CreateFlagButton: React.FC = () => {
     return (
             <button
-                onClick={() => { setOpen(!open) }}
+                onClick={() => { setOpen(!open); }}
                 type="button"
                 className="inline-flex items-center rounded-md border
                 border-transparent bg-emerald-500 px-3 py-2
@@ -71,8 +71,8 @@ export const Flags: React.FC = () => {
             >
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
                 Create Flag
-            </button>)
-  }
+            </button>);
+  };
 
   return (
         <DashboardLayout>
@@ -92,5 +92,5 @@ export const Flags: React.FC = () => {
                 <CreateOrUpdateFlagDialog {...createFlagProps} />
             </>
         </DashboardLayout>
-  )
-}
+  );
+};

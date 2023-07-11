@@ -226,4 +226,4 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
             </div>
         </div>
     );
-}
+};

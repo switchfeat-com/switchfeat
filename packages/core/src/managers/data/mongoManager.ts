@@ -29,7 +29,7 @@ export const createMongoDataStore = (): DataStoreManager => {
         };
     }
     return dataStoreInstance;
-}
+};
 
 const connectDb = async () => {
     try {

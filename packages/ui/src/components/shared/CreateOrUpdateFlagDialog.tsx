@@ -1,9 +1,9 @@
-import { Transition, Dialog, Switch } from "@headlessui/react"
-import { XMarkIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline"
-import { Fragment, ReactNode, useEffect, useRef, useState } from "react"
-import * as keys from "../../config/keys"
-import { FlagModel } from "../../models/FlagModel"
-import { classNames } from "../../helpers/classHelper"
+import { Transition, Dialog, Switch } from "@headlessui/react";
+import { XMarkIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
+import * as keys from "../../config/keys";
+import { FlagModel } from "../../models/FlagModel";
+import { classNames } from "../../helpers/classHelper";
 
 export interface CreateOrUpdateFlagDialogProps {
   open: boolean
@@ -27,37 +27,37 @@ const FadeIn: React.FC<{ delay: string, children: ReactNode }> = (props) => {
           >
               {props.children}
           </Transition.Child>
-    )
-  }
+    );
+  };
 
 export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> = (props) => {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const descriptionRef = useRef<HTMLTextAreaElement>(null)
-  const [enabled, setEnabled] = useState(false)
+  const nameRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     if ((!props.flag) || !props.open) {
-      return
+      return;
     }
 
     setEnabled(props.flag.status);
-  }, [props.flag, props.open])
+  }, [props.flag, props.open]);
 
   const handleCreateFlag = (): void => {
     if (!nameRef.current) {
-      return
+      return;
     }
 
-    const formData = new FormData()
-    formData.append('flagName', nameRef.current.value)
-    formData.append('flagStatus', enabled.toString())
+    const formData = new FormData();
+    formData.append('flagName', nameRef.current.value);
+    formData.append('flagStatus', enabled.toString());
 
     if (props.flag) {
-      formData.append('flagKey', props.flag.key)
+      formData.append('flagKey', props.flag.key);
     }
 
     if (descriptionRef.current) {
-      formData.append('flagDescription', descriptionRef.current.value)
+      formData.append('flagDescription', descriptionRef.current.value);
     }
 
     fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
@@ -73,19 +73,19 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
       return resp.json();
     }).then(respJson => {
       if (respJson.success as boolean) {
-        props.refreshFlags()
-        props.setOpen(false)
+        props.refreshFlags();
+        props.setOpen(false);
       } else {
-        let msg = "Generic error occurred, please try again."
+        let msg = "Generic error occurred, please try again.";
         if (respJson.errorCode === "error_input") {
-          msg = "One or more required information are missing."
+          msg = "One or more required information are missing.";
         } else if (respJson.errorCode === "error_alreadysaved") {
-          msg = "There is already a flag with the same name."
+          msg = "There is already a flag with the same name.";
         }
-        console.log(msg)
+        console.log(msg);
       }
-    }).catch(error => { console.log(error) })
-  }
+    }).catch(error => { console.log(error); });
+  };
 
   return (
 
@@ -117,7 +117,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                         <button
                                                             type="button"
                                                             className="rounded-md bg-emerald-500 text-emerald-200 hover:text-white focus:outline-none focus:ring-2"
-                                                            onClick={() => { props.setOpen(false) }}
+                                                            onClick={() => { props.setOpen(false); }}
                                                         >
                                                             <span className="sr-only">Close panel</span>
                                                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -236,7 +236,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                 </div>
             </Dialog>
         </Transition.Root >
-  )
-}
+  );
+};
 
 

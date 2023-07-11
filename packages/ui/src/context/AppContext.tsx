@@ -1,4 +1,4 @@
-import { UserModel } from "../models/UserModel"
+import { UserModel } from "../models/UserModel";
 
 export interface AppContext {
    authContext: AuthContext;
@@ -24,4 +24,4 @@ export const initialState: AppContext = {
         loginClick: () => {},
         logoutClick: () => {},
     }
-}
+};

@@ -10,4 +10,4 @@ export const SectionHeader: React.FC<{ title: string, children: ReactNode }> = (
             </div>
         </div>
     </>);
-}
+};

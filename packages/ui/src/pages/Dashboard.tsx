@@ -3,7 +3,7 @@ import logo from "../images/logo.png";
 import { useNavigate } from 'react-router-dom';
 
 export const Dashboard: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
         <DashboardLayout>
@@ -26,7 +26,7 @@ export const Dashboard: React.FC = () => {
 
                                 <div className="mx-auto flex justify-center mt-4">
                                     <button
-                                        onClick={() => { navigate("/flags") }}
+                                        onClick={() => { navigate("/flags"); }}
                                         type="button"
                                         className="  items-center rounded-md border
                                                 border-transparent bg-emerald-500 px-3 py-2
@@ -41,5 +41,5 @@ export const Dashboard: React.FC = () => {
 
                         </div>
                     </div></div></div>
-        </DashboardLayout>)
-}
+        </DashboardLayout>);
+};

@@ -58,6 +58,6 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (props) => 
             {!loadingInitial && props.children}
         </appContext.Provider>
     );
-}
+};
 
 export const useAppContext = (): AppContext => useContext(appContext);

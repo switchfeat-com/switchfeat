@@ -91,4 +91,4 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = (props) => 
         </Dialog>
     </Transition.Root>
     );
-}
+};

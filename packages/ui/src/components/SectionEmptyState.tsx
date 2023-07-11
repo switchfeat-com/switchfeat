@@ -11,5 +11,5 @@ export const SectionEmptyState: React.FC<{ type: string, children: ReactNode }> 
                {props.children}
             </div>
         </div>
-    )
-}
+    );
+};

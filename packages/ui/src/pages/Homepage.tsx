@@ -5,4 +5,4 @@ export const HomePage: React.FC = () => {
 
     <Login />
     </>);
-}
+};

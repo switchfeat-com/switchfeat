@@ -10,7 +10,7 @@
         "airbnb-typescript/base",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:react/jsx-runtime",
+        "plugin:react/jsx-runtime"
     ],
     "overrides": [
         {
@@ -40,7 +40,7 @@
         "react/react-in-jsx-scope": "off",
         "react/jsx-uses-react": "off",
         "semi": "off",
-        "@typescript-eslint/semi": "off",
+        "@typescript-eslint/semi": ["error", "always"],
         "@typescript-eslint/indent": "off",
         "react/prop-types": "off",
         "@typescript-eslint/member-delimiter-style": "off",

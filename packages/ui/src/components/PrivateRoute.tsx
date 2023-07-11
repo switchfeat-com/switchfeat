@@ -13,6 +13,6 @@ const PrivateRoute: React.FC<{ children: ReactElement }> = ({ children }) => {
 : (
     children
   );
-}
+};
 
 export default PrivateRoute;
