@@ -11,11 +11,11 @@ export const formatDateTime = (dateStr: string | undefined) => {
 
 export const utcNow = (): DateTime => {
     return DateTime.utc();
-}
+};
 
 export const getDateWithOffset = (nrDays: number, start: DateTime): DateTime => {
     return start.minus({ "days": nrDays });
-}
+};
 
 export const diffFromUtcInDays = (date: string | undefined) => {
 
