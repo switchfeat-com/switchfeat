@@ -56,4 +56,4 @@ Then again, once done, SwitchFeat will be available at http://localhost:4000
 
 Either it be a bug fix, an update to our documentation, a feature request, contributions are extremely welcome!
 
-Look at the [public roadmap](https://github.com/switchfeat-com/switchfeat/projects/1) to see what's coming and where you can help.
+Look at the [public roadmap](https://github.com/orgs/switchfeat-com/projects/1) to see what's coming and where you can help.
