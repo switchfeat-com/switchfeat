@@ -23,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "tsc": "npm run build:tw & react-scripts build",
+    "tsc": "npm run build:tw && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:tw": "tailwindcss -i ./src/App.css -o ./src/output.css",
