@@ -5,7 +5,7 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import { keys, dbManager } from "@switchfeat/core";
-import { flagRoutes } from "./routes/flagsRoutes";
+import { flagRoutesWrapper } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
@@ -15,10 +15,8 @@ dotenv.config();
 
 const env = process.env.NODE_ENV;
 
-// connect to mongodb
-const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
-
-dataStoreManager.connectDb();
+// connect to datastore
+const dataStoreManagerPromise: Promise<dbManager.DataStoreManager> = getDataStoreManager();
 
 const app: Express = express();
 const port = process.env.PORT || 4000;
@@ -53,7 +51,8 @@ if (env !== "dev") {
 }
 
 app.use(authRoutes);
-app.use(flagRoutes);
+app.use(flagRoutesWrapper(dataStoreManagerPromise));
+
 
 
 if (env !== "dev") {

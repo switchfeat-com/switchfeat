@@ -1,7 +1,10 @@
 import { dbManager, UserModel } from "@switchfeat/core";
-import { getDataStoreManager } from "../managers/auth/dataStoreManager";
 
-const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
+let dataStoreManager: dbManager.DataStoreManager;
+
+export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>) => {
+    manager.then(data => dataStoreManager = data);
+};
 
 export const getUser = async (search: { userId?: string, email?: string }): Promise<UserModel | null> => {
 

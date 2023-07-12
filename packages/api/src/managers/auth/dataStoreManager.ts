@@ -1,6 +1,6 @@
 import { dbManager } from "@switchfeat/core";
 
 // return the datastore based on the active configuration.
-export const getDataStoreManager = (): dbManager.DataStoreManager => {
-    return dbManager.getDataStore(dbManager.SupportedDb.NeDB);
+export const getDataStoreManager = async (): Promise<dbManager.DataStoreManager> => {
+    return await dbManager.getDataStore(dbManager.SupportedDb.NeDB);
 };

@@ -30,7 +30,6 @@ export type NeDbManager = {
 };
 
 export type DataStoreManager = {
-    connectDb: () => void;
 
     // flags functions
     getFlags: (userId: string) => Promise<FlagModel[]>;
@@ -40,6 +39,13 @@ export type DataStoreManager = {
     addFlag: (flag: FlagModel) => Promise<boolean>;
     updateFlag: (flag: FlagModel) => Promise<boolean>;
     deleteFlag: (flag: FlagModel) => Promise<boolean>;
+
+    // conditions functions
+    getConditions: (userId: string) => Promise<ConditionModel[]>;
+    addCondition: (flag: ConditionModel) => Promise<boolean>;
+    updateCondition: (flag: ConditionModel) => Promise<boolean>;
+    deleteCondition: (flag: ConditionModel) => Promise<boolean>;
+    getConditionById: (id: string) => Promise<ConditionModel>;
 
     // user functions
     getUser: (userId: string) => Promise<UserModel>;
@@ -51,7 +57,7 @@ export type DataStoreManager = {
 
 type DbManager = MongoManager | NeDbManager;
 
-export const getDbProvider = (id: SupportedDb): DbManager => {
+export const getDbManager = (id: SupportedDb): DbManager => {
     switch (id) {
         case SupportedDb.Mongo:
             return initValues as MongoManager;
@@ -60,11 +66,11 @@ export const getDbProvider = (id: SupportedDb): DbManager => {
     }
 };
 
-export const getDataStore = (id: SupportedDb): DataStoreManager => {
+export const getDataStore = async (id: SupportedDb): Promise<DataStoreManager> => {
     switch (id) {
         case SupportedDb.Mongo:
             return createMongoDataStore();
         case SupportedDb.NeDB:
-            return createNeDbDataStore();
+            return await createNeDbDataStore();
     }
 };
