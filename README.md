@@ -45,12 +45,28 @@ To build the project use the following command in the root folder of the project
 npm run build
 ```
 
-To start the project, simple run: 
+To start both the server and the ui, simply run: 
 ```
 npm run start
 ```
 
-Then again, once done, SwitchFeat will be available at http://localhost:4000 
+SwitchFeat will be available at http://localhost:4000 
+
+## Running frontend and backend separately
+
+For convenience during the development phase, the [package.json](https://github.com/switchfeat-com/switchfeat/blob/main/package.json) file esposes two additional scripts which allow to run the server and the UI on separate ports. 
+This simplifies working on the frontend, where the UI can be updated without running a full build on both projects on every change.
+
+The following command will run the UI process on http://localhost:3000
+```
+npm run dev:start-ui
+```
+
+The following command will run the Server process on http://localhost:4000
+```
+npm run dev:start-api
+```
+
 
 ## Contributions
 
