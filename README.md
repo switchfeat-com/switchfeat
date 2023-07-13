@@ -22,7 +22,7 @@
 SwitchFeat is an open-source, self-hosted platform that makes it very easy to manage your feature flags and run A/B tests straight from your infrastructure.
 No external servers involved, no latency in sending flags data over the internet.<b> Your data stays within your network.</b>
 
-Just wrap your logic around a feature flag an duse SwitchFeat SDK to toggle that code on or off, based on multiple conditions and user segments.
+Just wrap your logic around a feature flag and use SwitchFeat API to toggle that code on or off, based on multiple conditions and user segments.
 
 ## Getting started
 
