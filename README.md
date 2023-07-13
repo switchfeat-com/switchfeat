@@ -3,7 +3,8 @@
 </div>
 <div align="center">
     <h1 align="center">SwitchFeat</h1>
-    <h5>Feature flags and A/B testing framework</h5>
+    <div>Feature flags and A/B testing framework</div>
+    <h3>Manage your feature flags with a simple API call</h3>
 </div> 
 <br/>
 
