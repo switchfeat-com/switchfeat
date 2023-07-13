@@ -6,11 +6,13 @@
     <div>An open source tool built to minimize deployment risks and speed-up your features development.</div> 
 </div> 
 <br/>
-
 <div align="center">
       <img src="https://img.shields.io/badge/PR-welcome-brightgreen.svg?style=flat" alt="PR welcome on @apitrakr/cli" />
-  
 </div>
+<br/>
+ <img src="https://github.com/switchfeat-com/switchfeat/assets/905984/3e0bbfe1-72f8-4cdc-95e9-3002d9058789" width=1000 />
+
+
 
 <br/>
 
