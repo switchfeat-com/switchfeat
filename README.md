@@ -3,8 +3,7 @@
 </div>
 <div align="center">
     <h1 align="center">SwitchFeat</h1>
-    <div>Feature flags and A/B testing framework</div>
-    <h3>Manage your feature flags with a simple API call</h3>
+    <div>An open source tool built to minimize deployment risks and speed-up your features development.</div> 
 </div> 
 <br/>
 
@@ -14,6 +13,10 @@
 </div>
 
 <br/>
+
+## What is SwitchFeat
+SwitchFeat is an open-source, self-hosted platform that makes it very easy to manage your feature flags and run A/B tests straight from your infrastructure.
+No external servers involved, no latency in sending flags data over the internet.<b> Your data stays within your network.</b>
 
 ## Getting started
 
