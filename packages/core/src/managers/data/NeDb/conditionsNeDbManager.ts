@@ -13,6 +13,10 @@ export const getConditionById = async (id: string): Promise<ConditionModel> => n
     _id: id,
 });
 
+export const getConditionByKey = async (key: string): Promise<ConditionModel> => neDbManager.conditions!.asyncFindOne({
+    "key": key,
+});
+
 export const addCondition = async (condition: ConditionModel): Promise<boolean> => {
     try {
         const response = await neDbManager.conditions!.asyncInsert(condition);

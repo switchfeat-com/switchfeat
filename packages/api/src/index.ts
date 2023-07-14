@@ -6,13 +6,14 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import { keys, dbManager } from "@switchfeat/core";
 import { flagRoutesWrapper } from "./routes/flagsRoutes";
+import { conditionsRoutesWrapper } from "./routes/conditionsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
 import { getDataStoreManager } from './managers/auth/dataStoreManager';
+import { segmentsRoutesWrapper } from './routes/segmentsRoutes';
 
 dotenv.config();
-
 const env = process.env.NODE_ENV;
 
 // connect to datastore
@@ -33,11 +34,8 @@ app.use(session({
   secret: "$%£$£DDikdjflieas93mdjk.sldcpes",
 }));
 
-
 passportAuth.initialise(app);
 app.use(passport.session());
-
-// set up cors to allow us to accept requests from our client
 
 app.use(
   cors({
@@ -52,8 +50,8 @@ if (env !== "dev") {
 
 app.use(authRoutes);
 app.use(flagRoutesWrapper(dataStoreManagerPromise));
-
-
+app.use(conditionsRoutesWrapper(dataStoreManagerPromise));
+app.use(segmentsRoutesWrapper(dataStoreManagerPromise));
 
 if (env !== "dev") {
   app.get('*', (req, res) => {

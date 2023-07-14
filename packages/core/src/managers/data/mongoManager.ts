@@ -1,5 +1,5 @@
 
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 import { keys } from "../../config/keys";
 import { DataStoreManager, MongoManager, SupportedDb, getDbManager } from "./dbManager";
 
@@ -30,14 +30,21 @@ export const createMongoDataStore = async (): Promise<DataStoreManager> => {
             addCondition: () => { throw new Error(); },
             deleteCondition: () => { throw new Error(); },
             getConditionById: () => { throw new Error(); },
+            getConditionByKey: () => { throw new Error(); },
             updateCondition: () => { throw new Error(); },
             getConditions: () => { throw new Error(); },
+            getSegments: () => { throw new Error(); },
+            addSegment: () => { throw new Error(); },
+            deleteSegment: () => { throw new Error(); },
+            getSegmentById: () => { throw new Error(); },
+            getSegmentByKey: () => { throw new Error(); },
+            updateSegment: () => { throw new Error(); },
         };
     }
     return dataStoreInstance;
 };
 
-const connectDb = async () : Promise<MongoManager> => {
+const connectDb = async (): Promise<MongoManager> => {
     try {
         const client: MongoClient = new MongoClient(keys.MONGODB_URI);
 
@@ -50,6 +57,7 @@ const connectDb = async () : Promise<MongoManager> => {
         mongoDbManager.users = db.collection("users");
         mongoDbManager.flags = db.collection("flags");
         mongoDbManager.conditions = db.collection("conditions");
+        mongoDbManager.segments = db.collection("segments");
 
         return mongoDbManager;
 

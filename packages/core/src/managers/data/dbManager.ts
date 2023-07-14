@@ -5,6 +5,7 @@ import { UserModel } from "../../models/userModel";
 import AsyncNedb from "nedb-async";
 import { createMongoDataStore } from "./mongoManager";
 import { createNeDbDataStore } from "./neDBManager";
+import { SegmentModel } from "../../models/segmentModel";
 
 export enum SupportedDb {
     Mongo = "mongo",
@@ -14,19 +15,22 @@ export enum SupportedDb {
 const initValues = {
     users: null,
     flags: null,
-    conditions: null
+    conditions: null,
+    segments: null
 };
 
 export type MongoManager = {
     flags: Collection<FlagModel> | null,
     users: Collection<UserModel> | null,
     conditions: Collection<ConditionModel> | null,
+    segments: Collection<SegmentModel> | null,
 };
 
 export type NeDbManager = {
     flags: AsyncNedb<FlagModel> | null,
     users: AsyncNedb<UserModel> | null,
     conditions: AsyncNedb<ConditionModel> | null,
+    segments: AsyncNedb<SegmentModel> | null,
 };
 
 export type DataStoreManager = {
@@ -42,10 +46,19 @@ export type DataStoreManager = {
 
     // conditions functions
     getConditions: (userId: string) => Promise<ConditionModel[]>;
-    addCondition: (flag: ConditionModel) => Promise<boolean>;
-    updateCondition: (flag: ConditionModel) => Promise<boolean>;
-    deleteCondition: (flag: ConditionModel) => Promise<boolean>;
+    addCondition: (condition: ConditionModel) => Promise<boolean>;
+    updateCondition: (condition: ConditionModel) => Promise<boolean>;
+    deleteCondition: (condition: ConditionModel) => Promise<boolean>;
     getConditionById: (id: string) => Promise<ConditionModel>;
+    getConditionByKey: (key: string) => Promise<ConditionModel>;
+
+    // segments functions
+    getSegments: (userId: string) => Promise<SegmentModel[]>;
+    addSegment: (segment: SegmentModel) => Promise<boolean>;
+    updateSegment: (segment: SegmentModel) => Promise<boolean>;
+    deleteSegment: (segment: SegmentModel) => Promise<boolean>;
+    getSegmentById: (id: string) => Promise<SegmentModel>;
+    getSegmentByKey: (key: string) => Promise<SegmentModel>;
 
     // user functions
     getUser: (userId: string) => Promise<UserModel>;

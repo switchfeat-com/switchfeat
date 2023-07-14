@@ -35,7 +35,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
 
     flagRoutes.post("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        console.log("received add: " + JSON.stringify(req.body));
+        console.log("received flag add: " + JSON.stringify(req.body));
 
         const flagName = req.body.flagName;
         const flagDescription = req.body.flagDescription;
@@ -76,7 +76,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
 
     flagRoutes.put("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        console.log("received update: " + JSON.stringify(req.body));
+        console.log("received flag update: " + JSON.stringify(req.body));
 
         const flagKey = req.body.flagKey;
         const flagName = req.body.flagName;
@@ -114,7 +114,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
 
     flagRoutes.delete("/api/flags/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        console.log("received delete: " + JSON.stringify(req.body));
+        console.log("received flag delete: " + JSON.stringify(req.body));
 
         const flagKey = req.body.flagKey;
 
