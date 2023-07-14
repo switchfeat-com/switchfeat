@@ -14,25 +14,15 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
     const flagRoutes = Router();
     flagRoutes.get("/api/segments/", auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        try {
+        try { 
 
-            const flagKey = req.query.flagKey;
-
-            if (!flagKey) {
-                res.status(401).json({
-                    success: false,
-                    errorCode: "error_input"
-                });
-                return;
-            }
-
-            const segments = await segmentsService.getSegments(flagKey as string);
+            const segments = await segmentsService.getSegments("");
 
             res.json({
                 success: true,
                 user: req.user,
                 cookies: req.cookies,
-                conditions: segments
+                segments: segments
             });
         } catch (error) {
             console.log(error);

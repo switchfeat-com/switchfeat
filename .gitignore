@@ -8,3 +8,4 @@ output.css
 packages/api/db.switchfeat.conditions
 packages/api/db.switchfeat.flags
 packages/api/db.switchfeat.users
+packages/api/db.switchfeat.segments

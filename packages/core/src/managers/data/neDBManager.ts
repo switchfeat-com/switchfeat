@@ -26,6 +26,7 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
         flagsManager.setNeDbManager(neDbManager);
         usersManager.setNeDbManager(neDbManager);
         conditionsManager.setNeDbManager(neDbManager);
+        segmentsManager.setNeDbManager(neDbManager);
         
         dataStoreInstance = {
             addFlag: flagsManager.addFlag,
