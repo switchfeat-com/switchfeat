@@ -57,7 +57,7 @@ export const Flags: React.FC = () => {
     onCancel: () => { setOpen(false); },
     title: "Create flag",
     description: "Get started by creating your new feature flag.",
-    refreshFlags: handleRefreshFlags,
+    refreshAll: handleRefreshFlags,
   };
 
   const CreateFlagButton: React.FC = () => {

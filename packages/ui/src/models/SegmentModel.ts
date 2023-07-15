@@ -5,4 +5,6 @@ export interface SegmentModel {
     createdOn: string;
     updatedOn: string;
     key: string;
+    matching: string;
+    conditions: string;
 }

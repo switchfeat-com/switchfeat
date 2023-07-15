@@ -57,7 +57,7 @@ export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void }
         title: "Edit flag",
         description: "Update your feature flag.",
         flag: props.flag,
-        refreshFlags: props.refreshFlags,
+        refreshAll: props.refreshFlags,
     };
 
     return (

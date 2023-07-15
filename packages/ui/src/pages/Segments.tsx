@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { DashboardLayout } from "../layout/DashboardLayout";
 import { SectionEmptyState } from "../components/SectionEmptyState";
-import { FlagModel } from "../models/FlagModel";
-import * as keys from "../config/keys"; 
-import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/shared/CreateOrUpdateFlagDialog";
+import * as keys from "../config/keys";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { SegmentModel } from "../models/SegmentModel";
 import { SegmentsItem } from "../components/SegmentsItem";
+import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/shared/CreateOrUpdateSegmentDialog";
+
 
 export const Segments: React.FC = () => {
   const [segments, setSegments] = useState<SegmentModel[]>([]);
@@ -21,7 +21,7 @@ export const Segments: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/Segments/`, {
+    fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -34,12 +34,13 @@ export const Segments: React.FC = () => {
       return resp.json();
     }).then(respJson => {
       setSegments([]);
-      const allSegments: FlagModel[] = [];
-      respJson.segments.forEach((item: FlagModel) => {
+      const allSegments: SegmentModel[] = [];
+      respJson.segments.forEach((item: SegmentModel) => {
         allSegments.push({
           name: item.name,
           description: item.description,
-          status: item.status,
+          matching: item.matching,
+          conditions: item.conditions,
           createdOn: item.createdOn,
           updatedOn: item.updatedOn,
           key: item.key,
@@ -52,38 +53,47 @@ export const Segments: React.FC = () => {
     }).catch(ex => { console.log(ex); });
   }, [refreshSegments]);
 
- 
+  const createFlagProps: CreateOrUpdateSegmentDialogProps = {
+    open,
+    setOpen,
+    onCancel: () => { setOpen(false); },
+    title: "Create segment",
+    description: "Create a new user segment.",
+    refreshAll: handleRefreshSegments,
+  };
+
   const CreateSegmentButton: React.FC = () => {
     return (
-            <button
-                onClick={() => { setOpen(!open); }}
-                type="button"
-                className="inline-flex items-center rounded-md border
+      <button
+        onClick={() => { setOpen(!open); }}
+        type="button"
+        className="inline-flex items-center rounded-md border
                 border-transparent bg-emerald-500 px-3 py-2
                 text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-            >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Create Segment
-            </button>);
+      >
+        <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+        Create Segment
+      </button>);
   };
 
   return (
-        <DashboardLayout>
-            <> {!loading && (
-                <>
-                    {segments.length === 0 && <SectionEmptyState type="segments"> <CreateSegmentButton /> </SectionEmptyState>}
-                    {segments.length > 0 &&
-                        <>
-                            <SectionHeader title="Segments"> <CreateSegmentButton /></SectionHeader>
+    <DashboardLayout>
+      <> {!loading && (
+        <>
+          {segments.length === 0 && <SectionEmptyState type="segments"> <CreateSegmentButton /> </SectionEmptyState>}
+          {segments.length > 0 &&
+            <>
+              <SectionHeader title="Segments"> <CreateSegmentButton /></SectionHeader>
 
-                            {segments.map((item, idx) => (
-                                <SegmentsItem key={idx} segment={item} refreshSegments={handleRefreshSegments} />
-                            ))}
-                        </>
-                    } </>
-            )}
-               
+              {segments.map((item, idx) => (
+                <SegmentsItem key={idx} segment={item} refreshSegments={handleRefreshSegments} />
+              ))}
             </>
-        </DashboardLayout>
+          }
+        </>
+      )}
+   <CreateOrUpdateSegmentDialog {...createFlagProps} />
+      </>
+    </DashboardLayout>
   );
 };

@@ -12,7 +12,7 @@ export interface CreateOrUpdateFlagDialogProps {
   title: string
   description: ReactNode
   flag?: FlagModel
-  refreshFlags: () => void
+  refreshAll: () => void
 }
 
 const FadeIn: React.FC<{ delay: string, children: ReactNode }> = (props) => {
@@ -43,7 +43,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     setEnabled(props.flag.status);
   }, [props.flag, props.open]);
 
-  const handleCreateFlag = (): void => {
+  const handleCreateOrUpdateFlag = (): void => {
     if (!nameRef.current) {
       return;
     }
@@ -73,7 +73,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
       return resp.json();
     }).then(respJson => {
       if (respJson.success as boolean) {
-        props.refreshFlags();
+        props.refreshAll();
         props.setOpen(false);
       } else {
         let msg = "Generic error occurred, please try again.";
@@ -220,7 +220,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                 Cancel
                                             </button>
                                             <button
-                                                onClick={handleCreateFlag}
+                                                onClick={handleCreateOrUpdateFlag}
                                                 className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
                                             text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline
                                             focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
