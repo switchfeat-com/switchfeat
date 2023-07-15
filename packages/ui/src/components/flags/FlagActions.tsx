@@ -1,11 +1,11 @@
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
-import { classNames } from "../helpers/classHelper";
-import { ConfirmationDialog, type ConfirmationDialogProps } from "./shared/ConfirmationDialog";
-import * as keys from "../config/keys";
-import { FlagModel } from "../models/FlagModel";
-import { CreateOrUpdateFlagDialog, type CreateOrUpdateFlagDialogProps } from "./shared/CreateOrUpdateFlagDialog";
+import { classNames } from "../../helpers/classHelper";
+import { ConfirmationDialog, type ConfirmationDialogProps } from "../shared/ConfirmationDialog";
+import * as keys from "../../config/keys";
+import { FlagModel } from "../../models/FlagModel";
+import { CreateOrUpdateFlagDialog, type CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
 
 export const FlagActions: React.FC<{ flag: FlagModel, refreshFlags: () => void }> = (props) => {
     const [showDelete, setShowDelete] = useState(false);

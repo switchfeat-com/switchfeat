@@ -1,9 +1,9 @@
 import { Dialog, Switch, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { classNames } from "../helpers/classHelper";
-import { FlagModel } from "../models/FlagModel";
-import * as dateHelper from "../helpers/dateHelper";
-import * as keys from "../config/keys";
+import { classNames } from "../../helpers/classHelper";
+import { FlagModel } from "../../models/FlagModel";
+import * as dateHelper from "../../helpers/dateHelper";
+import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { FlagActions } from "./FlagActions";
 

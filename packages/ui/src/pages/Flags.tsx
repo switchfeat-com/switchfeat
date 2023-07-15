@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { DashboardLayout } from "../layout/DashboardLayout";
-import { SectionEmptyState } from "../components/SectionEmptyState";
+import { SectionEmptyState } from "../components/shared/SectionEmptyState";
 import { FlagModel } from "../models/FlagModel";
 import * as keys from "../config/keys";
-import { FlagsItem } from "../components/FlagsItem";
-import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/shared/CreateOrUpdateFlagDialog";
+import { FlagsItem } from "../components/flags/FlagsItem";
+import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/flags/CreateOrUpdateFlagDialog";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export const Flags: React.FC = () => {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
 import { DashboardLayout } from "../layout/DashboardLayout";
-import { SectionEmptyState } from "../components/SectionEmptyState";
+import { SectionEmptyState } from "../components/shared/SectionEmptyState";
 import * as keys from "../config/keys";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { SegmentModel } from "../models/SegmentModel";
-import { SegmentsItem } from "../components/SegmentsItem";
-import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/shared/CreateOrUpdateSegmentDialog";
+import { SegmentsItem } from "../components/segments/SegmentsItem";
+import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/segments/CreateOrUpdateSegmentDialog";
 
 
 export const Segments: React.FC = () => {

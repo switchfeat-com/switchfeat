@@ -1,10 +1,10 @@
-import { Fragment, ReactNode, useRef, useState } from "react";
-import { SegmentModel } from "../../models/SegmentModel";
+import { Fragment, ReactNode, useRef, useState, MouseEvent } from "react";
+import { ConditionModel, SegmentModel } from "../../models/SegmentModel";
 import { Transition, Dialog } from "@headlessui/react";
 import { QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as keys from "../../config/keys";
-import { classNames } from "../../helpers/classHelper";
-import { ConditionsBoard } from "../ConditionsBoard";
+import { ConditionsBoard, ConditionsBoardProps } from "./ConditionsBoard";
+import { ConditionsItem } from "./ConditionsItem";
 
 
 export interface CreateOrUpdateSegmentDialogProps {
@@ -22,6 +22,23 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const nameRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [matching, setMatching] = useState("all");
+    const [conditions, setConditions] = useState<ConditionModel[]>([]);
+
+    const handleAddCondition = (newCondition: ConditionModel) => {
+        const temp = [...conditions];
+        temp.push(newCondition);
+        setConditions([...temp]);
+    };
+
+    const handleRemoveCondition = (item: ConditionModel) => {
+        console.log("remove condition");
+        const temp = [...conditions];
+        setConditions([...temp.filter(x => x !== item)]);
+    };
+
+    const conditionsProps: ConditionsBoardProps = {
+        handleAddCondition,
+    };
 
     const supportedMatching = [
         { id: 'all', title: 'All conditions' },
@@ -36,6 +53,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
         const formData = new FormData();
         formData.append('segmentName', nameRef.current.value);
         formData.append('segmentMatching', matching);
+        formData.append('segmentConditions', JSON.stringify(conditions));
 
         if (props.segment) {
             formData.append('segmentKey', props.segment.key);
@@ -88,7 +106,6 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                     type="radio"
                                     onChange={() => setMatching(item.id)}
                                     checked={matching === item.id}
-                                    defaultChecked={item.id === 'all'}
                                     className="h-4 w-4 border-gray-300 text-emerald-600 focus:ring-emerald-600"
                                 />
                                 <label htmlFor={item.id} className="ml-3 block text-base font-medium leading-6 text-gray-900">
@@ -163,13 +180,20 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                                 shadow-sm ring-1 ring-inset ring-gray-300
                                                                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
-                                                        /> 
-                                                       
+                                                        />
+
                                                         <MatchingRadio />
-                                                        <ConditionsBoard />
+                                                        <ConditionsBoard {...conditionsProps} />
+
+                                                        <div className="space-y-4 mt-4">
+                                                            {conditions.map((item: ConditionModel, idx) => (
+                                                                <ConditionsItem condition={item} key={idx} 
+                                                                    removeCondition={() => handleRemoveCondition(item)} />
+                                                            ))}
+                                                        </div>
+
                                                     </div>
                                                     <div className="pb-6 pt-4">
-
                                                         <div className="mt-4 flex text-base">
                                                             <a href="/docs/flags" className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                                                                 <QuestionMarkCircleIcon
@@ -179,7 +203,6 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                                 <span className="ml-2">Learn more about segments</span>
                                                             </a>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,6 +216,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 Cancel
                                             </button>
                                             <button
+                                               type="button"
                                                 onClick={handleCreateOrUpdateSegment}
                                                 className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
                                             text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline

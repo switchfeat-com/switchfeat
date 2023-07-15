@@ -5,7 +5,7 @@ import { AppContextProvider } from "./context/AppContextProvider";
 import { Flags } from "./pages/Flags";
 import { Segments } from "./pages/Segments";
 import { Dashboard } from "./pages/Dashboard";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/shared/PrivateRoute";
 
 const App: React.FC = () => {
   return (
