@@ -4,7 +4,7 @@ import multer from 'multer';
 
 import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
-import { ConditionModel, dateHelper, dbManager, entityHelper, SegmentMatching } from "@switchfeat/core";
+import { dateHelper, dbManager, entityHelper, SegmentMatching } from "@switchfeat/core";
 
 export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
@@ -59,7 +59,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
             createdOn: dateHelper.utcNow().toJSDate(),
             updatedOn: dateHelper.utcNow().toJSDate(),
             matching: matching as SegmentMatching,
-            conditions: conditions ?? JSON.parse(conditions) as ConditionModel[]
+            conditions: JSON.parse(conditions)
         });
 
         res.json({
@@ -96,7 +96,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
 
             alreadyInDb.matching = matching;
             alreadyInDb.conditions = JSON.parse(conditions);
-            
+
             await segmentsService.updateSegment(alreadyInDb);
 
             res.json({

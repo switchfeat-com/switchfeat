@@ -66,12 +66,12 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
                     <div className=" sm:flex sm:items-start sm:justify-between">
                         <div className="max-w-xl text-base text-gray-500">
                             <div className="text-base  leading-6 text-gray-900">
-                                <span className="font-semibold">{props.flag.name}</span>  <code className="bg-slate-100 px-2 py-1 rounded-md text-sm ml-4">{props.flag.key}</code>
+                                <span className="font-semibold">{props.flag.name}</span> <span> ({props.flag.description})</span>
                             </div>
                             <div className="mt-3">
-                                <Switch.Description>
-                                    {props.flag.description}
-                                </Switch.Description>
+                            <code className="py-1 rounded-md text-sm">key: {props.flag.key}</code>
+                                  
+                               
                             </div>
                         </div>
                         <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
