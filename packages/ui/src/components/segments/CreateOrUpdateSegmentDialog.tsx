@@ -1,9 +1,9 @@
-import { Fragment, ReactNode, useRef, useState, MouseEvent } from "react";
+import { Fragment, ReactNode, useRef, useState } from "react";
 import { ConditionModel, SegmentModel } from "../../models/SegmentModel";
 import { Transition, Dialog } from "@headlessui/react";
 import { QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as keys from "../../config/keys";
-import { ConditionsBoard, ConditionsBoardProps } from "./ConditionsBoard";
+import { ConditionsBoard } from "./ConditionsBoard";
 import { ConditionsItem } from "./ConditionsItem";
 
 
@@ -30,14 +30,23 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
         setConditions([...temp]);
     };
 
+    const handleEditCondition = (currCondition: ConditionModel) => {
+        const temp = [...conditions];
+        const found = conditions.find(x => x.key === currCondition.key); 
+        if (found) {
+            found.context = currCondition.context;
+            found.conditionType = currCondition.conditionType;
+            found.operator = currCondition.operator;
+            found.value = currCondition.value;
+            console.log(temp);
+            setConditions([...temp]);
+        }
+    };
+
     const handleRemoveCondition = (item: ConditionModel) => {
         console.log("remove condition");
         const temp = [...conditions];
         setConditions([...temp.filter(x => x !== item)]);
-    };
-
-    const conditionsProps: ConditionsBoardProps = {
-        handleAddCondition,
     };
 
     const supportedMatching = [
@@ -138,7 +147,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                 leaveFrom="translate-x-0"
                                 leaveTo="translate-x-full"
                             >
-                                <Dialog.Panel className="pointer-events-auto w-screen max-w-3xl">
+                                <Dialog.Panel className="pointer-events-auto w-screen max-w-4xl">
                                     <form className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl ">
                                         <div className="h-0 flex-1 overflow-y-auto">
                                             <div className="bg-emerald-500 px-4 py-6 sm:px-6">
@@ -183,14 +192,20 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                         />
 
                                                         <MatchingRadio />
-                                                        <ConditionsBoard {...conditionsProps} />
 
-                                                        <div className="space-y-4 mt-4">
-                                                            {conditions.map((item: ConditionModel, idx) => (
-                                                                <ConditionsItem condition={item} key={idx} 
-                                                                    removeCondition={() => handleRemoveCondition(item)} />
-                                                            ))}
+                                                        <div className="mt-6">
+                                                            <label className="text-base font-semibold text-gray-900">Conditions</label>
+                                                            <p className="text-sm text-gray-500">Conditions get evaluate based on the selected matching criteria.</p>
+                                                            <ConditionsBoard  handleAddOrUpdateCondition={handleAddCondition} />
+                                                            <div className="space-y-4 mt-4">
+                                                                {conditions.map((item: ConditionModel, idx) => (
+                                                                    <ConditionsItem condition={item} key={idx} removeCondition={() => handleRemoveCondition(item)} >
+                                                                        <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition}  />
+                                                                    </ConditionsItem>
+                                                                ))}
+                                                            </div>
                                                         </div>
+
 
                                                     </div>
                                                     <div className="pb-6 pt-4">
@@ -216,7 +231,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 Cancel
                                             </button>
                                             <button
-                                               type="button"
+                                                type="button"
                                                 onClick={handleCreateOrUpdateSegment}
                                                 className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
                                             text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline

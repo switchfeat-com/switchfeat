@@ -4,7 +4,7 @@ import multer from 'multer';
 
 import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
-import { dateHelper, dbManager, entityHelper, SegmentMatching } from "@switchfeat/core";
+import { ConditionModel, dateHelper, dbManager, entityHelper, SegmentMatching } from "@switchfeat/core";
 
 export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
@@ -39,7 +39,8 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
 
         const segmentName = req.body.segmentName;
         const segmentDescription = req.body.segmentDescription;
-        const matching = req.body.matching;
+        const matching = req.body.segmentMatching;
+        const conditions = req.body.segmentConditions;
 
         if (!segmentName) {
             res.status(401).json({
@@ -57,7 +58,8 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
             description: segmentDescription,
             createdOn: dateHelper.utcNow().toJSDate(),
             updatedOn: dateHelper.utcNow().toJSDate(),
-            matching: matching as SegmentMatching
+            matching: matching as SegmentMatching,
+            conditions: conditions ?? JSON.parse(conditions) as ConditionModel[]
         });
 
         res.json({

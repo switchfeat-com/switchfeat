@@ -10,9 +10,9 @@ export type SegmentModel = {
 };
 
 export type ConditionModel = {
-    key?: string;
+    key: string;
     operator: string;
-    value: string;
+    value: string | undefined;
     context: string;
     conditionType: string;
 };
