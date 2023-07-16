@@ -74,9 +74,9 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
 
          const segmentKey = req.body.segmentKey;
          const segmentName = req.body.segmentName;
-         const segmentDescription = req.body.flagDescription;
-         const matching = req.body.matching;
-         const conditions = req.body.conditions;
+         const segmentDescription = req.body.segmentDescription;
+         const matching = req.body.segmentMatching;
+         const conditions = req.body.segmentConditions;
 
         if (!segmentKey) {
             res.status(401).json({
@@ -96,6 +96,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
 
             alreadyInDb.matching = matching;
             alreadyInDb.conditions = JSON.parse(conditions);
+            
             await segmentsService.updateSegment(alreadyInDb);
 
             res.json({

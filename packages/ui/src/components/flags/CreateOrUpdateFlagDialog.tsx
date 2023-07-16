@@ -6,88 +6,88 @@ import { FlagModel } from "../../models/FlagModel";
 import { classNames } from "../../helpers/classHelper";
 
 export interface CreateOrUpdateFlagDialogProps {
-  open: boolean
-  setOpen: (state: boolean) => void
-  onCancel: () => void
-  title: string
-  description: ReactNode
-  flag?: FlagModel
-  refreshAll: () => void
+    open: boolean
+    setOpen: (state: boolean) => void
+    onCancel: () => void
+    title: string
+    description: ReactNode
+    flag?: FlagModel
+    refreshAll: () => void
 }
 
 const FadeIn: React.FC<{ delay: string, children: ReactNode }> = (props) => {
     return (
-          <Transition.Child
-              enter={`transition-all ease-in-out duration-700 ${props.delay}`}
-              enterFrom="opacity-0 translate-y-6"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition-all ease-in-out duration-300"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-          >
-              {props.children}
-          </Transition.Child>
+        <Transition.Child
+            enter={`transition-all ease-in-out duration-700 ${props.delay}`}
+            enterFrom="opacity-0 translate-y-6"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition-all ease-in-out duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+        >
+            {props.children}
+        </Transition.Child>
     );
-  };
+};
 
 export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> = (props) => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const [enabled, setEnabled] = useState(false);
+    const nameRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const [enabled, setEnabled] = useState(false);
 
-  useEffect(() => {
-    if ((!props.flag) || !props.open) {
-      return;
-    }
-
-    setEnabled(props.flag.status);
-  }, [props.flag, props.open]);
-
-  const handleCreateOrUpdateFlag = (): void => {
-    if (!nameRef.current) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('flagName', nameRef.current.value);
-    formData.append('flagStatus', enabled.toString());
-
-    if (props.flag) {
-      formData.append('flagKey', props.flag.key);
-    }
-
-    if (descriptionRef.current) {
-      formData.append('flagDescription', descriptionRef.current.value);
-    }
-
-    fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
-      method: (props.flag) ? "PUT" : "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Origin": "true"
-      },
-      body: formData
-    }).then(async resp => {
-      return resp.json();
-    }).then(respJson => {
-      if (respJson.success as boolean) {
-        props.refreshAll();
-        props.setOpen(false);
-      } else {
-        let msg = "Generic error occurred, please try again.";
-        if (respJson.errorCode === "error_input") {
-          msg = "One or more required information are missing.";
-        } else if (respJson.errorCode === "error_alreadysaved") {
-          msg = "There is already a flag with the same name.";
+    useEffect(() => {
+        if ((!props.flag) || !props.open) {
+            return;
         }
-        console.log(msg);
-      }
-    }).catch(error => { console.log(error); });
-  };
 
-  return (
+        setEnabled(props.flag.status);
+    }, [props.flag, props.open]);
+
+    const handleCreateOrUpdateFlag = (): void => {
+        if (!nameRef.current) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('flagName', nameRef.current.value);
+        formData.append('flagStatus', enabled.toString());
+
+        if (props.flag) {
+            formData.append('flagKey', props.flag.key);
+        }
+
+        if (descriptionRef.current) {
+            formData.append('flagDescription', descriptionRef.current.value);
+        }
+
+        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+            method: (props.flag) ? "PUT" : "POST",
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "true"
+            },
+            body: formData
+        }).then(async resp => {
+            return resp.json();
+        }).then(respJson => {
+            if (respJson.success as boolean) {
+                props.refreshAll();
+                props.setOpen(false);
+            } else {
+                let msg = "Generic error occurred, please try again.";
+                if (respJson.errorCode === "error_input") {
+                    msg = "One or more required information are missing.";
+                } else if (respJson.errorCode === "error_alreadysaved") {
+                    msg = "There is already a flag with the same name.";
+                }
+                console.log(msg);
+            }
+        }).catch(error => { console.log(error); });
+    };
+
+    return (
 
         <Transition.Root show={props.open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={props.setOpen}>
@@ -126,7 +126,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                 </div>
                                                 <div className="mt-1">
                                                     <p className="text-base text-emerald-300">
-                                                       {props.description}
+                                                        {props.description}
                                                     </p>
                                                 </div>
                                             </div>
@@ -168,7 +168,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                             </div>
                                                         </FadeIn>
 
-                                                         <FadeIn delay="delay-[600ms]">
+                                                        <FadeIn delay="delay-[600ms]">
                                                             <fieldset>
                                                                 <legend className="text-base font-medium leading-6 text-gray-900">Enabled</legend>
                                                                 <div className="mt-2 space-y-4">
@@ -176,17 +176,17 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                         checked={enabled}
                                                                         onChange={setEnabled}
                                                                         className={classNames(
-                                                                          enabled ? 'bg-emerald-600' : 'bg-gray-200',
-                                                                          'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ',
-                                                                          'focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2'
+                                                                            enabled ? 'bg-emerald-600' : 'bg-gray-200',
+                                                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ',
+                                                                            'focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2'
                                                                         )}
                                                                     >
                                                                         <span className="sr-only">Enabled</span>
                                                                         <span
                                                                             aria-hidden="true"
                                                                             className={classNames(
-                                                                              enabled ? 'translate-x-5' : 'translate-x-0',
-                                                                              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                                                                enabled ? 'translate-x-5' : 'translate-x-0',
+                                                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
                                                                             )}
                                                                         />
                                                                     </Switch>
@@ -236,7 +236,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                 </div>
             </Dialog>
         </Transition.Root >
-  );
+    );
 };
 
 

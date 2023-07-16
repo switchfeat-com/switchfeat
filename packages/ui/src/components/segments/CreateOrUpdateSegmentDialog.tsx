@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useRef, useState } from "react";
+import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import { ConditionModel, SegmentModel } from "../../models/SegmentModel";
 import { Transition, Dialog } from "@headlessui/react";
 import { QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -7,15 +7,15 @@ import { ConditionsBoard } from "./ConditionsBoard";
 import { ConditionsItem } from "./ConditionsItem";
 
 
-export interface CreateOrUpdateSegmentDialogProps {
-    open: boolean
-    setOpen: (state: boolean) => void
-    onCancel: () => void
-    title: string
-    description: ReactNode
-    segment?: SegmentModel
+export type CreateOrUpdateSegmentDialogProps = {
+    open: boolean,
+    setOpen: (state: boolean) => void,
+    onCancel: () => void,
+    title: string,
+    description: ReactNode,
+    segment?: SegmentModel,
     refreshAll: () => void
-}
+};
 
 
 export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogProps> = (props) => {
@@ -23,6 +23,12 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
+
+    useEffect(() => {
+        if (props.segment) {
+            setConditions(props.segment.conditions);
+        }
+    }, [props.segment]);
 
     const handleAddCondition = (newCondition: ConditionModel) => {
         const temp = [...conditions];
