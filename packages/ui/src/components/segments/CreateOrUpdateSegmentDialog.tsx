@@ -32,7 +32,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
 
     const handleEditCondition = (currCondition: ConditionModel) => {
         const temp = [...conditions];
-        const found = conditions.find(x => x.key === currCondition.key); 
+        const found = conditions.find(x => x.key === currCondition.key);
         if (found) {
             found.context = currCondition.context;
             found.conditionType = currCondition.conditionType;
@@ -102,11 +102,11 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const MatchingRadio = () => {
         return (
             <div className="mt-6">
-                <label className="text-base font-semibold text-gray-900">Matching</label>
+                <label className="text-base font-semibold text-gray-900 py-4">Matching</label>
                 <p className="text-sm text-gray-500">Select a matching criteria for your segment conditions.</p>
                 <fieldset className="mt-4">
                     <legend className="sr-only">Matching conditions</legend>
-                    <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                    <div className=" sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                         {supportedMatching.map((item) => (
                             <div key={item.id} className="flex items-center">
                                 <input
@@ -173,12 +173,12 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </div>
                                             </div>
                                             <div className="flex flex-1 flex-col justify-between">
-                                                <div className="divide-y divide-gray-200 px-4 sm:px-6">
-                                                    <div className=" pb-5 pt-6">
+                                                <div className="divide-y divide-gray-400 px-4 sm:px-6">
+                                                    <div className="mt-3">
 
                                                         <label
                                                             htmlFor="project-name"
-                                                            className="block text-base font-medium leading-6 text-gray-900">
+                                                            className="block text-base font-medium leading-6 text-gray-900 py-3">
                                                             Name
                                                         </label>
                                                         <input
@@ -191,16 +191,32 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
                                                         />
 
+                                                        <label
+                                                            htmlFor="project-name"
+                                                            className="block text-base font-medium leading-6 text-gray-900 py-3">
+                                                            Description <span className="text-gray-400">(optional)</span>
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            defaultValue={props.segment?.name}
+                                                            ref={descriptionRef}
+                                                            className="block w-full rounded-md border-0 py-2 px-2 text-gray-900
+                                                                shadow-sm ring-1 ring-inset ring-gray-300
+                                                                 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                                                                 focus:ring-emerald-600 sm:text-base sm:leading-6"
+                                                        />
+
+
                                                         <MatchingRadio />
 
                                                         <div className="mt-6">
                                                             <label className="text-base font-semibold text-gray-900">Conditions</label>
                                                             <p className="text-sm text-gray-500">Conditions get evaluate based on the selected matching criteria.</p>
-                                                            <ConditionsBoard  handleAddOrUpdateCondition={handleAddCondition} />
+                                                            <ConditionsBoard handleAddOrUpdateCondition={handleAddCondition} />
                                                             <div className="space-y-4 mt-4">
                                                                 {conditions.map((item: ConditionModel, idx) => (
                                                                     <ConditionsItem condition={item} key={idx} removeCondition={() => handleRemoveCondition(item)} >
-                                                                        <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition}  />
+                                                                        <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition} />
                                                                     </ConditionsItem>
                                                                 ))}
                                                             </div>
