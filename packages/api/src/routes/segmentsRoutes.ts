@@ -106,7 +106,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         } else {
             res.json({
                 success: false,
-                errorCode: "error_flag_notfound"
+                errorCode: "error_segment_notfound"
             });
         }
     });
@@ -137,7 +137,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         } else {
             res.json({
                 success: false,
-                errorCode: "error_flag_notfound"
+                errorCode: "error_segment_notfound"
             });
         }
     });

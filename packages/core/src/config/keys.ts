@@ -7,6 +7,8 @@ const API_URL =  "http://localhost:4000";
 
 const AUTH_PROVIDER = (process.env.AuthProvider as string);
 
+const SESSION_SECRET = (process.env.SessionSecret as string);
+
 const MONGODB = {
     MONGODB_URI: (process.env.DbUri as string)
 };
@@ -21,5 +23,6 @@ export const keys = {
     ...GOOGLE_AUTH,
     CLIENT_HOME_PAGE_URL,
     API_URL,
-    AUTH_PROVIDER
+    AUTH_PROVIDER,
+    SESSION_SECRET
 };

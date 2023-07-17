@@ -6,7 +6,6 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import { keys, dbManager } from "@switchfeat/core";
 import { flagRoutesWrapper } from "./routes/flagsRoutes";
-import { conditionsRoutesWrapper } from "./routes/conditionsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
@@ -31,7 +30,7 @@ app.use(express.json());
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: "$%£$£DDikdjflieas93mdjk.sldcpes",
+  secret: keys.SESSION_SECRET,
 }));
 
 passportAuth.initialise(app);
@@ -50,7 +49,6 @@ if (env !== "dev") {
 
 app.use(authRoutes);
 app.use(flagRoutesWrapper(dataStoreManagerPromise));
-app.use(conditionsRoutesWrapper(dataStoreManagerPromise));
 app.use(segmentsRoutesWrapper(dataStoreManagerPromise));
 
 if (env !== "dev") {
