@@ -27,6 +27,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     useEffect(() => {
         if (props.segment) {
             setConditions(props.segment.conditions);
+            setMatching(props.segment.matching);
         }
     }, [props.segment]);
 

@@ -33,7 +33,8 @@ export const updateSegment = async (segment: SegmentModel): Promise<boolean> => 
             $set: {
                 description: segment.description,
                 name: segment.name,
-                conditions: segment.conditions
+                conditions: segment.conditions,
+                matching: segment.matching
             } as SegmentModel
         });
         return (!!response);
