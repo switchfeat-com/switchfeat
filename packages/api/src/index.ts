@@ -5,20 +5,18 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import { keys, dbManager } from "@switchfeat/core";
-import { flagRoutes } from "./routes/flagsRoutes";
+import { flagRoutesWrapper } from "./routes/flagsRoutes";
 import { authRoutes } from './routes/authRoutes';
 import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
 import { getDataStoreManager } from './managers/auth/dataStoreManager';
+import { segmentsRoutesWrapper } from './routes/segmentsRoutes';
 
 dotenv.config();
-
 const env = process.env.NODE_ENV;
 
-// connect to mongodb
-const dataStoreManager: dbManager.DataStoreManager = getDataStoreManager();
-
-dataStoreManager.connectDb();
+// connect to datastore
+const dataStoreManagerPromise: Promise<dbManager.DataStoreManager> = getDataStoreManager();
 
 const app: Express = express();
 const port = process.env.PORT || 4000;
@@ -32,14 +30,11 @@ app.use(express.json());
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: "$%£$£DDikdjflieas93mdjk.sldcpes",
+  secret: keys.SESSION_SECRET,
 }));
-
 
 passportAuth.initialise(app);
 app.use(passport.session());
-
-// set up cors to allow us to accept requests from our client
 
 app.use(
   cors({
@@ -53,8 +48,8 @@ if (env !== "dev") {
 }
 
 app.use(authRoutes);
-app.use(flagRoutes);
-
+app.use(flagRoutesWrapper(dataStoreManagerPromise));
+app.use(segmentsRoutesWrapper(dataStoreManagerPromise));
 
 if (env !== "dev") {
   app.get('*', (req, res) => {

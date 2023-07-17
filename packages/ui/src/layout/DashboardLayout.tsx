@@ -5,6 +5,7 @@ import {
     BellIcon,
     Cog6ToothIcon,
     FlagIcon,
+    FolderIcon,
     HomeIcon,
     XMarkIcon
 } from '@heroicons/react/24/outline';
@@ -19,8 +20,8 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
     const navigation = [
         { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-        { name: 'Flags', href: '/flags', icon: FlagIcon }
-        // { name: 'Segments', href: '/segments', icon: FolderIcon },
+        { name: 'Flags', href: '/flags', icon: FlagIcon },
+        { name: 'Segments', href: '/segments', icon: FolderIcon },
         // { name: 'Conditions', href: '/conditions', icon: ArrowsRightLeftIcon }
     ];
 

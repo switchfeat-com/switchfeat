@@ -1,13 +1,8 @@
-import { ConditionModel } from './conditionModel';
-import { ObjectId } from 'mongodb';
+import { BaseModel } from './baseModel';
+import { SegmentModel } from './segmentModel';
 
-export interface FlagModel {
-    _id?: ObjectId,
-    name: string;
-    key: string;
-    description?: string;
-    createdOn: Date;
-    updatedOn: Date;
+export type FlagModel = {
+    key: string; 
     status: boolean;
-    condition?: ConditionModel;
-}
+    segments?: SegmentModel[];
+} & BaseModel;

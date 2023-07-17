@@ -1,13 +1,11 @@
 name: Lint
 on:
     push:
-        branches:
-            - main
+        branches: [ "main" ]
     pull_request:
     workflow_dispatch:
 
 jobs:
-
     lint:
         name: "Lint"
         runs-on: ubuntu-latest
