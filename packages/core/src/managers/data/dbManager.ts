@@ -1,5 +1,4 @@
 import { Collection } from "mongodb";
-import { ConditionModel } from "../../models/conditionModel";
 import { FlagModel } from "../../models/flagModel";
 import { UserModel } from "../../models/userModel";
 import AsyncNedb from "nedb-async";
@@ -15,21 +14,18 @@ export enum SupportedDb {
 const initValues = {
     users: null,
     flags: null,
-    conditions: null,
     segments: null
 };
 
 export type MongoManager = {
     flags: Collection<FlagModel> | null,
     users: Collection<UserModel> | null,
-    conditions: Collection<ConditionModel> | null,
     segments: Collection<SegmentModel> | null,
 };
 
 export type NeDbManager = {
     flags: AsyncNedb<FlagModel> | null,
     users: AsyncNedb<UserModel> | null,
-    conditions: AsyncNedb<ConditionModel> | null,
     segments: AsyncNedb<SegmentModel> | null,
 };
 
@@ -44,15 +40,7 @@ export type DataStoreManager = {
     updateFlag: (flag: FlagModel) => Promise<boolean>;
     deleteFlag: (flag: FlagModel) => Promise<boolean>;
 
-    // conditions functions
-    getConditions: (userId: string) => Promise<ConditionModel[]>;
-    addCondition: (condition: ConditionModel) => Promise<boolean>;
-    updateCondition: (condition: ConditionModel) => Promise<boolean>;
-    deleteCondition: (condition: ConditionModel) => Promise<boolean>;
-    getConditionById: (id: string) => Promise<ConditionModel>;
-    getConditionByKey: (key: string) => Promise<ConditionModel>;
-
-    // segments functions
+    // segments and conditions functions
     getSegments: (userId: string) => Promise<SegmentModel[]>;
     addSegment: (segment: SegmentModel) => Promise<boolean>;
     updateSegment: (segment: SegmentModel) => Promise<boolean>;

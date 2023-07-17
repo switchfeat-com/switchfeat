@@ -27,12 +27,6 @@ export const createMongoDataStore = async (): Promise<DataStoreManager> => {
             addUser: () => { throw new Error(); },
             updateUser: () => { throw new Error(); },
             deleteUser: () => { throw new Error(); },
-            addCondition: () => { throw new Error(); },
-            deleteCondition: () => { throw new Error(); },
-            getConditionById: () => { throw new Error(); },
-            getConditionByKey: () => { throw new Error(); },
-            updateCondition: () => { throw new Error(); },
-            getConditions: () => { throw new Error(); },
             getSegments: () => { throw new Error(); },
             addSegment: () => { throw new Error(); },
             deleteSegment: () => { throw new Error(); },
@@ -56,7 +50,6 @@ const connectDb = async (): Promise<MongoManager> => {
         const mongoDbManager = getDbManager(SupportedDb.Mongo) as MongoManager;
         mongoDbManager.users = db.collection("users");
         mongoDbManager.flags = db.collection("flags");
-        mongoDbManager.conditions = db.collection("conditions");
         mongoDbManager.segments = db.collection("segments");
 
         return mongoDbManager;
