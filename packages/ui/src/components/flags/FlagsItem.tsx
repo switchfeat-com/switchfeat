@@ -1,13 +1,12 @@
 import { Dialog, Switch, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import { classNames } from "../../helpers/classHelper";
 import { FlagModel } from "../../models/FlagModel";
 import * as dateHelper from "../../helpers/dateHelper";
 import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { FlagActions } from "./FlagActions";
 
-export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> = (props) => {
+export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, children: ReactNode }> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -60,52 +59,50 @@ export const FlagsItem: React.FC<{ flag: FlagModel, refreshFlags: () => void }> 
 
     return (
         <>
-            <div className="bg-white shadow sm:rounded-lg m-4">
-                <Switch.Group as="div" className="px-4 py-5 sm:p-6">
+            <button className="w-full" onClick={props.setOpen} >
+                <div className="bg-white shadow sm:rounded-lg m-4">
+                    <Switch.Group as="div" className="px-4 py-5 sm:p-6">
 
-                    <div className=" sm:flex sm:items-start sm:justify-between">
-                        <div className="max-w-xl text-base text-gray-500">
-                            <div className="text-base  leading-6 text-gray-900">
-                                <span className="font-semibold">{props.flag.name}</span> <span> ({props.flag.description})</span>
-                            </div>
-                            <div className="mt-3">
-                            <code className="py-1 rounded-md text-sm">key: {props.flag.key}</code>
-                                  
-                               
-                            </div>
-                        </div>
-                        <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
-                            <div className="flex flex-col">
-                                <div className="text-sm text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
-                                <div className="text-right">
-                                    <Switch
-                                        checked={enabled}
-                                        onChange={(checked) => { showConfirmationDialog(checked); }}
-                                        className={classNames(
-                                            enabled ? 'bg-green-600' : 'bg-gray-200',
-                                            'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
-                                            'border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
-                                        )}
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className={classNames(
-                                                enabled ? 'translate-x-5' : 'translate-x-0',
-                                                'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                            )}
-                                        />
-                                    </Switch>
+                        <div className=" sm:flex sm:items-start sm:justify-between">
+                            <div className="max-w-xl text-base text-gray-500">
+                                <div className="text-base  leading-6 text-gray-900">
+                                    <span className="font-semibold">{props.flag.name}</span> <span> ({props.flag.description})</span>
+                                </div>
+                                <div className="mt-3 text-left">
+                                    <code className="py-1 rounded-md text-sm">key: {props.flag.key}</code>
+
+
                                 </div>
                             </div>
-                            <div className="ml-4">
-                                 <FlagActions flag={props.flag} refreshFlags={props.refreshFlags} />
+                            <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
+                                <div className="flex flex-col">
+                                    <div className="text-sm text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
+                                    <div className="text-right">
+                                        <Switch
+                                            checked={enabled}
+                                            onChange={(checked) => { showConfirmationDialog(checked); }}
+                                            className={classNames(
+                                                enabled ? 'bg-green-600' : 'bg-gray-200',
+                                                'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
+                                                'border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
+                                            )}
+                                        >
+                                            <span
+                                                aria-hidden="true"
+                                                className={classNames(
+                                                    enabled ? 'translate-x-5' : 'translate-x-0',
+                                                    'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                                )}
+                                            />
+                                        </Switch>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
-                    </div>
-                </Switch.Group>
-            </div>
-
+                    </Switch.Group>
+                </div>
+            </button>
+            {props.children}
             <Transition.Root show={showConfirmation} as={Fragment}>
                 <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>
                     <Transition.Child

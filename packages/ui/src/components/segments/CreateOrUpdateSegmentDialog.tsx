@@ -24,7 +24,6 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
-
     const [showDelete, setShowDelete] = useState(false);
 
     useEffect(() => {
@@ -302,9 +301,9 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowDelete(true)}
-                                                    className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
-                                                               text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline
-                                                               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                                                    className="ml-4 inline-flex justify-center rounded-md bg-red-700 px-3 py-2
+                                                               text-base font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline
+                                                               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                                 >
                                                     Delete segment
                                                 </button>

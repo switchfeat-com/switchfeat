@@ -13,6 +13,7 @@ export const Flags: React.FC = () => {
   const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const handleRefreshFlags = (): void => {
     setRefreshFlags(!refreshFlags);
@@ -60,6 +61,15 @@ export const Flags: React.FC = () => {
     refreshAll: handleRefreshFlags,
   };
 
+  const editFlagProps: CreateOrUpdateFlagDialogProps = {
+    open: openEdit,
+    setOpen: setOpenEdit,
+    onCancel: () => { setOpenEdit(false); },
+    title: "Edit flag",
+    description: "Update your feature flag.",
+    refreshAll: handleRefreshFlags,
+  };
+
   const CreateFlagButton: React.FC = () => {
     return (
             <button
@@ -83,8 +93,8 @@ export const Flags: React.FC = () => {
                         <>
                             <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
 
-                            {flags.map((flagItem, idx) => (
-                                <FlagsItem key={idx} flag={flagItem} refreshFlags={handleRefreshFlags} />
+                            {flags.map((item, idx) => (
+                                <FlagsItem key={idx} flag={item} setOpen={() => setOpenEdit(!openEdit)}><CreateOrUpdateFlagDialog {...editFlagProps} flag={item}/></FlagsItem>
                             ))}
                         </>
                     } </>
