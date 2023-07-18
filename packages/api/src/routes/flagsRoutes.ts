@@ -40,6 +40,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         const flagName = req.body.flagName;
         const flagDescription = req.body.flagDescription;
         const flagStatus = req.body.flagStatus;
+        const flagRules = req.body.flagRules;
 
         if (!flagName) {
             res.status(401).json({
@@ -59,7 +60,8 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
                 createdOn: dateHelper.utcNow().toJSDate(),
                 status: (flagStatus === "true"),
                 updatedOn: dateHelper.utcNow().toJSDate(),
-                key: flagKey
+                key: flagKey,
+                rules: JSON.parse(flagRules)
             });
 
             res.json({
@@ -82,6 +84,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         const flagName = req.body.flagName;
         const flagDescription = req.body.flagDescription;
         const flagStatus = req.body.flagStatus;
+        const flagRules = req.body.flagRules;
 
         if (!flagKey) {
             res.status(401).json({
@@ -98,6 +101,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
             alreadyInDb.updatedOn = dateHelper.utcNow().toJSDate();
             alreadyInDb.description = flagDescription ? flagDescription : alreadyInDb.description;
             alreadyInDb.name = flagName ? flagName : alreadyInDb.name;
+            alreadyInDb.rules = flagRules ? JSON.parse(flagRules) : alreadyInDb.rules;
             await flagsService.updateFlag(alreadyInDb);
 
             res.json({
