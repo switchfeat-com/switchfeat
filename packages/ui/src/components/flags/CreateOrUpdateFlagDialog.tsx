@@ -24,7 +24,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     const [enabled, setEnabled] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [rules, setRules] = useState<RuleModel[]>([]);
-  
+
 
     useEffect(() => {
         if ((!props.flag) || !props.open) {
@@ -32,7 +32,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         }
 
         setEnabled(props.flag.status);
-    }, [props.flag, props.open]); 
+    }, [props.flag, props.open]);
 
 
     const handleCreateOrUpdateFlag = (): void => {
@@ -144,7 +144,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     return (
         <>
             <Transition.Root show={props.open} as={Fragment}>
-                <Dialog as="div" className="relative z-50" onClose={props.setOpen}>
+                <Dialog as="div" className="relative z-50" onClose={props.setOpen}  initialFocus={nameRef}>
                     <div className="fixed inset-0" />
 
                     <div className="fixed inset-0 overflow-hidden">
@@ -198,7 +198,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                 defaultValue={props.flag?.name}
                                                                 ref={nameRef}
                                                                 className="block w-full rounded-md border-0 py-2 px-2 text-gray-900
-                                                                shadow-sm ring-1 ring-inset ring-gray-300
+                                                                shadow-sm ring-1 ring-inset ring-gray-300 
                                                                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
                                                             />
@@ -243,15 +243,18 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
 
                                                             <div className="mt-6">
                                                                 <label className="text-base font-semibold text-gray-900">Rules</label>
-                                                                <p className="text-sm text-gray-500">Assign segments to this flag creating new rules. Rules get evaluate in order.</p>
+                                                                <p className="text-base text-gray-500">Create rules to assign segments to this flag.<br /> Rules get evaluate in order.</p>
                                                                 <RulesBoard handleAddOrUpdateRule={handleAddRule} />
                                                                 <div className="space-y-4 mt-4">
-                                                                    {rules.map((item: RuleModel, idx) => (
+                                                                    {rules.length > 0 && rules.map((item: RuleModel, idx) => (
                                                                         <RulesItem rule={item} key={idx} removeRule={() => handleRemoveRule(item)} >
-                                                                            <RulesBoard toEditRule={item} 
+                                                                            <RulesBoard toEditRule={item}
                                                                                 handleAddOrUpdateRule={handleEditRule} />
                                                                         </RulesItem>
                                                                     ))}
+                                                                    {rules.length === 0 && (
+                                                                        <div className="text-center text-lg mt-4">No rules available</div>
+                                                                    )}
                                                                 </div>
                                                             </div>
 
@@ -290,6 +293,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                     Delete flag
                                                 </button>
                                                 <button
+                                                    type="button"
                                                     onClick={handleCreateOrUpdateFlag}
                                                     className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
                                             text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline

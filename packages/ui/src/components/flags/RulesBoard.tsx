@@ -86,7 +86,7 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
                     </label>
                     <div className="mt-2">
                         <select
-
+                            value={selectedSegment?.key}
                             onChange={(e) => onChangeSelectedSegment(e.target.value)}
                             className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 
                                    ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
@@ -94,7 +94,6 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
                         >
                             {segments && segments.map((item) => (
                                 <option
-                                    selected={selectedSegment?.key === item.key}
                                     key={item.key}
                                     value={item.key}>{item.name}</option>))}
                         </select>

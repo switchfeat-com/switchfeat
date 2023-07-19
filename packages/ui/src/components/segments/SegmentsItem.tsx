@@ -3,13 +3,10 @@ import { SegmentModel } from "../../models/SegmentModel";
 
 export const SegmentsItem: React.FC<{ segment: SegmentModel, setOpen: () => void, children: ReactNode }> = (props) => {
 
-
-
-
     return (
 
         <div className="bg-white shadow sm:rounded-lg m-4">
-            <button className="w-full" onClick={props.setOpen} >
+            <div className="w-full hover:cursor-pointer" onClick={props.setOpen} >
                 <div className="px-4 py-5 sm:p-6  flex justify-between w-full ">
                     <div className="text-base text-gray-500">
                         <div className="text-base text-left  leading-6 text-gray-900">
@@ -29,7 +26,7 @@ export const SegmentsItem: React.FC<{ segment: SegmentModel, setOpen: () => void
                         </div>
                     </div>
                 </div>
-            </button>
+            </div>
             {props.children}
         </div>
     );
