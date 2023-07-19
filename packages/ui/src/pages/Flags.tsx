@@ -43,6 +43,7 @@ export const Flags: React.FC = () => {
           createdOn: item.createdOn,
           updatedOn: item.updatedOn,
           key: item.key,
+          rules: item.rules
         });
       });
 

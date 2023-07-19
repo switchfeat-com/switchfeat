@@ -59,7 +59,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, childre
 
     return (
         <>
-            <button className="w-full" onClick={props.setOpen} >
+            <div className="w-full hover:cursor-pointer" onClick={props.setOpen} >
                 <div className="bg-white shadow sm:rounded-lg m-4">
                     <Switch.Group as="div" className="px-4 py-5 sm:p-6">
 
@@ -101,7 +101,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, childre
                         </div>
                     </Switch.Group>
                 </div>
-            </button>
+            </div>
             {props.children}
             <Transition.Root show={showConfirmation} as={Fragment}>
                 <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>

@@ -2,9 +2,11 @@ import { Transition, Dialog, Switch } from "@headlessui/react";
 import { XMarkIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import * as keys from "../../config/keys";
-import { FlagModel } from "../../models/FlagModel";
+import { FlagModel, RuleModel } from "../../models/FlagModel";
 import { classNames } from "../../helpers/classHelper";
 import { ConfirmationDialog, ConfirmationDialogProps } from "../shared/ConfirmationDialog";
+import { RulesBoard } from "./RulesBoard";
+import { RulesItem } from "./RulesItem";
 
 export interface CreateOrUpdateFlagDialogProps {
     open: boolean
@@ -21,6 +23,8 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [enabled, setEnabled] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [rules, setRules] = useState<RuleModel[]>([]);
+  
 
     useEffect(() => {
         if ((!props.flag) || !props.open) {
@@ -28,7 +32,8 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         }
 
         setEnabled(props.flag.status);
-    }, [props.flag, props.open]);
+    }, [props.flag, props.open]); 
+
 
     const handleCreateOrUpdateFlag = (): void => {
         if (!nameRef.current) {
@@ -38,6 +43,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         const formData = new FormData();
         formData.append('flagName', nameRef.current.value);
         formData.append('flagStatus', enabled.toString());
+        formData.append('flagRules', JSON.stringify(rules));
 
         if (props.flag) {
             formData.append('flagKey', props.flag.key);
@@ -115,6 +121,26 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         accent: "red",
     };
 
+    const handleAddRule = (currRule: RuleModel) => {
+        const temp = [...rules];
+        temp.push(currRule);
+        setRules([...temp]);
+    };
+
+    const handleEditRule = (currRule: RuleModel) => {
+        const temp = [...rules];
+        const found = rules.find(x => x.key === currRule.key);
+        if (found) {
+            found.segment = currRule.segment;
+            setRules([...temp]);
+        }
+    };
+
+    const handleRemoveRule = (item: RuleModel) => {
+        const temp = [...rules];
+        setRules([...temp.filter(x => x !== item)]);
+    };
+
     return (
         <>
             <Transition.Root show={props.open} as={Fragment}>
@@ -133,7 +159,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                     leaveFrom="translate-x-0"
                                     leaveTo="translate-x-full"
                                 >
-                                    <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                                    <Dialog.Panel className="pointer-events-auto w-screen max-w-2xl">
                                         <form className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
                                             <div className="h-0 flex-1 overflow-y-auto">
                                                 <div className="bg-emerald-500 px-4 py-6 sm:px-6">
@@ -166,7 +192,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                 htmlFor="project-name"
                                                                 className="block text-base font-medium leading-6 text-gray-900 py-3">
                                                                 Name
-                                                            </label> 
+                                                            </label>
                                                             <input
                                                                 type="text"
                                                                 defaultValue={props.flag?.name}
@@ -175,12 +201,12 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                 shadow-sm ring-1 ring-inset ring-gray-300
                                                                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
-                                                            /> 
+                                                            />
                                                             <label
                                                                 htmlFor="description"
                                                                 className="block text-base font-medium leading-6 text-gray-900 py-3">
                                                                 Description
-                                                            </label> 
+                                                            </label>
                                                             <input
                                                                 type="text"
                                                                 ref={descriptionRef}
@@ -189,7 +215,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                 shadow-sm ring-1 ring-inset ring-gray-300
                                                                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
-                                                            /> 
+                                                            />
                                                             <fieldset className="mt-4">
                                                                 <legend className="text-base font-medium leading-6 text-gray-900">Enabled</legend>
                                                                 <div className="mt-2 space-y-4">
@@ -214,6 +240,20 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                                 </div>
 
                                                             </fieldset>
+
+                                                            <div className="mt-6">
+                                                                <label className="text-base font-semibold text-gray-900">Rules</label>
+                                                                <p className="text-sm text-gray-500">Assign segments to this flag creating new rules. Rules get evaluate in order.</p>
+                                                                <RulesBoard handleAddOrUpdateRule={handleAddRule} />
+                                                                <div className="space-y-4 mt-4">
+                                                                    {rules.map((item: RuleModel, idx) => (
+                                                                        <RulesItem rule={item} key={idx} removeRule={() => handleRemoveRule(item)} >
+                                                                            <RulesBoard toEditRule={item} 
+                                                                                handleAddOrUpdateRule={handleEditRule} />
+                                                                        </RulesItem>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
 
                                                         </div>
                                                         <div className="pb-6 pt-4">
@@ -270,5 +310,3 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         </>
     );
 };
-
-
