@@ -1,4 +1,4 @@
-import { FlagModel, dateHelper } from "@switchfeat/core";
+import { ResponseCode, FlagModel, SdkResponseCodes, dateHelper } from "@switchfeat/core";
 import { ConditionModel, StringOperator } from "@switchfeat/core";
 
 export type EvaluateResponse = {
@@ -7,7 +7,7 @@ export type EvaluateResponse = {
         segment: string | null;
         condition: string | null;
     }
-    reason: string;
+    reason: ResponseCode;
     time: number;
 };
 
@@ -19,7 +19,7 @@ export const evaluateFlag = async (flag: FlagModel, context: { [key: string]: st
 
         if (!flag.rules) {
             response.match = flag.status;
-            response.reason = "no_rules";
+            response.reason = SdkResponseCodes.RuleNotFound;
             return response;
         }
 
@@ -27,7 +27,7 @@ export const evaluateFlag = async (flag: FlagModel, context: { [key: string]: st
         const contextValue = context[firstContextKey];
 
         if (!flag.status) {
-            response.reason = "flag_inactive";
+            response.reason = SdkResponseCodes.FlagDisabled;
             return response;
         }
 
@@ -42,17 +42,18 @@ export const evaluateFlag = async (flag: FlagModel, context: { [key: string]: st
                     response.meta.segment = x.segment.key;
                     response.meta.condition = matchCondition.key;
                     foundMatchCondition = true;
+                    response.reason = SdkResponseCodes.FlagMatch;
                 }
             }
         });
 
         if (!foundMatchCondition) {
-            response.reason = "no_matching_condition";
+            response.reason = SdkResponseCodes.NoMatchingCondition;
             return response;
         }
 
     } catch (ex) {
-        response.reason = "generic_error";
+        response.reason = SdkResponseCodes.GenericError;
     } finally {
         response.time = dateHelper.diffInMs(startTime, dateHelper.utcNow())!;
     }

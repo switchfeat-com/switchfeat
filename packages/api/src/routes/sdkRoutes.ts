@@ -3,13 +3,12 @@ import { Request, Response } from "express";
 import multer from 'multer';
 import * as flagsService from "../services/flagsService";
 import * as auth from "../managers/auth/passportAuth";
-import { dbManager } from "@switchfeat/core";
+import { SdkResponseCodes, dbManager } from "@switchfeat/core";
 import * as sdkService from "../services/sdkService";
 
 export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
     flagsService.setDataStoreManager(storeManager);
-
     const upload = multer();
     const sdkRoutes = Router();
 
@@ -18,15 +17,13 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
             const flags = await flagsService.getFlags("");
 
             res.json({
-                success: true,
                 user: req.user,
                 flags: flags
             });
         } catch (error) {
             console.log(error);
             res.status(500).json({
-                success: false,
-                message: "unable to retrieve flags"
+                error: SdkResponseCodes.GenericError
             });
         }
     });
@@ -36,32 +33,28 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
 
             const flagKey = req.body.flagKey;
             const flagContext = req.body.flagContext;
-
             const flag = await flagsService.getFlag({key: flagKey});
 
             if (!flag) {
                 res.status(404).json({
-                    success: false,
                     user: req.user,
-                    error: "missing_flagkey"
+                    error: SdkResponseCodes.FlagNotFound
                 });
 
                 return;
             }
             
-           const resp = await sdkService.evaluateFlag(flag, flagContext);
+           const resp = await sdkService.evaluateFlag(flag, flagContext); 
 
-
-            res.json({
-                success: true,
+            res.status(200).json({
                 user: req.user,
                 data: resp
             });
+
         } catch (error) {
-            console.log(error);
             res.status(500).json({
-                success: false,
-                message: "unable to retrieve flags"
+                user: req.user,
+                error: SdkResponseCodes.GenericError
             });
         }
     });
