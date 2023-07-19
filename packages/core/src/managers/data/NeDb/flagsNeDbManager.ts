@@ -38,7 +38,8 @@ export const updateFlag = async (flag: FlagModel): Promise<boolean> => {
                 status: flag.status, 
                 description: flag.description, 
                 name: flag.name, 
-                updatedOn: flag.updatedOn } as FlagModel
+                updatedOn: flag.updatedOn,
+                rules: flag.rules } as FlagModel
         });
         return (!!response);
     } catch (ex) {

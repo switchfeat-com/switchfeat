@@ -1,15 +1,24 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { SegmentModel } from "../../models/SegmentModel";
+import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "./CreateOrUpdateSegmentDialog";
 
-export const SegmentsItem: React.FC<{ segment: SegmentModel, setOpen: () => void, children: ReactNode }> = (props) => {
+export const SegmentsItem: React.FC<{ segment: SegmentModel, handleRefreshSegments: () => void }> = (props) => {
 
+    const [openEdit, setOpenEdit] = useState(false);
 
-
+    const editSegmentProps: CreateOrUpdateSegmentDialogProps = {
+        open: openEdit,
+        setOpen: setOpenEdit,
+        onCancel: () => { setOpenEdit(!openEdit); },
+        title: "Edit segment",
+        description: "Edit this segment.",
+        refreshAll: props.handleRefreshSegments,
+    };
 
     return (
 
         <div className="bg-white shadow sm:rounded-lg m-4">
-            <button className="w-full" onClick={props.setOpen} >
+            <div className="w-full hover:cursor-pointer" onClick={() => setOpenEdit(!openEdit)} >
                 <div className="px-4 py-5 sm:p-6  flex justify-between w-full ">
                     <div className="text-base text-gray-500">
                         <div className="text-base text-left  leading-6 text-gray-900">
@@ -29,8 +38,8 @@ export const SegmentsItem: React.FC<{ segment: SegmentModel, setOpen: () => void
                         </div>
                     </div>
                 </div>
-            </button>
-            {props.children}
+            </div>
+            <CreateOrUpdateSegmentDialog {...editSegmentProps} segment={props.segment} />
         </div>
     );
 };

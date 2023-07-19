@@ -1,8 +1,8 @@
 import { BaseModel } from './baseModel';
-import { SegmentModel } from './segmentModel';
+import { RuleModel } from './ruleModel';
 
 export type FlagModel = {
     key: string; 
     status: boolean;
-    segments?: SegmentModel[];
+    rules?: RuleModel[];
 } & BaseModel;

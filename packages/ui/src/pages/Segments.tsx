@@ -14,7 +14,6 @@ export const Segments: React.FC = () => {
   const [refreshSegments, setRefreshSegments] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
 
   const handleRefreshSegments = (): void => {
     setRefreshSegments(!refreshSegments);
@@ -57,18 +56,9 @@ export const Segments: React.FC = () => {
   const createSegmentProps: CreateOrUpdateSegmentDialogProps = {
     open,
     setOpen,
-    onCancel: () => { setOpen(false); },
+    onCancel: () => { setOpen(!open); },
     title: "Create segment",
     description: "Create a new user segment.",
-    refreshAll: handleRefreshSegments,
-  };
-
-  const editSegmentProps: CreateOrUpdateSegmentDialogProps = {
-    open: openEdit,
-    setOpen: setOpenEdit,
-    onCancel: () => { setOpenEdit(false); },
-    title: "Edit segment",
-    description: "Edit this segment.",
     refreshAll: handleRefreshSegments,
   };
 
@@ -96,7 +86,7 @@ export const Segments: React.FC = () => {
               <SectionHeader title="Segments"> <CreateSegmentButton /></SectionHeader>
 
               {segments.map((item, idx) => (
-                <SegmentsItem key={idx} segment={item} setOpen={() => setOpenEdit(!openEdit)} ><CreateOrUpdateSegmentDialog {...editSegmentProps} segment={item}/></SegmentsItem>
+                <SegmentsItem key={idx} segment={item} handleRefreshSegments={handleRefreshSegments} />
               ))}
             </>
           }

@@ -13,6 +13,7 @@ export const Flags: React.FC = () => {
   const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const handleRefreshFlags = (): void => {
     setRefreshFlags(!refreshFlags);
@@ -42,8 +43,11 @@ export const Flags: React.FC = () => {
           createdOn: item.createdOn,
           updatedOn: item.updatedOn,
           key: item.key,
+          rules: item.rules
         });
       });
+
+      console.log(allFlags);
 
       setFlags(allFlags);
 
@@ -58,7 +62,7 @@ export const Flags: React.FC = () => {
     title: "Create flag",
     description: "Get started by creating your new feature flag.",
     refreshAll: handleRefreshFlags,
-  };
+  }; 
 
   const CreateFlagButton: React.FC = () => {
     return (
@@ -83,8 +87,8 @@ export const Flags: React.FC = () => {
                         <>
                             <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
 
-                            {flags.map((flagItem, idx) => (
-                                <FlagsItem key={idx} flag={flagItem} refreshFlags={handleRefreshFlags} />
+                            {flags.map((item, idx) => (
+                                <FlagsItem key={idx} flag={item} handleRefreshFlags={handleRefreshFlags} />
                             ))}
                         </>
                     } </>

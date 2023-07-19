@@ -24,7 +24,6 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
-
     const [showDelete, setShowDelete] = useState(false);
 
     useEffect(() => {
@@ -185,7 +184,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     return (
         <>
             <Transition.Root show={props.open} as={Fragment}>
-                <Dialog as="div" className="relative z-50" onClose={props.setOpen}>
+                <Dialog as="div" className="relative z-50" onClose={props.setOpen} initialFocus={nameRef}>
                     <div className="fixed inset-0" />
 
                     <div className="fixed inset-0 overflow-hidden">
@@ -267,11 +266,14 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                                 <p className="text-sm text-gray-500">Conditions get evaluate based on the selected matching criteria.</p>
                                                                 <ConditionsBoard handleAddOrUpdateCondition={handleAddCondition} />
                                                                 <div className="space-y-4 mt-4">
-                                                                    {conditions.map((item: ConditionModel, idx) => (
+                                                                    {conditions.length > 0 && conditions.map((item: ConditionModel, idx) => (
                                                                         <ConditionsItem condition={item} key={idx} removeCondition={() => handleRemoveCondition(item)} >
                                                                             <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition} />
                                                                         </ConditionsItem>
                                                                     ))}
+                                                                     {conditions.length === 0 && (
+                                                                        <div className="text-center text-lg mt-4">No conditions available</div>
+                                                                    )}
                                                                 </div>
                                                             </div>
 
@@ -292,7 +294,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </div>
                                             </div>
                                             <div className="flex flex-shrink-0 justify-end px-4 py-4">
-                                                <button
+                                                <button 
                                                     type="button"
                                                     className="rounded-md bg-white px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                                     onClick={props.onCancel}
@@ -302,9 +304,9 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowDelete(true)}
-                                                    className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
-                                                               text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline
-                                                               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                                                    className="ml-4 inline-flex justify-center rounded-md bg-red-700 px-3 py-2
+                                                               text-base font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline
+                                                               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                                 >
                                                     Delete segment
                                                 </button>
