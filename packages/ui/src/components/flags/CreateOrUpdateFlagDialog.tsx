@@ -32,6 +32,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
         }
 
         setEnabled(props.flag.status);
+        setRules(props.flag.rules);
     }, [props.flag, props.open]);
 
 

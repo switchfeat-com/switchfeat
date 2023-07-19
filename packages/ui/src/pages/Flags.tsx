@@ -47,6 +47,8 @@ export const Flags: React.FC = () => {
         });
       });
 
+      console.log(allFlags);
+
       setFlags(allFlags);
 
       setLoading(false);
