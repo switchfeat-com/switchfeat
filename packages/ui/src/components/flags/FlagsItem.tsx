@@ -1,16 +1,29 @@
 import { Dialog, Switch, Transition } from "@headlessui/react";
-import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { classNames } from "../../helpers/classHelper";
 import { FlagModel } from "../../models/FlagModel";
 import * as dateHelper from "../../helpers/dateHelper";
 import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
 
-export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, children: ReactNode }> = (props) => {
+export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void}> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const cancelButtonRef = useRef(null);
+
+    const [openEdit, setOpenEdit] = useState(false);
+
+    const editFlagProps: CreateOrUpdateFlagDialogProps = {
+        open: openEdit,
+        setOpen: setOpenEdit,
+        onCancel: () => { setOpenEdit(false); },
+        title: "Edit flag",
+        description: "Update your feature flag.",
+        refreshAll: props.handleRefreshFlags,
+      };
+
 
     useEffect(() => {
         setEnabled(props.flag.status);
@@ -59,7 +72,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, childre
 
     return (
         <>
-            <div className="w-full hover:cursor-pointer" onClick={props.setOpen} >
+            <div className="w-full hover:cursor-pointer" onClick={() => setOpenEdit(!openEdit)} >
                 <div className="bg-white shadow sm:rounded-lg m-4">
                     <Switch.Group as="div" className="px-4 py-5 sm:p-6">
 
@@ -102,7 +115,8 @@ export const FlagsItem: React.FC<{ flag: FlagModel, setOpen: () => void, childre
                     </Switch.Group>
                 </div>
             </div>
-            {props.children}
+            <CreateOrUpdateFlagDialog {...editFlagProps} flag={props.flag}/>
+            
             <Transition.Root show={showConfirmation} as={Fragment}>
                 <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>
                     <Transition.Child

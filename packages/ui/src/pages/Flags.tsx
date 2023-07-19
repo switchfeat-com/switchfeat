@@ -60,16 +60,7 @@ export const Flags: React.FC = () => {
     title: "Create flag",
     description: "Get started by creating your new feature flag.",
     refreshAll: handleRefreshFlags,
-  };
-
-  const editFlagProps: CreateOrUpdateFlagDialogProps = {
-    open: openEdit,
-    setOpen: setOpenEdit,
-    onCancel: () => { setOpenEdit(false); },
-    title: "Edit flag",
-    description: "Update your feature flag.",
-    refreshAll: handleRefreshFlags,
-  };
+  }; 
 
   const CreateFlagButton: React.FC = () => {
     return (
@@ -95,7 +86,7 @@ export const Flags: React.FC = () => {
                             <SectionHeader title="Flags"> <CreateFlagButton /></SectionHeader>
 
                             {flags.map((item, idx) => (
-                                <FlagsItem key={idx} flag={item} setOpen={() => setOpenEdit(!openEdit)}><CreateOrUpdateFlagDialog {...editFlagProps} flag={item}/></FlagsItem>
+                                <FlagsItem key={idx} flag={item} handleRefreshFlags={handleRefreshFlags} />
                             ))}
                         </>
                     } </>
