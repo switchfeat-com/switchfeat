@@ -35,3 +35,7 @@ export const diffFromUtcInDays = (date: string | undefined) => {
 
     return DateTime.fromISO(date).diff( DateTime.utc(), ["days"]).toObject().days?.toFixed(0);
 };
+
+export const diffInMs = (startDate: DateTime, endDate: DateTime): number => {
+    return endDate.toMillis() - startDate.toMillis();
+};

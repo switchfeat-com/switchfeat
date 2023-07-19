@@ -1,6 +1,6 @@
 
 export { FlagModel } from "./models/flagModel";
-export { ConditionModel } from "./models/conditionModel";
+export { ConditionModel, StringOperator, BooleanOperator, NumericOperator, DayTimeOperator } from "./models/conditionModel";
 export { SegmentModel, SegmentMatching } from "./models/segmentModel";
 export { UserModel } from "./models/userModel";
 export * as dbManager from "./managers/data/dbManager";

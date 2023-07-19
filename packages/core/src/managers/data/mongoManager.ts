@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import { keys } from "../../config/keys";
 import { DataStoreManager, MongoManager, SupportedDb, getDbManager } from "./dbManager";
 
-let dataStoreInstance: DataStoreManager;
+
 
 export const createMongoDataStore = async (): Promise<DataStoreManager> => {
 
@@ -12,29 +12,28 @@ export const createMongoDataStore = async (): Promise<DataStoreManager> => {
     if (!mongoManager) {
         throw Error("The neDbManager has not been properly initialized");
     }
+    
+    const dataStoreInstance = {
+        addFlag: () => { throw new Error(); },
+        deleteFlag: () => { throw new Error(); },
+        getFlagById: () => { throw new Error(); },
+        getFlagByKey: () => { throw new Error(); },
+        getFlagByName: () => { throw new Error(); },
+        getFlags: () => { throw new Error(); },
+        updateFlag: () => { throw new Error(); },
+        getUser: () => { throw new Error(); },
+        getUserByEmail: () => { throw new Error(); },
+        addUser: () => { throw new Error(); },
+        updateUser: () => { throw new Error(); },
+        deleteUser: () => { throw new Error(); },
+        getSegments: () => { throw new Error(); },
+        addSegment: () => { throw new Error(); },
+        deleteSegment: () => { throw new Error(); },
+        getSegmentById: () => { throw new Error(); },
+        getSegmentByKey: () => { throw new Error(); },
+        updateSegment: () => { throw new Error(); },
+    };
 
-    if (!dataStoreInstance) {
-        dataStoreInstance = {
-            addFlag: () => { throw new Error(); },
-            deleteFlag: () => { throw new Error(); },
-            getFlagById: () => { throw new Error(); },
-            getFlagByKey: () => { throw new Error(); },
-            getFlagByName: () => { throw new Error(); },
-            getFlags: () => { throw new Error(); },
-            updateFlag: () => { throw new Error(); },
-            getUser: () => { throw new Error(); },
-            getUserByEmail: () => { throw new Error(); },
-            addUser: () => { throw new Error(); },
-            updateUser: () => { throw new Error(); },
-            deleteUser: () => { throw new Error(); },
-            getSegments: () => { throw new Error(); },
-            addSegment: () => { throw new Error(); },
-            deleteSegment: () => { throw new Error(); },
-            getSegmentById: () => { throw new Error(); },
-            getSegmentByKey: () => { throw new Error(); },
-            updateSegment: () => { throw new Error(); },
-        };
-    }
     return dataStoreInstance;
 };
 

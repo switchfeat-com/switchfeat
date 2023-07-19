@@ -8,9 +8,6 @@ import * as usersManager from "./NeDb/usersNeDbManager";
 import * as segmentsManager from "./NeDb/segmentsNeDbManager";
 import { SegmentModel } from '../../models/segmentModel';
 
-
-let dataStoreInstance: DataStoreManager;
-
 export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
 
     const neDbManager = await connectDb();
@@ -19,39 +16,37 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
         throw Error("The neDbManager has not been properly initialized");
     }
 
-    if (!dataStoreInstance) {
+    flagsManager.setNeDbManager(neDbManager);
+    usersManager.setNeDbManager(neDbManager);
+    segmentsManager.setNeDbManager(neDbManager);
 
-        flagsManager.setNeDbManager(neDbManager);
-        usersManager.setNeDbManager(neDbManager);
-        segmentsManager.setNeDbManager(neDbManager);
-        
-        dataStoreInstance = {
-            addFlag: flagsManager.addFlag,
-            deleteFlag: flagsManager.deleteFlag,
-            getFlagById: flagsManager.getFlagById,
-            getFlagByKey: flagsManager.getFlagByKey,
-            getFlagByName: flagsManager.getFlagByName,
-            getFlags: flagsManager.getFlags,
-            updateFlag: flagsManager.updateFlag,
+    const dataStoreInstance = {
+        addFlag: flagsManager.addFlag,
+        deleteFlag: flagsManager.deleteFlag,
+        getFlagById: flagsManager.getFlagById,
+        getFlagByKey: flagsManager.getFlagByKey,
+        getFlagByName: flagsManager.getFlagByName,
+        getFlags: flagsManager.getFlags,
+        updateFlag: flagsManager.updateFlag,
 
-            getSegments: segmentsManager.getSegments,
-            addSegment: segmentsManager.addSegment,
-            deleteSegment: segmentsManager.deleteSegment,
-            getSegmentById: segmentsManager.getSegmentById,
-            getSegmentByKey: segmentsManager.getSegmentByKey,
-            updateSegment: segmentsManager.updateSegment,
+        getSegments: segmentsManager.getSegments,
+        addSegment: segmentsManager.addSegment,
+        deleteSegment: segmentsManager.deleteSegment,
+        getSegmentById: segmentsManager.getSegmentById,
+        getSegmentByKey: segmentsManager.getSegmentByKey,
+        updateSegment: segmentsManager.updateSegment,
 
-            getUser: () => { throw new Error(); },
-            getUserByEmail: () => { throw new Error(); },
-            addUser: () => { throw new Error(); },
-            updateUser: () => { throw new Error(); },
-            deleteUser: () => { throw new Error(); },
-        };
-    }
+        getUser: () => { throw new Error(); },
+        getUserByEmail: () => { throw new Error(); },
+        addUser: () => { throw new Error(); },
+        updateUser: () => { throw new Error(); },
+        deleteUser: () => { throw new Error(); },
+    };
+
     return dataStoreInstance;
 };
 
-const connectDb = async () : Promise<NeDbManager> => {
+const connectDb = async (): Promise<NeDbManager> => {
     try {
         const neDbManager = getDbManager(SupportedDb.NeDB) as NeDbManager;
         neDbManager.flags = new AsyncNedb<FlagModel>({ filename: 'db.switchfeat.flags', autoload: true });
