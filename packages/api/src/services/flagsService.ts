@@ -5,7 +5,6 @@ let dataStoreManager: dbManager.DataStoreManager;
 export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>) => {
     manager.then(data => dataStoreManager = data);
 };
- 
 
 export const getFlags = async (userId: string): Promise<FlagModel[]> => {
     return await dataStoreManager.getFlags(userId);

@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 import * as passportAuth from "./managers/auth/passportAuth"; 
 import { getDataStoreManager } from './managers/auth/dataStoreManager';
 import { segmentsRoutesWrapper } from './routes/segmentsRoutes';
+import { sdkRoutesWrapper } from './routes/sdkRoutes';
 
 dotenv.config();
 const env = process.env.NODE_ENV;
@@ -50,6 +51,7 @@ if (env !== "dev") {
 app.use(authRoutes);
 app.use(flagRoutesWrapper(dataStoreManagerPromise));
 app.use(segmentsRoutesWrapper(dataStoreManagerPromise));
+app.use(sdkRoutesWrapper(dataStoreManagerPromise));
 
 if (env !== "dev") {
   app.get('*', (req, res) => {
