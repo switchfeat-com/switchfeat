@@ -1,5 +1,6 @@
 import { ResponseCode, FlagModel, SdkResponseCodes, dateHelper } from "@switchfeat/core";
 import { ConditionModel, StringOperator } from "@switchfeat/core";
+import {v4 as uuidv4} from 'uuid';
 
 export type EvaluateResponse = {
     match: boolean;
@@ -9,9 +10,11 @@ export type EvaluateResponse = {
     }
     reason: ResponseCode;
     time: number;
+    correlationId: string;
+    responseId: string;
 };
 
-export const evaluateFlag = async (flag: FlagModel, context: { [key: string]: string }): Promise<EvaluateResponse> => {
+export const evaluateFlag = async (flag: FlagModel, context: Record<string, string>, correlationId: string): Promise<EvaluateResponse> => {
 
     const response: EvaluateResponse = { match: false, meta: {} } as EvaluateResponse;
     const startTime = dateHelper.utcNow();
@@ -56,6 +59,8 @@ export const evaluateFlag = async (flag: FlagModel, context: { [key: string]: st
         response.reason = SdkResponseCodes.GenericError;
     } finally {
         response.time = dateHelper.diffInMs(startTime, dateHelper.utcNow())!;
+        response.responseId = uuidv4();
+        response.correlationId = correlationId;
     }
 
     return response;

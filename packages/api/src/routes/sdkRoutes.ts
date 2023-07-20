@@ -33,6 +33,8 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
 
             const flagKey = req.body.flagKey;
             const flagContext = req.body.flagContext;
+            const correlationId = req.body.correlationId;
+
             const flag = await flagsService.getFlag({key: flagKey});
 
             if (!flag) {
@@ -44,7 +46,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
                 return;
             }
             
-           const resp = await sdkService.evaluateFlag(flag, flagContext); 
+           const resp = await sdkService.evaluateFlag(flag, flagContext, correlationId); 
 
             res.status(200).json({
                 user: req.user,

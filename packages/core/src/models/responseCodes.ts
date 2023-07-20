@@ -17,7 +17,7 @@ type ResponseCodes = {
 };
 
 export const SdkResponseCodes: ResponseCodes = {
-    
+
     // errors
     GenericError: { message: "generic_error", statusCode: 500 },
     ConditionNotFound: { message: "condition_not_found", statusCode: 404 },
@@ -30,4 +30,4 @@ export const SdkResponseCodes: ResponseCodes = {
     // info
     FlagDisabled:  { message: "flag_disabled", statusCode: 200 },
     FlagMatch:  { message: "flag_match", statusCode: 200 },
-};
+} as const;
