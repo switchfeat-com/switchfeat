@@ -42,6 +42,10 @@ Or you can just download the premade image from the official Github Registry lik
 docker run --name switchfeat-com -d -p 4000:4000 ghcr.io/switchfeat-com/switchfeat:main
 ```
 
+Once the download is complete, an additional step is needed to set the environment variables within the Docker image itself.
+The image already contains a [.env.example](https://github.com/switchfeat-com/switchfeat/blob/main/packages/api/.env.example) file which contains all env variables names.
+Please fill the values for the variables in the required section, rename the file to ```.env``` and restart the container.
+
 Once done, SwitchFeat will be available at http://localhost:4000 
 
 
