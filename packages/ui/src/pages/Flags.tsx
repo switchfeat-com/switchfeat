@@ -13,7 +13,6 @@ export const Flags: React.FC = () => {
   const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
 
   const handleRefreshFlags = (): void => {
     setRefreshFlags(!refreshFlags);
@@ -47,10 +46,7 @@ export const Flags: React.FC = () => {
         });
       });
 
-      console.log(allFlags);
-
       setFlags(allFlags);
-
       setLoading(false);
     }).catch(ex => { console.log(ex); });
   }, [refreshFlags]);
