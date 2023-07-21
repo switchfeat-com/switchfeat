@@ -7,7 +7,7 @@ import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
 
-export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void}> = (props) => {
+export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void }> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -22,7 +22,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
         title: "Edit flag",
         description: "Update your feature flag.",
         refreshAll: props.handleRefreshFlags,
-      };
+    };
 
 
     useEffect(() => {
@@ -48,6 +48,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
         }).then(respJson => {
             if (respJson.success as boolean) {
                 setEnabled(pendingSwitchEnabled);
+                props.flag.status = pendingSwitchEnabled;
                 setShowConfirmation(false);
             } else {
                 let msg = "Generic error occurred, please try again.";
@@ -93,6 +94,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                                     <div className="text-right">
                                         <Switch
                                             checked={enabled}
+                                            onClick={(e) => e.stopPropagation()}
                                             onChange={(checked) => { showConfirmationDialog(checked); }}
                                             className={classNames(
                                                 enabled ? 'bg-green-600' : 'bg-gray-200',
@@ -115,8 +117,8 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                     </Switch.Group>
                 </div>
             </div>
-            <CreateOrUpdateFlagDialog {...editFlagProps} flag={props.flag}/>
-            
+            <CreateOrUpdateFlagDialog {...editFlagProps} flag={props.flag} />
+
             <Transition.Root show={showConfirmation} as={Fragment}>
                 <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>
                     <Transition.Child
