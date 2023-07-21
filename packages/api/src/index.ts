@@ -39,7 +39,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: keys.CLIENT_HOME_PAGE_URL,
+    origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true // allow session cookie from browser to pass through
   }));

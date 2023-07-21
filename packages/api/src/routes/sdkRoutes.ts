@@ -38,7 +38,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
             const flag = await flagsService.getFlag({key: flagKey});
 
             if (!flag) {
-                res.status(404).json({
+                res.json({
                     user: req.user,
                     error: SdkResponseCodes.FlagNotFound
                 });
@@ -48,13 +48,13 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
             
            const resp = await sdkService.evaluateFlag(flag, flagContext, correlationId); 
 
-            res.status(200).json({
+            res.json({
                 user: req.user,
                 data: resp
             });
 
         } catch (error) {
-            res.status(500).json({
+            res.json({
                 user: req.user,
                 error: SdkResponseCodes.GenericError
             });
