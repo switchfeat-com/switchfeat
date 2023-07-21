@@ -52,7 +52,7 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
             });
 
             setSegments(allSegments);
-
+            setSelectedSegment(allSegments[0]);
             setLoading(false);
         }).catch(ex => { console.log(ex); });
     }, []);
