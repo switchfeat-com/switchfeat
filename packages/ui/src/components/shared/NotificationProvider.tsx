@@ -17,7 +17,6 @@ interface Toast {
 		role: 'status' | 'alert';
 		'aria-live': 'assertive' | 'off' | 'polite';
 	};
-	style?: React.CSSProperties;
 	className?: string;
 	iconTheme?: IconTheme;
 	createdAt: number;
@@ -33,14 +32,15 @@ type ToastOptions = Partial<
 		| 'duration'
 		| 'ariaProps'
 		| 'className'
-		| 'style'
 		| 'position'
 		| 'iconTheme'
 	>
 >;
+
 type DefaultToastOptions = ToastOptions & {
 	[key in ToastType]?: ToastOptions;
 };
+
 type ToastPosition =
 	| 'top-left'
 	| 'top-center'
