@@ -263,7 +263,8 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                         <div className="pb-6 pt-4">
 
                                                             <div className="mt-4 flex text-base">
-                                                                <a href="/docs/flags" className="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                                                <a href="https://docs.switchfeat.com/concepts/flags" target="_blank" rel="noreferrer" 
+                                                                className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                                                         aria-hidden="true"
