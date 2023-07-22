@@ -6,7 +6,7 @@ import { Flags } from "./pages/Flags";
 import { Segments } from "./pages/Segments";
 import { Dashboard } from "./pages/Dashboard";
 import PrivateRoute from "./components/shared/PrivateRoute";
-import NotificationProvider from "./components/shared/NotificationProvider";
+import { NotificationProvider } from "./components/shared/NotificationProvider";
 
 const App: React.FC = () => {
 	return (

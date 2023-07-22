@@ -7,6 +7,9 @@ import { classNames } from "../../helpers/classHelper";
 import { ConfirmationDialog, ConfirmationDialogProps } from "../shared/ConfirmationDialog";
 import { RulesBoard } from "./RulesBoard";
 import { RulesItem } from "./RulesItem";
+import { toast } from 'react-hot-toast';
+import { Toast } from "../shared/NotificationProvider";
+
 
 export interface CreateOrUpdateFlagDialogProps {
     open: boolean
@@ -69,6 +72,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
             if (respJson.success as boolean) {
                 props.refreshAll();
                 props.setOpen(false);
+                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
             } else {
                 let msg = "Generic error occurred, please try again.";
                 if (respJson.errorCode === "error_input") {
@@ -76,7 +80,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                 } else if (respJson.errorCode === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
-                console.log(msg);
+                toast.error(msg);
             }
         }).catch(error => { console.log(error); });
     };
@@ -102,8 +106,12 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
             if (respJson.success as boolean) {
                 setShowDelete(false);
                 props.refreshAll();
+                toast.success("Flag deleted.");
             }
-        }).catch(error => { console.log(error); });
+        }).catch(error => {
+            console.log(error);
+            toast.error("Error deleting flag.");
+        });
     };
 
     const deleteFlagProps: ConfirmationDialogProps = {
@@ -145,7 +153,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     return (
         <>
             <Transition.Root show={props.open} as={Fragment}>
-                <Dialog as="div" className="relative z-50" onClose={props.setOpen}  initialFocus={nameRef}>
+                <Dialog as="div" className="relative z-50" onClose={props.setOpen} initialFocus={nameRef}>
                     <div className="fixed inset-0" />
 
                     <div className="fixed inset-0 overflow-hidden">
@@ -263,8 +271,8 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
                                                         <div className="pb-6 pt-4">
 
                                                             <div className="mt-4 flex text-base">
-                                                                <a href="https://docs.switchfeat.com/concepts/flags" target="_blank" rel="noreferrer" 
-                                                                className="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                                                <a href="https://docs.switchfeat.com/concepts/flags" target="_blank" rel="noreferrer"
+                                                                    className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                                                         aria-hidden="true"
