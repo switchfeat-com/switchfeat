@@ -1,14 +1,17 @@
 import React from 'react';
-import { Toaster } from 'react-hot-toast';
+import { Transition } from "@headlessui/react";
+import { Toaster, ToastIcon, resolveValue } from "react-hot-toast";
+
 
 type ToastType = 'success' | 'error' | 'loading' | 'blank' | 'custom';
 type ValueFunction<TValue, TArg> = (arg: TArg) => TValue;
 type ValueOrFunction<TValue, TArg> = TValue | ValueFunction<TValue, TArg>;
 type Renderable = JSX.Element | string | null;
-interface Toast {
+export interface Toast {
 	type: ToastType;
 	id: string;
 	message: ValueOrFunction<Renderable, Toast>;
+	subMessage: string;
 	icon?: Renderable;
 	duration?: number;
 	pauseDuration: number;
@@ -59,18 +62,16 @@ interface NotificationProviderProps {
 	toastOptions?: DefaultToastOptions;
 	reverseOrder?: boolean;
 	gutter?: number;
-	containerStyle?: React.CSSProperties;
 	containerClassName?: string;
 	children?: React.ReactNode;
 }
 
-const NotificationProvider = ({
+export const NotificationProvider = ({
 	children,
-	position,
+	position = 'top-center',
 	toastOptions,
 	reverseOrder,
 	gutter,
-	containerStyle,
 	containerClassName,
 }: NotificationProviderProps) => {
 	return (
@@ -80,12 +81,32 @@ const NotificationProvider = ({
 				toastOptions={toastOptions}
 				reverseOrder={reverseOrder}
 				gutter={gutter}
-				containerStyle={containerStyle}
 				containerClassName={containerClassName}
-			/>
+			>
+				{(t) => (
+					<Transition
+						appear
+						show={t.visible}
+						className="transform p-0 bg-white rounded shadow-lg"
+						enter="transition-all duration-200"
+						enterFrom="opacity-0 scale-20"
+						enterTo="opacity-100 scale-100"
+						leave="transition-all duration-200"
+						leaveFrom="opacity-100 scale-100"
+						leaveTo="opacity-0 scale-75"
+					>
+						<div className='flex border-b p-4'>
+							<ToastIcon toast={t} />
+							<p className="px-2">{resolveValue(t.message, t)}</p>
+						</div>
+						<div className='p-4'>
+							<p >{(t as Toast).subMessage}</p>
+						</div>
+
+					</Transition>
+				)}
+			</Toaster>
 			{children}
 		</>
 	);
 };
-
-export default NotificationProvider;

@@ -6,6 +6,8 @@ import * as dateHelper from "../../helpers/dateHelper";
 import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
+import { toast } from 'react-hot-toast';
+import { Toast } from "../shared/NotificationProvider";
 
 export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void }> = (props) => {
     const [enabled, setEnabled] = useState(false);
@@ -50,6 +52,7 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                 setEnabled(pendingSwitchEnabled);
                 props.flag.status = pendingSwitchEnabled;
                 setShowConfirmation(false);
+                toast.success(`Flag status updated!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
             } else {
                 let msg = "Generic error occurred, please try again.";
                 if (respJson.errorCode === "error_input") {

@@ -6,6 +6,8 @@ import * as keys from "../../config/keys";
 import { ConditionsBoard } from "./ConditionsBoard";
 import { ConditionsItem } from "./ConditionsItem";
 import { ConfirmationDialog, ConfirmationDialogProps } from "../shared/ConfirmationDialog";
+import { toast } from 'react-hot-toast';
+import { Toast } from "../shared/NotificationProvider";
 
 
 export type CreateOrUpdateSegmentDialogProps = {
@@ -96,6 +98,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
             if (respJson.success as boolean) {
                 props.refreshAll();
                 props.setOpen(false);
+                toast.success(`Segment operation successful!`, { subMessage: `Segment:  ${props.segment?.name}`} as Toast);
             } else {
                 let msg = "Generic error occurred, please try again.";
                 if (respJson.errorCode === "error_input") {
@@ -103,7 +106,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                 } else if (respJson.errorCode === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
-                console.log(msg);
+                toast.error(msg);
             }
         }).catch(error => { console.log(error); });
     };
@@ -160,9 +163,10 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
         }).then(respJson => {
             if (respJson.success as boolean) {
                 setShowDelete(false);
-                props.refreshAll();
+                props.refreshAll(); 
+                toast.success("Segment deleted.");
             }
-        }).catch(error => { console.log(error); });
+        }).catch(error => { console.log(error); toast.error("Error deleting segment");});
     };
 
     const deleteSegmentProps: ConfirmationDialogProps = {
