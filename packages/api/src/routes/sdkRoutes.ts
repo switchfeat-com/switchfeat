@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import multer from 'multer';
 import * as flagsService from "../services/flagsService";
+import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
 import { SdkResponseCodes, dbManager } from "@switchfeat/core";
 import * as sdkService from "../services/sdkService";
@@ -9,16 +10,15 @@ import * as sdkService from "../services/sdkService";
 export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
     flagsService.setDataStoreManager(storeManager);
+    segmentsService.setDataStoreManager(storeManager);
     const upload = multer();
     const sdkRoutes = Router();
 
     sdkRoutes.get("/api/sdk/flags", auth.isAuthenticated, async (req: Request, res: Response) => {
         try {
             const flags = await flagsService.getFlags("");
-
             res.json({
-                user: req.user,
-                flags: flags
+                name: "fgs",
             });
         } catch (error) {
             console.log(error);
@@ -30,7 +30,6 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
 
     sdkRoutes.post("/api/sdk/flag", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
         try {
-
             const flagKey = req.body.flagKey;
             const flagContext = req.body.flagContext;
             const correlationId = req.body.correlationId;
@@ -61,6 +60,19 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-
+    sdkRoutes.get("/api/sdk/segments", auth.isAuthenticated, async (req: Request, res: Response) => {
+        try { 
+            const segments = await segmentsService.getSegments("");
+            res.json({
+                user: req.user,
+                segments: segments
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                error: SdkResponseCodes.GenericError
+            });
+        }
+    });
     return sdkRoutes;
 };
