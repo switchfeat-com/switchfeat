@@ -18,7 +18,8 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         try {
             const flags = await flagsService.getFlags("");
             res.json({
-                name: "fgs",
+                user: req.user,
+                flags: flags
             });
         } catch (error) {
             console.log(error);
