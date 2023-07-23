@@ -61,6 +61,22 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
+    sdkRoutes.get("/api/sdk/rulesbyflag", auth.isAuthenticated, async (req: Request, res: Response) => {
+        try { 
+            const flagKey = req.query.flagKey as string;
+            const flag = await flagsService.getRulesByFlag(flagKey);
+            res.json({
+                user: req.user,
+                rulesByFlag: flag
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                error: SdkResponseCodes.GenericError
+            });
+        }
+    });
+
     sdkRoutes.get("/api/sdk/segments", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
             const segments = await segmentsService.getSegments("");
