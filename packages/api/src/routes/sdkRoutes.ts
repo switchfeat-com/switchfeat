@@ -75,5 +75,21 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
             });
         }
     });
+
+    sdkRoutes.get("/api/sdk/conditionsbysegment", auth.isAuthenticated, async (req: Request, res: Response) => {
+        try { 
+            const segmentKey = req.query.segmentKey as string;
+            const segment = await segmentsService.getConditionsBySegment(segmentKey);
+            res.json({
+                user: req.user,
+                conditionsBySegment: segment
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                error: SdkResponseCodes.GenericError
+            });
+        }
+    });
     return sdkRoutes;
 };
