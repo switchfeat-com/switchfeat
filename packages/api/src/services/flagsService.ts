@@ -1,4 +1,5 @@
 import { FlagModel, dbManager } from "@switchfeat/core";
+import { RuleModel } from "@switchfeat/core/dist/models/ruleModel";
 
 let dataStoreManager: dbManager.DataStoreManager;
 
@@ -25,6 +26,21 @@ export const getFlag = async (search: { name?: string, id?: string, key?: string
     }
 
     return null;
+};
+
+export const getRulesByFlag = async (flagKey: string): Promise<RuleModel[]> => {
+    if (!flagKey) {
+        return [];
+    }
+    try {
+        const flag = await dataStoreManager.getFlagByKey(flagKey);
+        if (flag && flag.rules) {
+            return flag.rules;
+        }
+        return [];
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const addFlag = async (flag: FlagModel): Promise<boolean> => {
