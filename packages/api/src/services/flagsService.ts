@@ -39,6 +39,7 @@ export const getRulesByFlag = async (flagKey: string): Promise<RuleModel[]> => {
         }
         return [];
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };

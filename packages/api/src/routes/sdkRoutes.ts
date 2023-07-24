@@ -61,13 +61,13 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-    sdkRoutes.get("/api/sdk/rulesbyflag", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/flags/:flagKey/rules", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
-            const flagKey = req.query.flagKey as string;
-            const flag = await flagsService.getRulesByFlag(flagKey);
+            const flagKey = req.params.flagKey as string;
+            const rules = await flagsService.getRulesByFlag(flagKey);
             res.json({
                 user: req.user,
-                rulesByFlag: flag
+                rules: rules
             });
         } catch (error) {
             console.log(error);
@@ -75,7 +75,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
                 error: SdkResponseCodes.GenericError
             });
         }
-    });
+    });    
 
     sdkRoutes.get("/api/sdk/segments", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
@@ -92,13 +92,13 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-    sdkRoutes.get("/api/sdk/conditionsbysegment", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/segments/:segmentKey/conditions", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
-            const segmentKey = req.query.segmentKey as string;
-            const segment = await segmentsService.getConditionsBySegment(segmentKey);
+            const segmentKey = req.params.segmentKey as string;
+            const conditions = await segmentsService.getConditionsBySegment(segmentKey);
             res.json({
                 user: req.user,
-                conditionsBySegment: segment
+                conditions: conditions
             });
         } catch (error) {
             console.log(error);
@@ -106,6 +106,6 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
                 error: SdkResponseCodes.GenericError
             });
         }
-    });
+    });    
     return sdkRoutes;
 };
