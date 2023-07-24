@@ -13,11 +13,8 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
     const upload = multer();
     const flagRoutes = Router();
     flagRoutes.get("/api/segments/", auth.isAuthenticated, async (req: Request, res: Response) => {
-
         try { 
-
             const segments = await segmentsService.getSegments("");
-
             res.json({
                 success: true,
                 user: req.user,

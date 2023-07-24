@@ -1,4 +1,4 @@
-import { SegmentModel, dbManager } from "@switchfeat/core";
+import { SegmentModel, dbManager, ConditionModel } from "@switchfeat/core";
 
 let dataStoreManager: dbManager.DataStoreManager;
 
@@ -6,13 +6,11 @@ export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>
     manager.then(data => dataStoreManager = data);
 };
 
-
 export const getSegments = async (segmentId: string): Promise<SegmentModel[]> => {
     return await dataStoreManager.getSegments(segmentId);
 };
 
 export const getSegment = async (search: { id?: string, key?: string }): Promise<SegmentModel | null> => { 
-
     if (search.id) {
         return await dataStoreManager.getSegmentById(search.id);
     }
@@ -22,6 +20,22 @@ export const getSegment = async (search: { id?: string, key?: string }): Promise
     }
 
     return null;
+};
+
+export const getConditionsBySegment = async (segmentKey: string): Promise<ConditionModel[]> => {
+    if (!segmentKey) {
+        return [];
+    }
+    try {
+        const segment = await dataStoreManager.getSegmentByKey(segmentKey);
+        if (segment && segment.conditions) {
+            return segment.conditions;
+        }
+        return [];
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 };
 
 export const addSegment = async (segment: SegmentModel): Promise<boolean> => {
