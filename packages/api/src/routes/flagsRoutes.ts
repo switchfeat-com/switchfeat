@@ -50,7 +50,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
             return;
         }
 
-        const flagKey = entityHelper.generateKey(flagName);
+        const flagKey = entityHelper.generateSlug(flagName);
         const alreadyInDb = await flagsService.getFlag({ key: flagKey });
 
         if (!alreadyInDb) {

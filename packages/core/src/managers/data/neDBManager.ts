@@ -39,10 +39,10 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
         getSegmentByKey: segmentsManager.getSegmentByKey,
         updateSegment: segmentsManager.updateSegment, 
          
-        getsdkAuths: sdkAuthsManager.getsdkAuths,
-        getApiAuthByKey: sdkAuthsManager.getApiAuthByKey,
-        addApiAuth: sdkAuthsManager.addApiAuth,
-        deleteApiAuth: sdkAuthsManager.deleteApiAuth,
+        getSdkAuths: sdkAuthsManager.getSdkAuths,
+        getSdkAuthByKey: sdkAuthsManager.getSdkAuthByKey,
+        addSdkAuth: sdkAuthsManager.addSdkAuth,
+        deleteSdkAuth: sdkAuthsManager.deleteSdkAuth,
 
         getUser: () => { throw new Error(); },
         getUserByEmail: () => { throw new Error(); },

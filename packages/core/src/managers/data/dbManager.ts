@@ -59,10 +59,10 @@ export type DataStoreManager = {
     deleteUser: (user: UserModel) => Promise<boolean>;
 
      // api auth functions
-     getsdkAuths: (userKey?: string) => Promise<SdkAuthModel[]>;
-     getApiAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
-     addApiAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
-     deleteApiAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
+     getSdkAuths: (userKey?: string) => Promise<SdkAuthModel[]>;
+     getSdkAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
+     addSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
+     deleteSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
 };
 
 type DbManager = MongoManager | NeDbManager;

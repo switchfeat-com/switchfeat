@@ -4,7 +4,6 @@ import multer from 'multer';
 import * as sdkAuthService from "../services/sdkAuthService";
 import * as auth from "../managers/auth/passportAuth";
 import { dateHelper, dbManager, entityHelper } from "@switchfeat/core";
-import { nanoid } from "nanoid/async";
 
 export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>) : Router  => {
 
@@ -12,11 +11,11 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
     const upload = multer();
     const apiAuthRoutes = Router();
-    apiAuthRoutes.get("/api/sdkauth/", auth.isAuthenticated, async (req: Request, res: Response) => {
+    apiAuthRoutes.get("/api/sdk/auth/", auth.isAuthenticated, async (req: Request, res: Response) => {
 
         try {
 
-            const sdkAuths = await sdkAuthService.getsdkAuths("");
+            const sdkAuths = await sdkAuthService.getSdkAuths("");
 
             res.json({
                 success: true,
@@ -28,14 +27,14 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
             console.log(error);
             res.status(500).json({
                 success: false,
-                errorCode: "error_apiauth_nolist"
+                errorCode: "error_sdk_auth_nolist"
             });
         }
     });
 
-    apiAuthRoutes.post("/api/sdkauth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+    apiAuthRoutes.post("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        console.log("received authkeys add: " + JSON.stringify(req.body));
+        console.log("received sdkAuth add: " + JSON.stringify(req.body));
 
         const keyName = req.body.keyName;
         const keyDescription = req.body.keyDescription;
@@ -51,12 +50,12 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
         const apiAuthKey = entityHelper.generateGuid("apikey");
         
-        const alreadyInDb = await sdkAuthService.getApiAuth({ key: apiAuthKey });
+        const alreadyInDb = await sdkAuthService.getSdkAuth({ key: apiAuthKey });
 
         if (!alreadyInDb) {
-            const apiKey = await nanoid();
+            const apiKey = await entityHelper.generateGuid("sk");
             
-            await sdkAuthService.addApiAuth({
+            await sdkAuthService.addSdkAuth({
                 name: keyName,
                 description: keyDescription,
                 createdOn: dateHelper.utcNow().toJSDate(),
@@ -74,17 +73,17 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         } else {
             res.json({
                 success: false,
-                errorCode: "error_apiauth_alreadysaved"
+                errorCode: "error_sdk_auth_alreadysaved"
             });
         }
     }); 
    
 
-    apiAuthRoutes.delete("/api/sdkauth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+    apiAuthRoutes.delete("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
-        console.log("received apiAuth delete: " + JSON.stringify(req.body));
+        console.log("received sdkAuth delete: " + JSON.stringify(req.body));
 
-        const apiAuthKey = req.body.apiAuthKey;
+        const apiAuthKey = req.body.sdkAuthKey;
 
         if (!apiAuthKey) {
             res.status(401).json({
@@ -94,10 +93,10 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
             return;
         }
 
-        const alreadyInDb = await sdkAuthService.getApiAuth({ key: apiAuthKey });
+        const alreadyInDb = await sdkAuthService.getSdkAuth({ key: apiAuthKey });
 
         if (alreadyInDb) {
-            await sdkAuthService.deleteApiAuth(alreadyInDb);
+            await sdkAuthService.deleteSdkAuth(alreadyInDb);
 
             res.json({
                 success: true,
@@ -106,7 +105,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         } else {
             res.json({
                 success: false,
-                errorCode: "error_apiauth_notfound"
+                errorCode: "error_sdk_auth_notfound"
             });
         }
     });

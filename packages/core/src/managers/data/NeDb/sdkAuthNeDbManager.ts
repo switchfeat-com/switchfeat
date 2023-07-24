@@ -7,13 +7,13 @@ export const setNeDbManager = (neDbGlobalManager: NeDbManager) => {
     neDbManager = neDbGlobalManager;
 };
 
-export const getsdkAuths = async (userKey?: string): Promise<SdkAuthModel[]> => neDbManager.sdkAuths!.asyncFind({});
+export const getSdkAuths = async (userKey?: string): Promise<SdkAuthModel[]> => neDbManager.sdkAuths!.asyncFind({});
 
-export const getApiAuthByKey = async (authKey: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
-    authKey,
+export const getSdkAuthByKey = async (authKey: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
+    key: authKey,
 });
 
-export const addApiAuth = async (auth: SdkAuthModel): Promise<boolean> => {
+export const addSdkAuth = async (auth: SdkAuthModel): Promise<boolean> => {
     try {
         const response = await neDbManager.sdkAuths!.asyncInsert(auth);
         return (!!response);
@@ -23,7 +23,7 @@ export const addApiAuth = async (auth: SdkAuthModel): Promise<boolean> => {
     }
 };
 
-export const deleteApiAuth = async (auth: SdkAuthModel): Promise<boolean> => {
+export const deleteSdkAuth = async (auth: SdkAuthModel): Promise<boolean> => {
     try {
         const response = await neDbManager.sdkAuths!.asyncRemove({ _id: auth._id });
         return (!!response);
