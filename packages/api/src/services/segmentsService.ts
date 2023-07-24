@@ -33,6 +33,7 @@ export const getConditionsBySegment = async (segmentKey: string): Promise<Condit
         }
         return [];
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };
