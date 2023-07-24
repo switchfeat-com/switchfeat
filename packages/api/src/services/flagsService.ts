@@ -1,5 +1,4 @@
-import { FlagModel, dbManager } from "@switchfeat/core";
-import { RuleModel } from "@switchfeat/core/dist/models/ruleModel";
+import { FlagModel, dbManager, RuleModel } from "@switchfeat/core";
 
 let dataStoreManager: dbManager.DataStoreManager;
 

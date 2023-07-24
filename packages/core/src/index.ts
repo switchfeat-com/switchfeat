@@ -1,5 +1,5 @@
-
 export { FlagModel } from "./models/flagModel";
+export { RuleModel } from "./models/ruleModel";
 export { ConditionModel, StringOperator, BooleanOperator, NumericOperator, DayTimeOperator } from "./models/conditionModel";
 export { SegmentModel, SegmentMatching } from "./models/segmentModel";
 export { UserModel } from "./models/userModel";
