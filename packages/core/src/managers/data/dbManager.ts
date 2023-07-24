@@ -5,6 +5,7 @@ import AsyncNedb from "nedb-async";
 import { createMongoDataStore } from "./mongoManager";
 import { createNeDbDataStore } from "./neDBManager";
 import { SegmentModel } from "../../models/segmentModel";
+import { SdkAuthModel } from "../../models/sdkAuthModel";
 
 export enum SupportedDb {
     Mongo = "mongo",
@@ -21,12 +22,14 @@ export type MongoManager = {
     flags: Collection<FlagModel> | null,
     users: Collection<UserModel> | null,
     segments: Collection<SegmentModel> | null,
+    sdkAuths: Collection<SdkAuthModel> | null,
 };
 
 export type NeDbManager = {
     flags: AsyncNedb<FlagModel> | null,
     users: AsyncNedb<UserModel> | null,
-    segments: AsyncNedb<SegmentModel> | null,
+    segments: AsyncNedb<SegmentModel> | null
+    sdkAuths: AsyncNedb<SdkAuthModel> | null,
 };
 
 export type DataStoreManager = {
@@ -54,6 +57,12 @@ export type DataStoreManager = {
     addUser: (user: UserModel) => Promise<boolean>;
     updateUser: (user: UserModel) => Promise<boolean>;
     deleteUser: (user: UserModel) => Promise<boolean>;
+
+     // api auth functions
+     getsdkAuths: (userKey?: string) => Promise<SdkAuthModel[]>;
+     getApiAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
+     addApiAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
+     deleteApiAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
 };
 
 type DbManager = MongoManager | NeDbManager;

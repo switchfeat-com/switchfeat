@@ -3,6 +3,7 @@ export { RuleModel } from "./models/ruleModel";
 export { ConditionModel, StringOperator, BooleanOperator, NumericOperator, DayTimeOperator } from "./models/conditionModel";
 export { SegmentModel, SegmentMatching } from "./models/segmentModel";
 export { UserModel } from "./models/userModel";
+export { SdkAuthModel } from "./models/sdkAuthModel";
 export { SdkResponseCodes, ResponseCode } from "./models/responseCodes";
 export * as dbManager from "./managers/data/dbManager";
 export * from "./config/keys";

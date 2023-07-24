@@ -32,6 +32,10 @@ export const createMongoDataStore = async (): Promise<DataStoreManager> => {
         getSegmentById: () => { throw new Error(); },
         getSegmentByKey: () => { throw new Error(); },
         updateSegment: () => { throw new Error(); },
+        getsdkAuths: () => { throw new Error(); },
+        getApiAuthByKey:  () => { throw new Error(); },
+        addApiAuth:  () => { throw new Error(); },
+        deleteApiAuth: () => { throw new Error(); },
     };
 
     return dataStoreInstance;
@@ -50,6 +54,7 @@ const connectDb = async (): Promise<MongoManager> => {
         mongoDbManager.users = db.collection("users");
         mongoDbManager.flags = db.collection("flags");
         mongoDbManager.segments = db.collection("segments");
+        mongoDbManager.sdkAuths = db.collection("sdkAuths");
 
         return mongoDbManager;
 
