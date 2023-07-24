@@ -4,7 +4,7 @@ import multer from 'multer';
 
 import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
-import { dateHelper, dbManager, entityHelper, SegmentMatching } from "@switchfeat/core";
+import { dateHelper, dbManager, entityHelper, SdkResponseCodes, SegmentMatching } from "@switchfeat/core";
 
 export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
@@ -42,7 +42,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         if (!segmentName) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -78,7 +78,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         if (!segmentKey) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -117,7 +117,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         if (!segmentKey) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }

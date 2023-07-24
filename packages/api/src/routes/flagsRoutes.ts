@@ -4,7 +4,7 @@ import multer from 'multer';
 
 import * as flagsService from "../services/flagsService";
 import * as auth from "../managers/auth/passportAuth";
-import { dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { SdkResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
 
 export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>) : Router  => {
 
@@ -45,7 +45,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         if (!flagName) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -89,7 +89,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         if (!flagKey) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -125,7 +125,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         if (!flagKey) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }

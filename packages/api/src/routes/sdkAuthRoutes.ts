@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import multer from 'multer';
 import * as sdkAuthService from "../services/sdkAuthService";
 import * as auth from "../managers/auth/passportAuth";
-import { dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { SdkResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
 
 export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>) : Router  => {
 
@@ -27,7 +27,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
             console.log(error);
             res.status(500).json({
                 success: false,
-                errorCode: "error_sdk_auth_nolist"
+                errorCode: SdkResponseCodes.GenericError
             });
         }
     });
@@ -43,7 +43,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         if (!keyName || !keyDescription) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                errorCode: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -88,7 +88,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         if (!apiAuthKey) {
             res.status(401).json({
                 success: false,
-                errorCode: "error_input"
+                error: SdkResponseCodes.InputMissing
             });
             return;
         }
@@ -105,7 +105,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         } else {
             res.json({
                 success: false,
-                errorCode: "error_sdk_auth_notfound"
+                errorCode: SdkResponseCodes.ApiKeyNotFound
             });
         }
     });
