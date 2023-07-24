@@ -41,6 +41,7 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
          
         getSdkAuths: sdkAuthsManager.getSdkAuths,
         getSdkAuthByKey: sdkAuthsManager.getSdkAuthByKey,
+        getSdkAuthByApiKey: sdkAuthsManager.getSdkAuthByApiKey,
         addSdkAuth: sdkAuthsManager.addSdkAuth,
         deleteSdkAuth: sdkAuthsManager.deleteSdkAuth,
 

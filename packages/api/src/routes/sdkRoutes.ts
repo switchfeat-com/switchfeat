@@ -14,7 +14,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
     const upload = multer();
     const sdkRoutes = Router();
 
-    sdkRoutes.get("/api/sdk/flags", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/flags", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
             const flags = await flagsService.getFlags("");
             res.json({
@@ -29,7 +29,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-    sdkRoutes.post("/api/sdk/flag", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.post("/api/sdk/flag", upload.any(), auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
             const flagKey = req.body.flagKey;
             const flagContext = req.body.flagContext;
@@ -61,7 +61,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-    sdkRoutes.get("/api/sdk/flags/:flagKey/rules", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/flags/:flagKey/rules", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try { 
             const flagKey = req.params.flagKey as string;
             const rules = await flagsService.getRulesByFlag(flagKey);
@@ -77,7 +77,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });    
 
-    sdkRoutes.get("/api/sdk/segments", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/segments", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try { 
             const segments = await segmentsService.getSegments("");
             res.json({
@@ -92,7 +92,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         }
     });
 
-    sdkRoutes.get("/api/sdk/segments/:segmentKey/conditions", auth.isAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/segments/:segmentKey/conditions", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try { 
             const segmentKey = req.params.segmentKey as string;
             const conditions = await segmentsService.getConditionsBySegment(segmentKey);

@@ -34,6 +34,7 @@ export const createMongoDataStore = async (): Promise<DataStoreManager> => {
         updateSegment: () => { throw new Error(); },
         getSdkAuths: () => { throw new Error(); },
         getSdkAuthByKey:  () => { throw new Error(); },
+        getSdkAuthByApiKey:  () => { throw new Error(); },
         addSdkAuth:  () => { throw new Error(); },
         deleteSdkAuth: () => { throw new Error(); },
     };

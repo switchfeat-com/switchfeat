@@ -9,8 +9,12 @@ export const setNeDbManager = (neDbGlobalManager: NeDbManager) => {
 
 export const getSdkAuths = async (userKey?: string): Promise<SdkAuthModel[]> => neDbManager.sdkAuths!.asyncFind({});
 
-export const getSdkAuthByKey = async (authKey: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
-    key: authKey,
+export const getSdkAuthByKey = async (key: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
+    key,
+});
+
+export const getSdkAuthByApiKey = async (apiKey: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
+    apiKey,
 });
 
 export const addSdkAuth = async (auth: SdkAuthModel): Promise<boolean> => {

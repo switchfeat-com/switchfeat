@@ -61,6 +61,7 @@ export type DataStoreManager = {
      // api auth functions
      getSdkAuths: (userKey?: string) => Promise<SdkAuthModel[]>;
      getSdkAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
+     getSdkAuthByApiKey: (authKey: string) => Promise<SdkAuthModel>;
      addSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
      deleteSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
 };

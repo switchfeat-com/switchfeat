@@ -10,10 +10,14 @@ export const getSdkAuths = async (userKey: string): Promise<SdkAuthModel[]> => {
     return await dataStoreManager.getSdkAuths(userKey);
 };
 
-export const getSdkAuth = async (search: { key?: string }): Promise<SdkAuthModel | null> => {
+export const getSdkAuth = async (search: { key?: string, apiKey?: string }): Promise<SdkAuthModel | null> => {
 
     if (search.key) {
         return await dataStoreManager.getSdkAuthByKey(search.key);
+    }
+
+    if (search.apiKey) {
+        return await dataStoreManager.getSdkAuthByApiKey(search.apiKey);
     }
 
     return null;
