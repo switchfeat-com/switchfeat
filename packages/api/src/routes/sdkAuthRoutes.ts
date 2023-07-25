@@ -16,12 +16,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
         try {
             const sdkAuths = await sdkAuthService.getSdkAuths("");
-            res.json({
-                success: true,
-                user: req.user,
-                cookies: req.cookies,
-                sdkAuths: sdkAuths
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, sdkAuths, req);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);
         }
