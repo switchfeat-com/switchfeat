@@ -4,7 +4,8 @@ import multer from 'multer';
 
 import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
-import { dateHelper, dbManager, entityHelper, SdkResponseCodes, SegmentMatching } from "@switchfeat/core";
+import { dateHelper, dbManager, entityHelper, ApiResponseCodes, SegmentMatching } from "@switchfeat/core";
+import { setErrorResponse, setSuccessResponse } from "../helpers/responseHelper";
 
 export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
@@ -15,18 +16,9 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
     flagRoutes.get("/api/segments/", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
             const segments = await segmentsService.getSegments("");
-            res.json({
-                success: true,
-                user: req.user,
-                cookies: req.cookies,
-                segments: segments
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, segments, req);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                success: false,
-                message: "unable to retrieve conditions"
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -40,10 +32,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         const conditions = req.body.segmentConditions;
 
         if (!segmentName) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -59,10 +48,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
             conditions: JSON.parse(conditions)
         });
 
-        res.json({
-            success: true,
-            errorCode: ""
-        });
+        setSuccessResponse(res, ApiResponseCodes.Success, null, req);
     });
 
     flagRoutes.put("/api/segments/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
@@ -76,10 +62,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
          const conditions = req.body.segmentConditions;
 
         if (!segmentKey) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -96,15 +79,9 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
 
             await segmentsService.updateSegment(alreadyInDb);
 
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: "error_segment_notfound"
-            });
+            setErrorResponse(res, ApiResponseCodes.SegmentNotFound);
         }
     });
 
@@ -115,10 +92,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         const segmentKey = req.body.segmentKey;
 
         if (!segmentKey) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -127,15 +101,9 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
         if (alreadyInDb) {
             await segmentsService.deleteSegment(alreadyInDb);
 
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: "error_segment_notfound"
-            });
+            setErrorResponse(res, ApiResponseCodes.SegmentNotFound);
         }
     });
 

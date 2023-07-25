@@ -3,7 +3,7 @@ import { Request, Response, NextFunction, Express } from "express";
 import * as userService from "../../services/usersService";
 import * as sdkAuthService from "../../services/sdkAuthService";
 import { googleStrategy } from "./googleAuth";
-import { SdkResponseCodes, keys } from "@switchfeat/core";
+import { ApiResponseCodes, keys } from "@switchfeat/core";
 
 
 export const initialise = (app: Express) => {
@@ -45,7 +45,7 @@ export const isSdkAuthenticated = async (req: Request, res: Response, next: Next
 	const apiKey = req.headers["sf-api-key"] as string;
 	if (!apiKey) {
 		res.status(401).json({
-			error: SdkResponseCodes.ApiKeyNotFound,
+			error: ApiResponseCodes.ApiKeyNotFound,
 		});
 
 		return;
@@ -59,7 +59,7 @@ export const isSdkAuthenticated = async (req: Request, res: Response, next: Next
 	}
 
 	res.status(401).json({
-		error: SdkResponseCodes.ApiKeyNotValid
+		error: ApiResponseCodes.ApiKeyNotValid
 	});
 	
 	return;

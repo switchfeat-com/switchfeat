@@ -3,7 +3,8 @@ import { Request, Response } from "express";
 import multer from 'multer';
 import * as sdkAuthService from "../services/sdkAuthService";
 import * as auth from "../managers/auth/passportAuth";
-import { SdkResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { ApiResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { setErrorResponse, setSuccessResponse } from "../helpers/responseHelper";
 
 export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>) : Router  => {
 
@@ -22,11 +23,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
                 sdkAuths: sdkAuths
             });
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                success: false,
-                errorCode: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -38,10 +35,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         const keyExpiresOn = req.body.keyExpiresOn;
 
         if (!keyName || !keyDescription) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -62,16 +56,9 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
                 apiKey: apiKey
             });
 
-            res.json({
-                success: true,
-                errorCode: "",
-                apiKey: apiKey
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, {apikey: apiKey}, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: SdkResponseCodes.SdkAuthKeyNotFound
-            });
+            setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
         }
     }); 
    
@@ -83,10 +70,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         const apiAuthKey = req.body.sdkAuthKey;
 
         if (!apiAuthKey) {
-            res.status(401).json({
-                success: false,
-                error: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -94,16 +78,9 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
         if (alreadyInDb) {
             await sdkAuthService.deleteSdkAuth(alreadyInDb);
-
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: SdkResponseCodes.SdkAuthKeyNotFound
-            });
+            setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
         }
     });
 

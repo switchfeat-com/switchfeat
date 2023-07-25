@@ -4,8 +4,9 @@ import multer from 'multer';
 import * as flagsService from "../services/flagsService";
 import * as segmentsService from "../services/segmentsService";
 import * as auth from "../managers/auth/passportAuth";
-import { SdkResponseCodes, dbManager } from "@switchfeat/core";
+import { ApiResponseCodes, dbManager } from "@switchfeat/core";
 import * as sdkService from "../services/sdkService";
+import { setErrorResponse, setSuccessResponse } from "../helpers/responseHelper";
 
 export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>): Router => {
 
@@ -17,47 +18,46 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
     sdkRoutes.get("/api/sdk/flags", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
             const flags = await flagsService.getFlags("");
-            res.json({
-                user: req.user,
-                flags: flags
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, flags);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                error: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
-    sdkRoutes.post("/api/sdk/flag", upload.any(), auth.isSdkAuthenticated, async (req: Request, res: Response) => {
+    sdkRoutes.get("/api/sdk/flags/:flagKey", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
-            const flagKey = req.body.flagKey;
+            const flagKey = req.params.flagKey;
+            const flag = await flagsService.getFlag({key: flagKey});
+
+            if (!flag) {
+                setErrorResponse(res, ApiResponseCodes.FlagNotFound);
+                return;
+            }
+            
+            setSuccessResponse(res, ApiResponseCodes.Success, flag);
+        } catch (error) {
+            setErrorResponse(res, ApiResponseCodes.GenericError);
+        }
+    });
+
+    sdkRoutes.post("/api/sdk/flags/:flagKey/evaluate", upload.any(), auth.isSdkAuthenticated, async (req: Request, res: Response) => {
+        try {
+            const flagKey = req.params.flagKey;
             const flagContext = req.body.flagContext;
             const correlationId = req.body.correlationId;
 
             const flag = await flagsService.getFlag({key: flagKey});
 
             if (!flag) {
-                res.json({
-                    user: req.user,
-                    error: SdkResponseCodes.FlagNotFound
-                });
-
+                setErrorResponse(res, ApiResponseCodes.FlagNotFound);
                 return;
             }
             
            const resp = await sdkService.evaluateFlag(flag, flagContext, correlationId); 
-
-            res.json({
-                user: req.user,
-                data: resp
-            });
+           setSuccessResponse(res, ApiResponseCodes.Success, resp);
 
         } catch (error) {
-            res.json({
-                user: req.user,
-                error: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -65,30 +65,18 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         try { 
             const flagKey = req.params.flagKey as string;
             const rules = await flagsService.getRulesByFlag(flagKey);
-            res.json({
-                user: req.user,
-                rules: rules
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, rules, req);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                error: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });    
 
     sdkRoutes.get("/api/sdk/segments", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try { 
             const segments = await segmentsService.getSegments("");
-            res.json({
-                user: req.user,
-                segments: segments
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, segments);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                error: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -96,15 +84,9 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
         try { 
             const segmentKey = req.params.segmentKey as string;
             const conditions = await segmentsService.getConditionsBySegment(segmentKey);
-            res.json({
-                user: req.user,
-                conditions: conditions
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, conditions);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                error: SdkResponseCodes.GenericError
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });    
     return sdkRoutes;

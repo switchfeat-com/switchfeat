@@ -4,7 +4,8 @@ import multer from 'multer';
 
 import * as flagsService from "../services/flagsService";
 import * as auth from "../managers/auth/passportAuth";
-import { SdkResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { ApiResponseCodes, dateHelper, dbManager, entityHelper } from "@switchfeat/core";
+import { setErrorResponse, setSuccessResponse } from "../helpers/responseHelper";
 
 export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManager>) : Router  => {
 
@@ -17,19 +18,9 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         try {
 
             const flags = await flagsService.getFlags("");
-
-            res.json({
-                success: true,
-                user: req.user,
-                cookies: req.cookies,
-                flags: flags
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, flags, req);
         } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                success: false,
-                message: "unable to retrieve flags"
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -43,10 +34,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         const flagRules = req.body.flagRules;
 
         if (!flagName) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -64,15 +52,9 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
                 rules: JSON.parse(flagRules)
             });
 
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: "error_flag_alreadysaved"
-            });
+            setErrorResponse(res, ApiResponseCodes.GenericError);
         }
     });
 
@@ -87,10 +69,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         const flagRules = req.body.flagRules;
 
         if (!flagKey) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -104,15 +83,9 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
             alreadyInDb.rules = flagRules ? JSON.parse(flagRules) : alreadyInDb.rules;
             await flagsService.updateFlag(alreadyInDb);
 
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: "error_flag_notfound"
-            });
+            setErrorResponse(res, ApiResponseCodes.FlagNotFound);
         }
     });
 
@@ -123,10 +96,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
         const flagKey = req.body.flagKey;
 
         if (!flagKey) {
-            res.status(401).json({
-                success: false,
-                errorCode: SdkResponseCodes.InputMissing
-            });
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
 
@@ -134,16 +104,9 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
 
         if (alreadyInDb) {
             await flagsService.deleteFlag(alreadyInDb);
-
-            res.json({
-                success: true,
-                errorCode: ""
-            });
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
         } else {
-            res.json({
-                success: false,
-                errorCode: "error_flag_notfound"
-            });
+            setErrorResponse(res, ApiResponseCodes.FlagNotFound);
         }
     });
 

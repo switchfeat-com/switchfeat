@@ -4,7 +4,8 @@ export { ConditionModel, StringOperator, BooleanOperator, NumericOperator, DayTi
 export { SegmentModel, SegmentMatching } from "./models/segmentModel";
 export { UserModel } from "./models/userModel";
 export { SdkAuthModel } from "./models/sdkAuthModel";
-export { SdkResponseCodes, ResponseCode } from "./models/responseCodes";
+export { ResponseModel } from "./models/responseModel";
+export { ApiResponseCodes, ApiResponseCode } from "./models/apiResponseCodes";
 export * as dbManager from "./managers/data/dbManager";
 export * from "./config/keys";
 export * as dateHelper from "./helpers/dateHelper";

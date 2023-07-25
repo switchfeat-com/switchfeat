@@ -1,7 +1,8 @@
 import { NextFunction, Router } from "express";
 import passport  from "passport";
-import { keys } from "@switchfeat/core";
+import { ApiResponseCodes, keys } from "@switchfeat/core";
 import { Request, Response } from "express";
+import { setErrorResponse } from "../helpers/responseHelper";
 
 export const authRoutes = Router();
 
@@ -34,10 +35,7 @@ authRoutes.get("/auth/is-auth", (req: Request, res: Response) => {
                 cookies: req.cookies
             });
         } else {
-            res.status(401).json({
-                success: false,
-                message: "user failed to authenticate."
-            });
+            setErrorResponse(res, ApiResponseCodes.UserAuthFailed);
         }
     }
 });

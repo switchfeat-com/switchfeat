@@ -1,29 +1,30 @@
 
-export type ResponseCode = {
+export type ApiResponseCode = {
     message: string;
     statusCode: number;
     description?: string;
 };
 
-type ResponseCodes = {
-    GenericError: ResponseCode,
-    ConditionNotFound: ResponseCode,
-    SegmentNotFound: ResponseCode,
-    RuleNotFound: ResponseCode,
-    FlagNotFound: ResponseCode,
-    NoMatchingCondition: ResponseCode,
-    ApiKeyNotValid: ResponseCode,
-    ApiKeyNotFound: ResponseCode,
-    ApiKeyExpired: ResponseCode,
-    FlagDisabled: ResponseCode,
-    FlagMatch: ResponseCode,
-    InputMissing: ResponseCode,
-    SdkAuthKeyNotFound: ResponseCode
+type ApiResponseCodes = {
+    GenericError: ApiResponseCode,
+    ConditionNotFound: ApiResponseCode,
+    SegmentNotFound: ApiResponseCode,
+    RuleNotFound: ApiResponseCode,
+    FlagNotFound: ApiResponseCode,
+    NoMatchingCondition: ApiResponseCode,
+    ApiKeyNotValid: ApiResponseCode,
+    ApiKeyNotFound: ApiResponseCode,
+    ApiKeyExpired: ApiResponseCode,
+    FlagDisabled: ApiResponseCode,
+    FlagMatch: ApiResponseCode,
+    InputMissing: ApiResponseCode,
+    SdkAuthKeyNotFound: ApiResponseCode,
+    UserAuthFailed: ApiResponseCode,
+    Success: ApiResponseCode
 };
 
-export const SdkResponseCodes: ResponseCodes = {
+export const ApiResponseCodes: ApiResponseCodes = {
 
-    // errors
     GenericError: { message: "generic_error", statusCode: 500 },
 
     ConditionNotFound: { message: "condition_not_found", statusCode: 404 },
@@ -40,7 +41,10 @@ export const SdkResponseCodes: ResponseCodes = {
 
     SdkAuthKeyNotFound: { message: "sdkauth_key_not_found", statusCode: 404 },
 
-    // info
+    UserAuthFailed: { message: "user_auth_failed", statusCode: 401 },
+
     FlagDisabled: { message: "flag_disabled", statusCode: 200 },
     FlagMatch: { message: "flag_match", statusCode: 200 },
+
+    Success: { message: "generic_success", statusCode: 200 }
 } as const;

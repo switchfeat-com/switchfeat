@@ -1,4 +1,4 @@
-import { ResponseCode, FlagModel, SdkResponseCodes, dateHelper } from "@switchfeat/core";
+import { ApiResponseCode, FlagModel, ApiResponseCodes, dateHelper } from "@switchfeat/core";
 import { ConditionModel, StringOperator } from "@switchfeat/core";
 import {v4 as uuidv4} from 'uuid';
 
@@ -8,7 +8,7 @@ export type EvaluateResponse = {
         segment: string | null;
         condition: string | null;
     }
-    reason: ResponseCode;
+    reason: ApiResponseCode;
     time: number;
     correlationId: string;
     responseId: string;
@@ -22,7 +22,7 @@ export const evaluateFlag = async (flag: FlagModel, context: Record<string, stri
 
         if (!flag.rules) {
             response.match = flag.status;
-            response.reason = SdkResponseCodes.RuleNotFound;
+            response.reason = ApiResponseCodes.RuleNotFound;
             return response;
         }
 
@@ -30,7 +30,7 @@ export const evaluateFlag = async (flag: FlagModel, context: Record<string, stri
         const contextValue = context[firstContextKey];
 
         if (!flag.status) {
-            response.reason = SdkResponseCodes.FlagDisabled;
+            response.reason = ApiResponseCodes.FlagDisabled;
             return response;
         }
 
@@ -45,18 +45,18 @@ export const evaluateFlag = async (flag: FlagModel, context: Record<string, stri
                     response.meta.segment = x.segment.key;
                     response.meta.condition = matchCondition.key;
                     foundMatchCondition = true;
-                    response.reason = SdkResponseCodes.FlagMatch;
+                    response.reason = ApiResponseCodes.FlagMatch;
                 }
             }
         });
 
         if (!foundMatchCondition) {
-            response.reason = SdkResponseCodes.NoMatchingCondition;
+            response.reason = ApiResponseCodes.NoMatchingCondition;
             return response;
         }
 
     } catch (ex) {
-        response.reason = SdkResponseCodes.GenericError;
+        response.reason = ApiResponseCodes.GenericError;
     } finally {
         response.time = dateHelper.diffInMs(startTime, dateHelper.utcNow())!;
         response.responseId = uuidv4();
