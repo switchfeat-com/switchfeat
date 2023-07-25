@@ -17,7 +17,8 @@ type ResponseCodes = {
     ApiKeyExpired: ResponseCode,
     FlagDisabled: ResponseCode,
     FlagMatch: ResponseCode,
-    InputMissing: ResponseCode
+    InputMissing: ResponseCode,
+    SdkAuthKeyNotFound: ResponseCode
 };
 
 export const SdkResponseCodes: ResponseCodes = {
@@ -36,6 +37,8 @@ export const SdkResponseCodes: ResponseCodes = {
     ApiKeyNotValid: { message: "api_key_not_valid", statusCode: 401 },
     ApiKeyExpired: { message: "api_key_expired", statusCode: 401 },
     ApiKeyNotFound: { message: "api_key_not_found", statusCode: 401, description: "Add the 'sf-api-key' header with your api key to the request" },
+
+    SdkAuthKeyNotFound: { message: "sdkauth_key_not_found", statusCode: 404 },
 
     // info
     FlagDisabled: { message: "flag_disabled", statusCode: 200 },

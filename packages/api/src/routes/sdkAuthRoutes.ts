@@ -14,9 +14,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
     apiAuthRoutes.get("/api/sdk/auth/", auth.isAuthenticated, async (req: Request, res: Response) => {
 
         try {
-
             const sdkAuths = await sdkAuthService.getSdkAuths("");
-
             res.json({
                 success: true,
                 user: req.user,
@@ -35,7 +33,6 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
     apiAuthRoutes.post("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
         console.log("received sdkAuth add: " + JSON.stringify(req.body));
-
         const keyName = req.body.keyName;
         const keyDescription = req.body.keyDescription;
         const keyExpiresOn = req.body.keyExpiresOn;
@@ -59,7 +56,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
                 name: keyName,
                 description: keyDescription,
                 createdOn: dateHelper.utcNow().toJSDate(),
-                expiresOn: new Date(keyExpiresOn),
+                expiresOn: keyExpiresOn ? new Date(keyExpiresOn) : dateHelper.utcNow().plus({month: 1}).toJSDate(),
                 updatedOn: dateHelper.utcNow().toJSDate(),
                 key: apiAuthKey,
                 apiKey: apiKey
@@ -73,7 +70,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         } else {
             res.json({
                 success: false,
-                errorCode: "error_sdk_auth_alreadysaved"
+                errorCode: SdkResponseCodes.SdkAuthKeyNotFound
             });
         }
     }); 
@@ -105,7 +102,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
         } else {
             res.json({
                 success: false,
-                errorCode: SdkResponseCodes.ApiKeyNotFound
+                errorCode: SdkResponseCodes.SdkAuthKeyNotFound
             });
         }
     });
