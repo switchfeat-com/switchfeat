@@ -6,11 +6,7 @@ import { DashboardLayout } from "../layout/DashboardLayout";
 export const Settings: FC<{ children: ReactNode }> = (props) => {
 
     const secondaryNavigation = [
-        { name: 'API Keys', href: '/settings/apikeys', current: true },
-        { name: 'Notifications', href: '#', current: false },
-        { name: 'Billing', href: '#', current: false },
-        { name: 'Teams', href: '#', current: false },
-        { name: 'Integrations', href: '#', current: false },
+        { name: 'API Keys', href: '/settings/apikeys', current: true }
     ];
 
     return (
@@ -23,7 +19,7 @@ export const Settings: FC<{ children: ReactNode }> = (props) => {
                     >
                         {secondaryNavigation.map((item) => (
                             <li key={item.name}>
-                                <a href={item.href} className={classNames("text-base", item.current ? 'text-emerald-400' : '')}>
+                                <a href={item.href} className={classNames("text-lg", item.current ? 'text-emerald-400' : '')}>
                                     {item.name}
                                 </a>
                             </li>

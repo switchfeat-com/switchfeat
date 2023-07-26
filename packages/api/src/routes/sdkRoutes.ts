@@ -43,12 +43,12 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
     sdkRoutes.post("/api/sdk/flags/:flagKey/evaluate", upload.any(), auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
             const flagKey = req.params.flagKey;
-            const flagContext = req.body.flagContext;
+            const flagContext = req.body.context;
             const correlationId = req.body.correlationId;
 
             const flag = await flagsService.getFlag({key: flagKey});
 
-            if (!flag) {
+            if (!flag || !flagContext) {
                 setErrorResponse(res, ApiResponseCodes.FlagNotFound);
                 return;
             }

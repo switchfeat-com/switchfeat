@@ -17,7 +17,6 @@ export const useApiKeys = (): UseApiKeysProps => {
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("effect called");
         setLoading(true);
         fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`, {
             method: "GET",
