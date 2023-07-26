@@ -23,7 +23,7 @@ export const ApiKeys: FC = () => {
                         </p>
                     </div>
                     <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                       <CreateApiKey hookState={hookState} />
+                        <CreateApiKey hookState={hookState} />
                     </div>
                 </div>
                 <div className="-mx-4 mt-10 ring-1 ring-gray-300 sm:mx-0 sm:rounded-lg">
@@ -61,7 +61,7 @@ export const ApiKeys: FC = () => {
                                     <td
                                         className={classNames(
                                             idx === 0 ? '' : 'border-t border-gray-200',
-                                            'hidden px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
+                                            ' px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
                                         )}
                                     >
                                         {x.name}
@@ -70,7 +70,7 @@ export const ApiKeys: FC = () => {
                                     <td
                                         className={classNames(
                                             idx === 0 ? '' : 'border-t border-gray-200',
-                                            'hidden px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
+                                            '  px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
                                         )}
                                     >
                                         <code className="bg-gray-200 rounded-lg p-2">{x.apiKey}</code>
@@ -78,7 +78,7 @@ export const ApiKeys: FC = () => {
                                     <td
                                         className={classNames(
                                             idx === 0 ? '' : 'border-t border-gray-200',
-                                            'hidden px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
+                                            '  px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
                                         )}
                                     >
                                         {dateHelper.formatDateTime(x.expiresOn, true)}
@@ -86,7 +86,7 @@ export const ApiKeys: FC = () => {
                                     <td
                                         className={classNames(
                                             idx === 0 ? '' : 'border-t border-gray-200',
-                                            'hidden px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
+                                            '  px-3 py-3.5 text-lg text-gray-500 lg:table-cell'
                                         )}
                                     >
                                         {dateHelper.formatDateTime(x.createdOn, true)}
@@ -98,7 +98,7 @@ export const ApiKeys: FC = () => {
                                             'relative py-3.5 pl-3 pr-4 text-right text-lg font-medium sm:pr-6'
                                         )}
                                     >
-                                        <DeleteApiKey sdkAuthKey={x.key} hookState={hookState} /> 
+                                        <DeleteApiKey sdkAuthKey={x.key} hookState={hookState} />
                                         {idx !== 0 ? <div className="absolute -top-px left-0 right-0 h-px bg-gray-200" /> : null}
                                     </td>
                                 </tr>
