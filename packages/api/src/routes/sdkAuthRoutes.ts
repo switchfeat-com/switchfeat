@@ -16,6 +16,12 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
         try {
             const sdkAuths = await sdkAuthService.getSdkAuths("");
+
+            // hide the full apikey for security reasons
+            sdkAuths.forEach(x => {
+                x.apiKey = x.apiKey.substring(0, 3) + '···' + x.apiKey.substring(x.apiKey.length - 5, x.apiKey.length - 1);
+            });
+
             setSuccessResponse(res, ApiResponseCodes.Success, sdkAuths, req);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);
@@ -26,10 +32,9 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
 
         console.log("received sdkAuth add: " + JSON.stringify(req.body));
         const keyName = req.body.keyName;
-        const keyDescription = req.body.keyDescription;
         const keyExpiresOn = req.body.keyExpiresOn;
 
-        if (!keyName || !keyDescription) {
+        if (!keyName) {
             setErrorResponse(res, ApiResponseCodes.InputMissing);
             return;
         }
@@ -43,9 +48,8 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
             
             await sdkAuthService.addSdkAuth({
                 name: keyName,
-                description: keyDescription,
                 createdOn: dateHelper.utcNow().toJSDate(),
-                expiresOn: keyExpiresOn ? new Date(keyExpiresOn) : dateHelper.utcNow().plus({month: 1}).toJSDate(),
+                expiresOn: keyExpiresOn ? new Date(keyExpiresOn) : dateHelper.utcNow().plus({months: 12}).toJSDate(),
                 updatedOn: dateHelper.utcNow().toJSDate(),
                 key: apiAuthKey,
                 apiKey: apiKey

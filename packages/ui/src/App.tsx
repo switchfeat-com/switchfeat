@@ -7,7 +7,7 @@ import { Segments } from "./pages/Segments";
 import { Dashboard } from "./pages/Dashboard";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import { NotificationProvider } from "./components/shared/NotificationProvider";
-import { ApiKeys } from "./components/settings/ApiKeys";
+import { ApiKeys } from "./components/settings/apiKeys/ApiKeys";
 
 const App: React.FC = () => {
 	return (
