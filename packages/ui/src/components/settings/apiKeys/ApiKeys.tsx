@@ -22,7 +22,7 @@ export const ApiKeys: FC = () => {
                             Please note, <strong className="font-semibold text-gray-900">we do not display</strong> your secret API keys again after you generate them.
                         </p>
                     </div>
-                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                    <div className="mt-6 sm:ml-16 sm:mt-0 sm:flex-none">
                         <CreateApiKey hookState={hookState} />
                     </div>
                 </div>
