@@ -11,3 +11,5 @@ packages/api/db.switchfeat.segments
 db.switchfeat.flags
 db.switchfeat.segments
 db.switchfeat.users
+db.switchfeat.sdkauths
+packages/api/db.switchfeat.sdkauths

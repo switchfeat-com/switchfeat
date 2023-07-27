@@ -95,13 +95,13 @@ export const NotificationProvider = ({
 						leaveFrom="opacity-100 scale-100"
 						leaveTo="opacity-0 scale-75"
 					>
-						<div className='flex border-b p-4'>
+						<div className='flex p-4'>
 							<ToastIcon toast={t} />
-							<p className="px-2">{resolveValue(t.message, t)}</p>
+							<p className="px-2 text-lg">{resolveValue(t.message, t)}</p>
 						</div>
-						<div className='p-4'>
+						{(t as Toast).subMessage && (<div className='p-4 text-lg'>
 							<p >{(t as Toast).subMessage}</p>
-						</div>
+						</div>)}
 
 					</Transition>
 				)}

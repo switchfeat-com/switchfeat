@@ -82,18 +82,16 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
 
                         <div className=" sm:flex sm:items-start sm:justify-between">
                             <div className="max-w-xl text-base text-gray-500">
-                                <div className="text-base  leading-6 text-gray-900">
+                                <div className="text-lg  leading-6 text-gray-900">
                                     <span className="font-semibold">{props.flag.name}</span> <span> ({props.flag.description})</span>
                                 </div>
                                 <div className="mt-3 text-left">
-                                    <code className="py-1 rounded-md text-sm">key: {props.flag.key}</code>
-
-
+                                    <code className="py-1 rounded-md text-base">key: {props.flag.key}</code>
                                 </div>
                             </div>
                             <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
                                 <div className="flex flex-col">
-                                    <div className="text-sm text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
+                                    <div className="text-base text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn, true)}</div>
                                     <div className="text-right">
                                         <Switch
                                             checked={enabled}

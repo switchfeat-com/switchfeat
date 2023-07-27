@@ -31,6 +31,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:tw": "tailwindcss -i ./src/App.css -o ./src/output.css",
+    "build:tw:watch": "tailwindcss -i ./src/App.css -o ./src/output.css --watch",
     "prestart": "npm run build:tw",
     "lint": "eslint . --ext .tsx"
   },

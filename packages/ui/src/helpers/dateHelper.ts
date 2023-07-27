@@ -1,11 +1,13 @@
 import { DateTime } from "luxon";
 
-export const formatDateTime = (dateStr: string | undefined) => {
+export const formatDateTime = (dateStr: string | undefined, hideTime?: boolean) => {
 	if (dateStr === undefined) {
 		return "";
-	}
+	} 
 
-	return DateTime.fromISO(dateStr).toFormat("MMM dd, yyyy @ hh:mm a");
+	return DateTime.fromISO(dateStr).toFormat(hideTime ? 
+		"MMM dd, yyyy" : 
+		"MMM dd, yyyy @ hh:mm a"); 
 };
 
 export const utcNow = (): DateTime => {

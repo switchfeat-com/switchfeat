@@ -39,7 +39,7 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
         }).then(respJson => {
             setSegments([]);
             const allSegments: SegmentModel[] = [];
-            respJson.segments.forEach((item: SegmentModel) => {
+            respJson.data.forEach((item: SegmentModel) => {
                 allSegments.push({
                     name: item.name,
                     description: item.description,

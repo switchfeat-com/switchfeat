@@ -6,7 +6,9 @@ import { DataStoreManager, NeDbManager, SupportedDb, getDbManager } from "./dbMa
 import * as flagsManager from "./NeDb/flagsNeDbManager";
 import * as usersManager from "./NeDb/usersNeDbManager";
 import * as segmentsManager from "./NeDb/segmentsNeDbManager";
+import * as sdkAuthsManager from "./NeDb/sdkAuthNeDbManager";
 import { SegmentModel } from '../../models/segmentModel';
+import { SdkAuthModel } from '../../models/sdkAuthModel';
 
 export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
 
@@ -19,6 +21,7 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
     flagsManager.setNeDbManager(neDbManager);
     usersManager.setNeDbManager(neDbManager);
     segmentsManager.setNeDbManager(neDbManager);
+    sdkAuthsManager.setNeDbManager(neDbManager);
 
     const dataStoreInstance = {
         addFlag: flagsManager.addFlag,
@@ -34,7 +37,13 @@ export const createNeDbDataStore = async (): Promise<DataStoreManager> => {
         deleteSegment: segmentsManager.deleteSegment,
         getSegmentById: segmentsManager.getSegmentById,
         getSegmentByKey: segmentsManager.getSegmentByKey,
-        updateSegment: segmentsManager.updateSegment,
+        updateSegment: segmentsManager.updateSegment, 
+         
+        getSdkAuths: sdkAuthsManager.getSdkAuths,
+        getSdkAuthByKey: sdkAuthsManager.getSdkAuthByKey,
+        getSdkAuthByApiKey: sdkAuthsManager.getSdkAuthByApiKey,
+        addSdkAuth: sdkAuthsManager.addSdkAuth,
+        deleteSdkAuth: sdkAuthsManager.deleteSdkAuth,
 
         getUser: () => { throw new Error(); },
         getUserByEmail: () => { throw new Error(); },
@@ -52,6 +61,7 @@ const connectDb = async (): Promise<NeDbManager> => {
         neDbManager.flags = new AsyncNedb<FlagModel>({ filename: 'db.switchfeat.flags', autoload: true });
         neDbManager.users = new AsyncNedb<UserModel>({ filename: 'db.switchfeat.users', autoload: true });
         neDbManager.segments = new AsyncNedb<SegmentModel>({ filename: 'db.switchfeat.segments', autoload: true });
+        neDbManager.sdkAuths = new AsyncNedb<SdkAuthModel>({ filename: 'db.switchfeat.sdkauths', autoload: true });
 
         console.log(`NeDBManager: connectDB: connected to local neDB`);
 

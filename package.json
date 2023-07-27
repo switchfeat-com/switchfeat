@@ -26,6 +26,7 @@
     "lint": "lerna run lint",
     "start": "cd ./packages/api && npm run start",
     "dev:start-api": "cd ./packages/api && npm run dev:start",
-    "dev:start-ui": "cd ./packages/ui && npm run start"
+    "dev:start-ui": "cd ./packages/ui && npm run start",
+    "dev:start-tw:watch": "cd ./packages/ui && npm run build:tw:watch"
   }
 }

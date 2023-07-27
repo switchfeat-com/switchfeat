@@ -21,8 +21,7 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
     const navigation = [
         { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
         { name: 'Flags', href: '/flags', icon: FlagIcon },
-        { name: 'Segments', href: '/segments', icon: FolderIcon },
-        // { name: 'Conditions', href: '/conditions', icon: ArrowsRightLeftIcon }
+        { name: 'Segments', href: '/segments', icon: FolderIcon }
     ];
 
     return (
@@ -110,7 +109,7 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
                                             <li className="mt-auto">
                                                 <a
-                                                    href="/dashboard/settings"
+                                                    href="/settings/apikeys"
                                                     className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
                                                 >
                                                     <Cog6ToothIcon
@@ -171,8 +170,8 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
                             <li className="mt-auto">
                                 <a
-                                    href="/dashboard/settings"
-                                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
+                                    href="/settings/apikeys"
+                                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
                                 >
                                     <Cog6ToothIcon
                                         className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-green-600"
