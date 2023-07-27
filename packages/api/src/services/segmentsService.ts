@@ -6,8 +6,8 @@ export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>
     manager.then(data => dataStoreManager = data);
 };
 
-export const getSegments = async (segmentId: string): Promise<SegmentModel[]> => {
-    return await dataStoreManager.getSegments(segmentId);
+export const getSegments = async (): Promise<SegmentModel[]> => {
+    return await dataStoreManager.getSegments();
 };
 
 export const getSegment = async (search: { id?: string, key?: string }): Promise<SegmentModel | null> => { 

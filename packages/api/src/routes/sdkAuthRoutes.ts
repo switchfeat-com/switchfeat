@@ -15,7 +15,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
     apiAuthRoutes.get("/api/sdk/auth/", auth.isAuthenticated, async (req: Request, res: Response) => {
 
         try {
-            const sdkAuths = await sdkAuthService.getSdkAuths("");
+            const sdkAuths = await sdkAuthService.getSdkAuths();
 
             // hide the full apikey for security reasons
             sdkAuths.forEach(x => {

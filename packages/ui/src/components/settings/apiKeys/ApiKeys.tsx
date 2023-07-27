@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Settings } from "../../../pages/Settings";
 import { useApiKeys } from "./hooks";
 import { SdkAuthModel } from "../../../models/SdkAuthModel";

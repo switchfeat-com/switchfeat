@@ -7,7 +7,7 @@ export const setNeDbManager = (neDbGlobalManager: NeDbManager) => {
     neDbManager = neDbGlobalManager;
 };
 
-export const getSegments = async (flagKey: string): Promise<SegmentModel[]> => neDbManager.segments!.asyncFind({});
+export const getSegments = async (): Promise<SegmentModel[]> => neDbManager.segments!.asyncFind({});
 
 export const getSegmentById = async (id: string): Promise<SegmentModel> => neDbManager.segments!.asyncFindOne({
     _id: id,

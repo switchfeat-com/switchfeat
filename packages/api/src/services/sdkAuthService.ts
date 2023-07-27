@@ -6,8 +6,8 @@ export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>
     manager.then(data => dataStoreManager = data);
 };
 
-export const getSdkAuths = async (userKey: string): Promise<SdkAuthModel[]> => {
-    return await dataStoreManager.getSdkAuths(userKey);
+export const getSdkAuths = async (): Promise<SdkAuthModel[]> => {
+    return await dataStoreManager.getSdkAuths();
 };
 
 export const getSdkAuth = async (search: { key?: string, apiKey?: string }): Promise<SdkAuthModel | null> => {
