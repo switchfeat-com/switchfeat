@@ -7,7 +7,7 @@ export const setNeDbManager = (neDbGlobalManager: NeDbManager) => {
     neDbManager = neDbGlobalManager;
 };
 
-export const getSdkAuths = async (userKey?: string): Promise<SdkAuthModel[]> => neDbManager.sdkAuths!.asyncFind({});
+export const getSdkAuths = async (): Promise<SdkAuthModel[]> => neDbManager.sdkAuths!.asyncFind({});
 
 export const getSdkAuthByKey = async (key: string): Promise<SdkAuthModel> => neDbManager.sdkAuths!.asyncFindOne({
     key,

@@ -15,7 +15,7 @@ export const segmentsRoutesWrapper = (storeManager: Promise<dbManager.DataStoreM
     const flagRoutes = Router();
     flagRoutes.get("/api/segments/", auth.isAuthenticated, async (req: Request, res: Response) => {
         try { 
-            const segments = await segmentsService.getSegments("");
+            const segments = await segmentsService.getSegments();
             setSuccessResponse(res, ApiResponseCodes.Success, segments, req);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { SegmentModel } from "../../models/SegmentModel";
 import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "./CreateOrUpdateSegmentDialog";
 

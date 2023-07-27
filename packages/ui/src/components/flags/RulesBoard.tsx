@@ -15,7 +15,6 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
 
     const [selectedSegment, setSelectedSegment] = useState<SegmentModel>();
     const [segments, setSegments] = useState<SegmentModel[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.toEditRule) {
@@ -24,7 +23,6 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
     }, [props.toEditRule]);
 
     useEffect(() => {
-        setLoading(true);
         fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
             method: "GET",
             credentials: "include",
@@ -53,7 +51,6 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
 
             setSegments(allSegments);
             setSelectedSegment(allSegments[0]);
-            setLoading(false);
         }).catch(ex => { console.log(ex); });
     }, []);
 

@@ -17,7 +17,7 @@ export const flagRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManag
 
         try {
 
-            const flags = await flagsService.getFlags("");
+            const flags = await flagsService.getFlags();
             setSuccessResponse(res, ApiResponseCodes.Success, flags, req);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);

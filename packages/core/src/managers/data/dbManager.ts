@@ -35,7 +35,7 @@ export type NeDbManager = {
 export type DataStoreManager = {
 
     // flags functions
-    getFlags: (userId: string) => Promise<FlagModel[]>;
+    getFlags: () => Promise<FlagModel[]>;
     getFlagByName: (name: string) => Promise<FlagModel>;
     getFlagById: (id: string) => Promise<FlagModel>;
     getFlagByKey: (key: string) => Promise<FlagModel>;
@@ -44,7 +44,7 @@ export type DataStoreManager = {
     deleteFlag: (flag: FlagModel) => Promise<boolean>;
 
     // segments and conditions functions
-    getSegments: (userId: string) => Promise<SegmentModel[]>;
+    getSegments: () => Promise<SegmentModel[]>;
     addSegment: (segment: SegmentModel) => Promise<boolean>;
     updateSegment: (segment: SegmentModel) => Promise<boolean>;
     deleteSegment: (segment: SegmentModel) => Promise<boolean>;
@@ -59,7 +59,7 @@ export type DataStoreManager = {
     deleteUser: (user: UserModel) => Promise<boolean>;
 
      // api auth functions
-     getSdkAuths: (userKey?: string) => Promise<SdkAuthModel[]>;
+     getSdkAuths: () => Promise<SdkAuthModel[]>;
      getSdkAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
      getSdkAuthByApiKey: (authKey: string) => Promise<SdkAuthModel>;
      addSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;

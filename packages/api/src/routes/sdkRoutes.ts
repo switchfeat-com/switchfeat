@@ -17,7 +17,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
 
     sdkRoutes.get("/api/sdk/flags", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try {
-            const flags = await flagsService.getFlags("");
+            const flags = await flagsService.getFlags();
             setSuccessResponse(res, ApiResponseCodes.Success, flags);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);
@@ -73,7 +73,7 @@ export const sdkRoutesWrapper = (storeManager: Promise<dbManager.DataStoreManage
 
     sdkRoutes.get("/api/sdk/segments", auth.isSdkAuthenticated, async (req: Request, res: Response) => {
         try { 
-            const segments = await segmentsService.getSegments("");
+            const segments = await segmentsService.getSegments();
             setSuccessResponse(res, ApiResponseCodes.Success, segments);
         } catch (error) {
             setErrorResponse(res, ApiResponseCodes.GenericError);
