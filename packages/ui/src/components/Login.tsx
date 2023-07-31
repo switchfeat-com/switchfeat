@@ -55,15 +55,13 @@ export const Login: React.FC = () => {
                                         </div>
                                         <div className="mt-4">
                                             <div className="-mx-2 -my-1.5 flex">
-                                                <button
-                                                    type="button"
+                                                <a href="https://docs.switchfeat.com" target="_blank" rel="noreferrer"
                                                     className="rounded-md bg-green-50 px-2 py-1.5 text-base font-medium text-green-800
                                                      hover:bg-green-100 focus:outline-none focus:ring-2
                                                      focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
                                                 >
                                                     View documentation   <span aria-hidden="true"> &rarr;</span>
-                                                </button>
-
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
