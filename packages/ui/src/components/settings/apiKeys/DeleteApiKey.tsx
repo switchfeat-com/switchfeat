@@ -4,20 +4,18 @@ import { FC, Fragment, useState } from "react";
 import { UseApiKeysProps } from "./hooks";
 import { toast } from 'react-hot-toast';
 
-export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> = (props) => {
-    const [open, setOpen] = useState(false); 
+export const DeleteApiKey: FC<{ sdkAuthKey: string, hookState: UseApiKeysProps }> = (props) => {
+    const [open, setOpen] = useState(false);
 
-    const handleDeleteApiKey = async () => {  
-        const success = await props.hookState.deleteApiKey(props.sdkAuthKey);
-
-        if (success) {
+    const handleDeleteApiKey = async () => {
+        await props.hookState.deleteApiKey(props.sdkAuthKey, () => {
+            toast.error("Error deleting API Key, please try again.");
+            setOpen(false);
+        }, () => {
             toast.success("API Key successfully deleted.");
             props.hookState.doRefreshSdkAuths();
-        } else {
-            toast.error("Error deleting API Key, please try again.");
-        }
-
-        setOpen(false);
+            setOpen(false);
+        });
     };
 
     return (
@@ -27,9 +25,9 @@ export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> 
                 type="button"
                 className="inline-flex items-center rounded-md bg-white px-2.5 
                 py-1.5 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-                 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white" 
+                 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
             >
-                <TrashIcon className="h-6 w-6 text-red-600"/>
+                <TrashIcon className="h-6 w-6 text-red-600" />
             </button>
 
             <Transition.Root show={open} as={Fragment}>
@@ -66,12 +64,12 @@ export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> 
                                         <div className="mt-3 sm:mt-5 text-lg">
                                             <Dialog.Title as="h3" className="text-lg text-center font-semibold leading-6 text-gray-900 mb-5">
                                                 Delete API Key
-                                            </Dialog.Title> 
+                                            </Dialog.Title>
                                             <p>
                                                 This API key will immediately be disabled.
                                                 API requests made using this key will be rejected,
                                                 which could break any functionality depending on it.
-                                            </p> 
+                                            </p>
                                         </div>
                                     </div>
                                     <div className="mt-5 sm:mt-6">

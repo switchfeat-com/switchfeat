@@ -3,11 +3,12 @@ import { KeyIcon } from "@heroicons/react/24/outline";
 import { ElementRef, FC, Fragment, useRef, useState } from "react";
 import { toast } from 'react-hot-toast';
 import { UseApiKeysProps } from "./hooks";
+import { SdkAuthModel } from "../../../models/SdkAuthModel";
 
-export const CreateApiKey: FC<{hookState: UseApiKeysProps}> = (props) => {
+export const CreateApiKey: FC<{ hookState: UseApiKeysProps }> = (props) => {
     const [open, setOpen] = useState(false);
     const nameRef = useRef<ElementRef<"input">>(null);
-    const [keyGenerated, setKeyGenerated] = useState<string | null>("");
+    const [keyGenerated, setKeyGenerated] = useState<string>("");
 
     const handleGenerateApiKey = async () => {
 
@@ -15,20 +16,20 @@ export const CreateApiKey: FC<{hookState: UseApiKeysProps}> = (props) => {
             return;
         }
 
-        const apiKey = await props.hookState.generateApiKey(nameRef.current.value);
-
-        if (apiKey) {
-            setKeyGenerated(apiKey);
-        } else {
+        await props.hookState.generateApiKey(nameRef.current.value, () => {
             toast.error("Error creating API Key, please try again.");
             setOpen(false);
-        }
+        }, (key: SdkAuthModel) => {
+            console.log(key);
+            setKeyGenerated(key.apiKey);
+            toast.success("New API key successfully created.");
+        });
     };
 
     const handleGeneratedKeyOnClose = () => {
         setOpen(false);
-        setKeyGenerated(null);
         props.hookState.doRefreshSdkAuths();
+        setKeyGenerated("");
     };
 
     return (

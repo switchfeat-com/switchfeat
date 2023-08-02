@@ -55,7 +55,7 @@ export const sdkAuthRoutesWrapper = (storeManager: Promise<dbManager.DataStoreMa
                 apiKey: apiKey
             });
 
-            setSuccessResponse(res, ApiResponseCodes.Success, {apikey: apiKey}, req);
+            setSuccessResponse(res, ApiResponseCodes.Success, {apiKey: apiKey}, req);
         } else {
             setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
         }

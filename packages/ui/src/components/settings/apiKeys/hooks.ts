@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import * as keys from "../../../config/keys";
 import { SdkAuthModel } from "../../../models/SdkAuthModel";
+import { useFetch } from "../../../hooks/useFetch";
 
 export type UseApiKeysProps = {
     sdkAuths: SdkAuthModel[];
-    generateApiKey: (keyName: string) => Promise<string | null>;
+    generateApiKey: (keyName: string, onError: () => void, onSuccess: (key: SdkAuthModel) => void) => Promise<string | null>;
     setRefreshSdkAuths: (state: boolean) => void;
     loading: boolean;
-    deleteApiKey: (sdkAuthKey: string) => Promise<boolean>;
+    deleteApiKey: (sdkAuthKey: string, onError: () => void, onSuccess: () => void) => Promise<boolean>;
     doRefreshSdkAuths: () => void;
 };
 
@@ -15,24 +16,16 @@ export const useApiKeys = (): UseApiKeysProps => {
     const [sdkAuths, setSdkAuths] = useState<SdkAuthModel[]>([]);
     const [refreshSdkAuths, setRefreshSdkAuths] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
+   
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            }
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
+
+        const onFetchSuccess = (fetchResp: SdkAuthModel[]) => {
             setSdkAuths([]);
             const allData: SdkAuthModel[] = [];
-            respJson.data.forEach((item: SdkAuthModel) => {
+            fetchResp.forEach((item: SdkAuthModel) => {
                 allData.push({
                     name: item.name,
                     description: item.description,
@@ -45,32 +38,30 @@ export const useApiKeys = (): UseApiKeysProps => {
             });
             setSdkAuths([...allData]);
             setLoading(false);
-        }).catch(ex => { console.log(ex); });
-    }, [refreshSdkAuths]);
+        };
 
+        doFetch<SdkAuthModel[]>({
+            onSuccess: onFetchSuccess,
+            onError: () => { },
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,
+            method: "GET"
+        });
+    }, [doFetch, refreshSdkAuths]);
 
-    const generateApiKey = async (keyName: string): Promise<string | null> => {
+    const generateApiKey = async (keyName: string, onError: () => void, onSuccess: (key: SdkAuthModel) => void): Promise<string | null> => {
         const formData = new FormData();
         formData.append('keyName', keyName);
 
         try {
-            const resp = await fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    Accept: "application/json",
-                    "Access-Control-Allow-Credentials": "true",
-                    "Access-Control-Allow-Origin": "true"
-                },
-                body: formData
+         
+            doFetch({
+                onSuccess: (resp: SdkAuthModel) => { onSuccess(resp);},
+                onError: onError,
+                reqBody: formData,
+                url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,
+                method: "POST"
             });
-            const respJson = await resp.json();
 
-            if (respJson.success) {
-                setSdkAuths((apiKeys) => [...apiKeys, respJson.data]);
-                // doRefreshSdkAuths();
-                return respJson.data.apikey;
-            }
         } catch (error) {
             console.log(error);
         }
@@ -78,28 +69,20 @@ export const useApiKeys = (): UseApiKeysProps => {
         return null;
     };
 
-    const deleteApiKey = async (sdkAuthKey: string): Promise<boolean> => {
+    const deleteApiKey = async (sdkAuthKey: string, onError: () => void, onSuccess: () => void): Promise<boolean> => {
         const formData = new FormData();
         formData.append('sdkAuthKey', sdkAuthKey);
 
         try {
-            const resp = await fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`, {
+            doFetch<SdkAuthModel[]>({
+                onSuccess: () => { doRefreshSdkAuths(); onSuccess();},
+                onError: onError,
+                url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,
                 method: "DELETE",
-                credentials: "include",
-                headers: {
-                    Accept: "application/json",
-                    "Access-Control-Allow-Credentials": "true",
-                    "Access-Control-Allow-Origin": "true"
-                },
-                body: formData
+                reqBody: formData
             });
-            const respJson = await resp.json();
 
-            if (respJson.success) {
-                doRefreshSdkAuths();
-            }
-
-            return respJson.success;
+            return true;
         } catch (error) {
             console.log(error);
         }

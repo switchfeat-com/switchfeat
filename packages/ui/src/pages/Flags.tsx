@@ -40,6 +40,7 @@ export const Flags: React.FC = () => {
   };
 
   useEffect(() => {
+    
     const fetchParams: UseFetchParams<FlagModel[]> = {
       onSuccess: onFetchSuccess,
       onError: () => { },
