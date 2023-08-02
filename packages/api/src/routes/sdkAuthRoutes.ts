@@ -85,24 +85,16 @@ export const sdkAuthRoutesWrapper = (
                     apiKey: apiKey,
                 });
 
-                setSuccessResponse(
-                    res,
-                    ApiResponseCodes.Success,
-                    { apikey: apiKey },
-                    req,
-                );
-            } else {
-                setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
-            }
-        },
-    );
+            setSuccessResponse(res, ApiResponseCodes.Success, {apiKey: apiKey}, req);
+        } else {
+            setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
+        }
+    }); 
+   
 
-    apiAuthRoutes.delete(
-        "/api/sdk/auth/",
-        upload.any(),
-        auth.isAuthenticated,
-        async (req: Request, res: Response) => {
-            console.log("received sdkAuth delete: " + JSON.stringify(req.body));
+    apiAuthRoutes.delete("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+
+        console.log("received sdkAuth delete: " + JSON.stringify(req.body));
 
             const apiAuthKey = req.body.sdkAuthKey;
 

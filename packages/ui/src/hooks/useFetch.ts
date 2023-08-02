@@ -3,7 +3,7 @@ import { useCallback } from "react";
 export type UseFetchParams<T> = {
     onSuccess: (data: T) => void;
     onError: () => void;
-    reqBody?: Record<string, string>;
+    reqBody?: BodyInit;
     url: string;
     method: ("GET" | "POST" | "PUT" | "DELETE");
     reqHeaders?: Record<string, string>;
@@ -15,7 +15,6 @@ export const useFetch = () => {
         try {
             const reqHeaders: Record<string, string> = {
                 Accept: "application/json",
-                "Content-Type": "application/json",
                 "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Allow-Origin": "true",
                 ...params.reqHeaders
@@ -24,7 +23,8 @@ export const useFetch = () => {
             const resp = await fetch(params.url, {
                 method: params.method,
                 credentials: "include",
-                headers: reqHeaders
+                headers: reqHeaders,
+                body: params.method !== "GET" ? params.reqBody : null
             });
 
             const respJson = (await resp.json()).data as T;
