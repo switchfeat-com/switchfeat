@@ -33,7 +33,8 @@
     "build:tw": "tailwindcss -i ./src/App.css -o ./src/output.css",
     "build:tw:watch": "tailwindcss -i ./src/App.css -o ./src/output.css --watch",
     "prestart": "npm run build:tw",
-    "lint": "eslint . --ext .tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write 'src/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [

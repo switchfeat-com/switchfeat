@@ -18,6 +18,8 @@
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-config-prettier": "^8.9.0",
+    "prettier": "3.0.0",
 
     "lerna": "^7.0.2",
     "luxon": "^3.3.0",
@@ -28,6 +30,7 @@
     "publish": "lerna run tsc && lerna publish",
     "build": "lerna run tsc",
     "lint": "lerna run lint",
+    "format": "lerna run format",
     "start": "cd ./packages/api && npm run start",
     "dev:start-api": "cd ./packages/api && npm run dev:start",
     "dev:start-ui": "cd ./packages/ui && npm run start",

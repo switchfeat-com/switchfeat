@@ -18,7 +18,8 @@
     "start": "node dist/index.js",
     "dev:start": "SET NODE_ENV=dev& node dist/index.js",
     "test": "node ./__tests__/api.test.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .js.ts",
+    "format": "prettier --write 'src/**/*.{js,ts}'"
   },
   "bugs": {
     "url": "https://github.com/switchfeat-com/switchfeat/issues"

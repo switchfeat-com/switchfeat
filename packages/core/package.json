@@ -23,7 +23,8 @@
     "tsc": "tsc",
     "start": "node dist/index.js",
     "test": "node ./__tests__/core.test.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .js,.ts",
+    "format": "prettier --write 'src/**/*.{js,ts}'"
   },
   "bugs": {
     "url": "https://github.com/switchfeat-com/switchfeat/issues"
