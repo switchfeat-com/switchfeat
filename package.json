@@ -1,39 +1,40 @@
 {
-  "name": "root",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "devDependencies": {
-    "@types/luxon": "^3.3.0",
-    "@types/mongodb": "^4.0.7",
-    "@types/node": "^20.3.1",
-
-    "eslint": "^8.44.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "@typescript-eslint/eslint-plugin": "^6.2.0",
-    "@typescript-eslint/parser": "^6.2.0",
-    "eslint-import-resolver-typescript": "^3.5.5",
-
-    "lerna": "^7.0.2",
-    "luxon": "^3.3.0",
-    "mongodb": "^5.6.0",
-    "typescript": "^5.1.6"
-  },
-  "scripts": {
-    "publish": "lerna run tsc && lerna publish",
-    "build": "lerna run tsc",
-    "lint": "lerna run lint",
-    "start": "cd ./packages/api && npm run start",
-    "dev:start-api": "cd ./packages/api && npm run dev:start",
-    "dev:start-ui": "cd ./packages/ui && npm run start",
-    "dev:start-tw:watch": "cd ./packages/ui && npm run build:tw:watch"
-  },
-  "overrides": {
-    "typescript": "^5.1.6"
-  }
+    "name": "root",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "devDependencies": {
+        "@types/luxon": "^3.3.0",
+        "@types/mongodb": "^4.0.7",
+        "@types/node": "^20.3.1",
+        "eslint": "^8.44.0",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "@typescript-eslint/eslint-plugin": "^6.2.0",
+        "@typescript-eslint/parser": "^6.2.0",
+        "eslint-import-resolver-typescript": "^3.5.5",
+        "eslint-config-prettier": "^8.9.0",
+        "prettier": "3.0.0",
+        "lerna": "^7.0.2",
+        "luxon": "^3.3.0",
+        "mongodb": "^5.6.0",
+        "typescript": "^5.1.6"
+    },
+    "scripts": {
+        "publish": "lerna run tsc && lerna publish",
+        "build": "lerna run tsc",
+        "lint": "lerna run lint",
+        "format": "lerna run format",
+        "start": "cd ./packages/api && npm run start",
+        "dev:start-api": "cd ./packages/api && npm run dev:start",
+        "dev:start-ui": "cd ./packages/ui && npm run start",
+        "dev:start-tw:watch": "cd ./packages/ui && npm run build:tw:watch"
+    },
+    "overrides": {
+        "typescript": "^5.1.6"
+    }
 }

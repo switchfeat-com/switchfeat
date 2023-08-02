@@ -1,8 +1,8 @@
-import { BaseModel } from './baseModel';
-import { RuleModel } from './ruleModel';
+import { BaseModel } from "./baseModel";
+import { RuleModel } from "./ruleModel";
 
 export type FlagModel = {
-    key: string; 
+    key: string;
     status: boolean;
     rules?: RuleModel[];
 } & BaseModel;

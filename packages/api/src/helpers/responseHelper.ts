@@ -6,16 +6,21 @@ export const setErrorResponse = (resp: Response, error: ApiResponseCode) => {
     resp.status(error.statusCode).json({
         success: false,
         error: error,
-        data: null
+        data: null,
     } as ResponseModel<null>);
 };
 
-export const setSuccessResponse = <T extends object | null>(resp: Response, code: ApiResponseCode, data: T, req?: Request) => {
+export const setSuccessResponse = <T extends object | null>(
+    resp: Response,
+    code: ApiResponseCode,
+    data: T,
+    req?: Request,
+) => {
     console.log(code);
 
     const response = {
         success: true,
-        data
+        data,
     } as ResponseModel<T>;
 
     if (req) {
