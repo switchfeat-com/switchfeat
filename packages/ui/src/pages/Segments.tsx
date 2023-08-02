@@ -7,6 +7,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { SegmentModel } from "../models/SegmentModel";
 import { SegmentsItem } from "../components/segments/SegmentsItem";
 import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/segments/CreateOrUpdateSegmentDialog";
+import { UseFetchParams, useFetch } from "../hooks/useFetch";
 
 
 export const Segments: React.FC = () => {
@@ -14,28 +15,16 @@ export const Segments: React.FC = () => {
   const [refreshSegments, setRefreshSegments] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
+  const { doFetch } = useFetch();
 
   const handleRefreshSegments = (): void => {
     setRefreshSegments(!refreshSegments);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Origin": "true"
-      }
-    }).then(async resp => {
-      return resp.json();
-    }).then(respJson => {
-      setSegments([]);
+  const onFetchSuccess = (fetchResp: SegmentModel[]) => {
+    setSegments([]);
       const allSegments: SegmentModel[] = [];
-      respJson.data.forEach((item: SegmentModel) => {
+      fetchResp.forEach((item: SegmentModel) => {
         allSegments.push({
           name: item.name,
           description: item.description,
@@ -50,8 +39,19 @@ export const Segments: React.FC = () => {
       setSegments(allSegments);
 
       setLoading(false);
-    }).catch(ex => { console.log(ex); });
-  }, [refreshSegments]);
+  };
+
+  useEffect(() => {
+    const fetchParams: UseFetchParams<SegmentModel[]> = {
+      onSuccess: onFetchSuccess,
+      onError: () => { },
+      url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
+      method: "GET"
+    };
+
+    setLoading(true);
+    doFetch<SegmentModel[]>(fetchParams);
+  }, [doFetch, refreshSegments]); 
 
   const createSegmentProps: CreateOrUpdateSegmentDialogProps = {
     open,
