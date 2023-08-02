@@ -2,12 +2,15 @@ import { Transition, Dialog } from "@headlessui/react";
 import { TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FC, Fragment, useState } from "react";
 import { UseApiKeysProps } from "./hooks";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
-export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> = (props) => {
-    const [open, setOpen] = useState(false); 
+export const DeleteApiKey: FC<{
+    sdkAuthKey: string;
+    hookState: UseApiKeysProps;
+}> = (props) => {
+    const [open, setOpen] = useState(false);
 
-    const handleDeleteApiKey = async () => {  
+    const handleDeleteApiKey = async () => {
         const success = await props.hookState.deleteApiKey(props.sdkAuthKey);
 
         if (success) {
@@ -27,9 +30,9 @@ export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> 
                 type="button"
                 className="inline-flex items-center rounded-md bg-white px-2.5 
                 py-1.5 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-                 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white" 
+                 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
             >
-                <TrashIcon className="h-6 w-6 text-red-600"/>
+                <TrashIcon className="h-6 w-6 text-red-600" />
             </button>
 
             <Transition.Root show={open} as={Fragment}>
@@ -57,25 +60,34 @@ export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> 
                                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white 
-                                px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                                <Dialog.Panel
+                                    className="relative transform overflow-hidden rounded-lg bg-white 
+                                px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+                                >
                                     <div>
                                         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-                                            <XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                                            <XMarkIcon
+                                                className="h-6 w-6 text-red-600"
+                                                aria-hidden="true"
+                                            />
                                         </div>
                                         <div className="mt-3 sm:mt-5 text-lg">
-                                            <Dialog.Title as="h3" className="text-lg text-center font-semibold leading-6 text-gray-900 mb-5">
+                                            <Dialog.Title
+                                                as="h3"
+                                                className="text-lg text-center font-semibold leading-6 text-gray-900 mb-5"
+                                            >
                                                 Delete API Key
-                                            </Dialog.Title> 
+                                            </Dialog.Title>
                                             <p>
-                                                This API key will immediately be disabled.
-                                                API requests made using this key will be rejected,
-                                                which could break any functionality depending on it.
-                                            </p> 
+                                                This API key will immediately be
+                                                disabled. API requests made
+                                                using this key will be rejected,
+                                                which could break any
+                                                functionality depending on it.
+                                            </p>
                                         </div>
                                     </div>
                                     <div className="mt-5 sm:mt-6">
-
                                         <button
                                             type="button"
                                             className="inline-flex w-full justify-center rounded-md bg-red-600 
@@ -92,7 +104,6 @@ export const DeleteApiKey: FC<{sdkAuthKey: string, hookState: UseApiKeysProps}> 
                     </div>
                 </Dialog>
             </Transition.Root>
-
         </>
     );
 };

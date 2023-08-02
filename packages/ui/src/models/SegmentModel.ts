@@ -1,6 +1,6 @@
 import { BaseModel } from "./BaseModel";
 
-export type SegmentModel = { 
+export type SegmentModel = {
     matching: string;
     conditions: ConditionModel[];
 } & BaseModel;

@@ -9,31 +9,30 @@ import { SdkAuthModel } from "../../models/sdkAuthModel";
 
 export enum SupportedDb {
     Mongo = "mongo",
-    NeDB = "nedb"
+    NeDB = "nedb",
 }
 
 const initValues = {
     users: null,
     flags: null,
-    segments: null
+    segments: null,
 };
 
 export type MongoManager = {
-    flags: Collection<FlagModel> | null,
-    users: Collection<UserModel> | null,
-    segments: Collection<SegmentModel> | null,
-    sdkAuths: Collection<SdkAuthModel> | null,
+    flags: Collection<FlagModel> | null;
+    users: Collection<UserModel> | null;
+    segments: Collection<SegmentModel> | null;
+    sdkAuths: Collection<SdkAuthModel> | null;
 };
 
 export type NeDbManager = {
-    flags: AsyncNedb<FlagModel> | null,
-    users: AsyncNedb<UserModel> | null,
-    segments: AsyncNedb<SegmentModel> | null
-    sdkAuths: AsyncNedb<SdkAuthModel> | null,
+    flags: AsyncNedb<FlagModel> | null;
+    users: AsyncNedb<UserModel> | null;
+    segments: AsyncNedb<SegmentModel> | null;
+    sdkAuths: AsyncNedb<SdkAuthModel> | null;
 };
 
 export type DataStoreManager = {
-
     // flags functions
     getFlags: () => Promise<FlagModel[]>;
     getFlagByName: (name: string) => Promise<FlagModel>;
@@ -58,12 +57,12 @@ export type DataStoreManager = {
     updateUser: (user: UserModel) => Promise<boolean>;
     deleteUser: (user: UserModel) => Promise<boolean>;
 
-     // api auth functions
-     getSdkAuths: () => Promise<SdkAuthModel[]>;
-     getSdkAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
-     getSdkAuthByApiKey: (authKey: string) => Promise<SdkAuthModel>;
-     addSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
-     deleteSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
+    // api auth functions
+    getSdkAuths: () => Promise<SdkAuthModel[]>;
+    getSdkAuthByKey: (authKey: string) => Promise<SdkAuthModel>;
+    getSdkAuthByApiKey: (authKey: string) => Promise<SdkAuthModel>;
+    addSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
+    deleteSdkAuth: (apiKey: SdkAuthModel) => Promise<boolean>;
 };
 
 type DbManager = MongoManager | NeDbManager;
@@ -77,8 +76,9 @@ export const getDbManager = (id: SupportedDb): DbManager => {
     }
 };
 
-export const getDataStore = async (id: SupportedDb): Promise<DataStoreManager> => {
-
+export const getDataStore = async (
+    id: SupportedDb,
+): Promise<DataStoreManager> => {
     switch (id) {
         case SupportedDb.Mongo:
             return createMongoDataStore();

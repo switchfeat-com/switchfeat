@@ -19,9 +19,7 @@
             "env": {
                 "node": true
             },
-            "files": [
-                ".eslintrc.{js,cjs}"
-            ],
+            "files": [".eslintrc.{js,cjs}"],
             "parserOptions": {
                 "sourceType": "script"
             }
@@ -29,14 +27,9 @@
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "project": [
-            "./tsconfig.json"
-        ]
+        "project": ["./tsconfig.json"]
     },
-    "plugins": [
-        "react",
-        "import"
-    ],
+    "plugins": ["react", "import"],
     "rules": {
         "@typescript-eslint/quotes": "off",
         "react/react-in-jsx-scope": "off",
@@ -51,10 +44,7 @@
             "version": "detect"
         },
         "import/parsers": {
-            "@typescript-eslint/parser": [
-                ".ts",
-                ".tsx"
-            ]
+            "@typescript-eslint/parser": [".ts", ".tsx"]
         },
         "import/resolver": {
             "typescript": {

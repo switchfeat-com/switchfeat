@@ -1,41 +1,41 @@
 {
-  "name": "@switchfeat/core",
-  "version": "0.0.1",
-  "description": "The core package for switchfeat",
-  "keywords": [
-    "feature-flags",
-    "feature-toggles",
-    "switchfeat"
-  ],
-  "author": "dev-bre <hey@devbre.com>",
-  "homepage": "https://switchfeat.com",
-  "license": "ISC",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/switchfeat-com/switchfeat.git"
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "tsc": "tsc",
-    "start": "node dist/index.js",
-    "test": "node ./__tests__/core.test.js",
-    "lint": "eslint . --ext .js,.ts",
-    "format": "prettier --write 'src/**/*.{js,ts}'"
-  },
-  "bugs": {
-    "url": "https://github.com/switchfeat-com/switchfeat/issues"
-  },
-  "dependencies": {
-    "nedb": "^1.8.0",
-    "nedb-async": "^0.1.6",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@types/nedb": "^1.8.13",
-    "@types/uuid": "^9.0.2"
-  }
+    "name": "@switchfeat/core",
+    "version": "0.0.1",
+    "description": "The core package for switchfeat",
+    "keywords": [
+        "feature-flags",
+        "feature-toggles",
+        "switchfeat"
+    ],
+    "author": "dev-bre <hey@devbre.com>",
+    "homepage": "https://switchfeat.com",
+    "license": "ISC",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/switchfeat-com/switchfeat.git"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "tsc": "tsc",
+        "start": "node dist/index.js",
+        "test": "node ./__tests__/core.test.js",
+        "lint": "eslint . --ext .js,.ts",
+        "format": "prettier --write 'src/**/*.{js,ts}'"
+    },
+    "bugs": {
+        "url": "https://github.com/switchfeat-com/switchfeat/issues"
+    },
+    "dependencies": {
+        "nedb": "^1.8.0",
+        "nedb-async": "^0.1.6",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "@types/nedb": "^1.8.13",
+        "@types/uuid": "^9.0.2"
+    }
 }

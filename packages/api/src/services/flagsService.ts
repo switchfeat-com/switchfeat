@@ -2,16 +2,21 @@ import { FlagModel, dbManager, RuleModel } from "@switchfeat/core";
 
 let dataStoreManager: dbManager.DataStoreManager;
 
-export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>) => {
-    manager.then(data => dataStoreManager = data);
+export const setDataStoreManager = (
+    manager: Promise<dbManager.DataStoreManager>,
+) => {
+    manager.then((data) => (dataStoreManager = data));
 };
 
 export const getFlags = async (): Promise<FlagModel[]> => {
     return await dataStoreManager.getFlags();
 };
 
-export const getFlag = async (search: { name?: string, id?: string, key?: string }): Promise<FlagModel | null> => {
-
+export const getFlag = async (search: {
+    name?: string;
+    id?: string;
+    key?: string;
+}): Promise<FlagModel | null> => {
     if (search.name) {
         return await dataStoreManager.getFlagByName(search.name);
     }

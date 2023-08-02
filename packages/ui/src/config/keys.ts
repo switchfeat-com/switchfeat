@@ -1,1 +1,1 @@
-export const CLIENT_HOME_PAGE_URL =  "http://localhost:4000";
+export const CLIENT_HOME_PAGE_URL = "http://localhost:4000";
