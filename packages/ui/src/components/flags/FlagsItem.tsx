@@ -8,12 +8,14 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
 import { toast } from 'react-hot-toast';
 import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void }> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const cancelButtonRef = useRef(null);
+    const { doFetch } = useFetch();
 
     const [openEdit, setOpenEdit] = useState(false);
 
@@ -36,33 +38,26 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
         formData.append('flagKey', props.flag.key);
         formData.append('flagStatus', pendingSwitchEnabled.toString());
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: "PUT",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
+            reqBody: formData,
+            onError: (respJson) => {
+                let msg = "Generic error occurred, please try again.";
+                if (respJson.message === "error_input") {
+                    msg = "One or more required information are missing.";
+                } else if (respJson.message === "error_alreadysaved") {
+                    msg = "There is already a flag with the same name.";
+                }
+                toast.error(msg);
             },
-            body: formData
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
+            onSuccess: () => {
                 setEnabled(pendingSwitchEnabled);
                 props.flag.status = pendingSwitchEnabled;
                 setShowConfirmation(false);
                 toast.success(`Flag status updated!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
-            } else {
-                let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
-                    msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
-                    msg = "There is already a flag with the same name.";
-                }
-                console.log(msg);
             }
-        }).catch(error => { console.log(error); });
+        });
     };
 
     const cancelFlagUpdate = (): void => {

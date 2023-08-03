@@ -5,6 +5,7 @@ import { generateGuid } from "../../helpers/entityHelper";
 import { SegmentModel } from "../../models/SegmentModel";
 import { useEffect, useState } from "react";
 import * as keys from "../../config/keys";
+import { useFetch } from "../../hooks/useFetch";
 
 export type RulesBoardProps = {
     toEditRule?: RuleModel;
@@ -15,6 +16,7 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
 
     const [selectedSegment, setSelectedSegment] = useState<SegmentModel>();
     const [segments, setSegments] = useState<SegmentModel[]>([]);
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (props.toEditRule) {
@@ -23,36 +25,30 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
     }, [props.toEditRule]);
 
     useEffect(() => {
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            }
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            setSegments([]);
-            const allSegments: SegmentModel[] = [];
-            respJson.data.forEach((item: SegmentModel) => {
-                allSegments.push({
-                    name: item.name,
-                    description: item.description,
-                    matching: item.matching,
-                    conditions: item.conditions,
-                    createdOn: item.createdOn,
-                    updatedOn: item.updatedOn,
-                    key: item.key,
+        doFetch<SegmentModel[], unknown>({
+            onSuccess: (fetchResp: SegmentModel[]) => {
+                setSegments([]);
+                const allSegments: SegmentModel[] = [];
+                fetchResp.forEach((item: SegmentModel) => {
+                    allSegments.push({
+                        name: item.name,
+                        description: item.description,
+                        matching: item.matching,
+                        conditions: item.conditions,
+                        createdOn: item.createdOn,
+                        updatedOn: item.updatedOn,
+                        key: item.key,
+                    });
                 });
-            });
-
-            setSegments(allSegments);
-            setSelectedSegment(allSegments[0]);
-        }).catch(ex => { console.log(ex); });
-    }, []);
+    
+                setSegments(allSegments);
+                setSelectedSegment(allSegments[0]);
+            },
+            onError: () => { },
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
+            method: "GET"
+          });
+    }, [doFetch]);
 
 
     const addRule = () => {

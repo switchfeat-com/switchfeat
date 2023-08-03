@@ -9,6 +9,7 @@ import { RulesBoard } from "./RulesBoard";
 import { RulesItem } from "./RulesItem";
 import { toast } from 'react-hot-toast';
 import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 
 export interface CreateOrUpdateFlagDialogProps {
@@ -27,6 +28,7 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
     const [enabled, setEnabled] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [rules, setRules] = useState<RuleModel[]>([]);
+    const { doFetch } = useFetch();
 
 
     useEffect(() => {
@@ -57,32 +59,25 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
             formData.append('flagDescription', descriptionRef.current.value);
         }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+        doFetch<unknown, {message: string}>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: (props.flag) ? "PUT" : "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            },
-            body: formData
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
-                props.refreshAll();
-                props.setOpen(false);
-                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
-            } else {
+            reqBody: formData,
+            onError: (respJson) => {
                 let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
+                if (respJson.message === "error_input") {
                     msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
+                } else if (respJson.message === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
                 toast.error(msg);
+            },
+            onSuccess: () =>{
+                props.refreshAll();
+                props.setOpen(false);
+                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
             }
-        }).catch(error => { console.log(error); });
+        });
     };
 
     const onConfirmDelete = (): void => {
@@ -91,26 +86,18 @@ export const CreateOrUpdateFlagDialog: React.FC<CreateOrUpdateFlagDialogProps> =
             formData.append('flagKey', props.flag.key);
         }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+        doFetch<unknown, {message: string}>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: "DELETE",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
+            reqBody: formData,
+            onError: () => {
+                toast.error("Error deleting flag.");
             },
-            body: formData,
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
+            onSuccess: () =>{
                 setShowDelete(false);
                 props.refreshAll();
                 toast.success("Flag deleted.");
             }
-        }).catch(error => {
-            console.log(error);
-            toast.error("Error deleting flag.");
         });
     };
 

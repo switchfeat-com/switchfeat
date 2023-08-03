@@ -8,6 +8,7 @@ import { ConditionsItem } from "./ConditionsItem";
 import { ConfirmationDialog, ConfirmationDialogProps } from "../shared/ConfirmationDialog";
 import { toast } from 'react-hot-toast';
 import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 
 export type CreateOrUpdateSegmentDialogProps = {
@@ -27,6 +28,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
     const [showDelete, setShowDelete] = useState(false);
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (props.segment) {
@@ -83,32 +85,25 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
             formData.append('segmentDescription', descriptionRef.current.value);
         }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: (props.segment) ? "PUT" : "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            },
-            body: formData
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
-                props.refreshAll();
-                props.setOpen(false);
-                toast.success(`Segment operation successful!`, { subMessage: `Segment:  ${props.segment?.name}`} as Toast);
-            } else {
+            reqBody: formData,
+            onError: (respJson) => {
                 let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
+                if (respJson.message === "error_input") {
                     msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
+                } else if (respJson.message === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
                 toast.error(msg);
+            },
+            onSuccess: () => {
+                props.refreshAll();
+                props.setOpen(false);
+                toast.success(`Segment operation successful!`, { subMessage: `Segment:  ${props.segment?.name}` } as Toast);
             }
-        }).catch(error => { console.log(error); });
+        });
     };
 
     const MatchingRadio = () => {
@@ -149,24 +144,19 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
         const formData = new FormData();
         formData.append('segmentKey', props.segment.key);
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
+        doFetch<unknown, {message: string}>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: "DELETE",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
+            reqBody: formData,
+            onError: () => {
+                toast.error("Error deleting segment.");
             },
-            body: formData,
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
+            onSuccess: () =>{
                 setShowDelete(false);
-                props.refreshAll(); 
+                props.refreshAll();
                 toast.success("Segment deleted.");
             }
-        }).catch(error => { console.log(error); toast.error("Error deleting segment");});
+        });
     };
 
     const deleteSegmentProps: ConfirmationDialogProps = {
@@ -275,7 +265,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                                             <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition} />
                                                                         </ConditionsItem>
                                                                     ))}
-                                                                     {conditions.length === 0 && (
+                                                                    {conditions.length === 0 && (
                                                                         <div className="text-center text-lg mt-4">No conditions available</div>
                                                                     )}
                                                                 </div>
@@ -285,8 +275,8 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                         </div>
                                                         <div className="pb-6 pt-4">
                                                             <div className="mt-4 flex text-base">
-                                                                <a href="https://docs.switchfeat.com/concepts/segments" target="_blank" rel="noreferrer"  
-                                                                className="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                                                <a href="https://docs.switchfeat.com/concepts/segments" target="_blank" rel="noreferrer"
+                                                                    className="group inline-flex items-center text-gray-500 hover:text-gray-900">
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                                                         aria-hidden="true"
@@ -299,7 +289,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </div>
                                             </div>
                                             <div className="flex flex-shrink-0 justify-end px-4 py-4">
-                                                <button 
+                                                <button
                                                     type="button"
                                                     className="rounded-md bg-white px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                                     onClick={props.onCancel}

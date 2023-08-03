@@ -7,7 +7,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { SegmentModel } from "../models/SegmentModel";
 import { SegmentsItem } from "../components/segments/SegmentsItem";
 import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/segments/CreateOrUpdateSegmentDialog";
-import { UseFetchParams, useFetch } from "../hooks/useFetch";
+import { useFetch } from "../hooks/useFetch";
 
 
 export const Segments: React.FC = () => {
@@ -42,15 +42,13 @@ export const Segments: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchParams: UseFetchParams<SegmentModel[]> = {
+    setLoading(true);
+    doFetch<SegmentModel[], unknown>({
       onSuccess: onFetchSuccess,
       onError: () => { },
       url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
       method: "GET"
-    };
-
-    setLoading(true);
-    doFetch<SegmentModel[]>(fetchParams);
+    });
   }, [doFetch, refreshSegments]); 
 
   const createSegmentProps: CreateOrUpdateSegmentDialogProps = {

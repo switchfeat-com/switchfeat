@@ -7,7 +7,7 @@ import * as keys from "../config/keys";
 import { FlagsItem } from "../components/flags/FlagsItem";
 import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "../components/flags/CreateOrUpdateFlagDialog";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { UseFetchParams, useFetch } from "../hooks/useFetch";
+import { useFetch } from "../hooks/useFetch";
 
 export const Flags: React.FC = () => {
   const [flags, setFlags] = useState<FlagModel[]>([]);
@@ -41,15 +41,13 @@ export const Flags: React.FC = () => {
 
   useEffect(() => {
     
-    const fetchParams: UseFetchParams<FlagModel[]> = {
+    setLoading(true);
+    doFetch<FlagModel[], unknown>({
       onSuccess: onFetchSuccess,
       onError: () => { },
       url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
       method: "GET"
-    };
-
-    setLoading(true);
-    doFetch<FlagModel[]>(fetchParams);
+    });
   }, [doFetch, refreshFlags]);
 
   const createFlagProps: CreateOrUpdateFlagDialogProps = {

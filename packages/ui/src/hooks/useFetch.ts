@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 
-export type UseFetchParams<T> = {
+export type UseFetchParams<T, E> = {
     onSuccess: (data: T) => void;
-    onError: () => void;
+    onError: (error: E) => void;
+    onFinally?: () => void;
     reqBody?: BodyInit;
     url: string;
     method: ("GET" | "POST" | "PUT" | "DELETE");
@@ -11,7 +12,7 @@ export type UseFetchParams<T> = {
 
 export const useFetch = () => { 
     
-    const doFetch = useCallback(<T>(params: UseFetchParams<T>) => { (async () => {
+    const doFetch = useCallback(<T, E>(params: UseFetchParams<T, E>) => { (async () => {
         try {
             const reqHeaders: Record<string, string> = {
                 Accept: "application/json",
@@ -26,12 +27,20 @@ export const useFetch = () => {
                 headers: reqHeaders,
                 body: params.method !== "GET" ? params.reqBody : null
             });
-
-            const respJson = (await resp.json()).data as T;
-            params.onSuccess(respJson);
+            const respJson = await resp.json();
+            if (respJson.success as boolean) {
+                const respData = respJson.data as T;
+                params.onSuccess(respData);
+            } else {
+                const respData = respJson.error as E;
+                params.onError(respData);
+            }
+           
         } catch (ex) {
             console.log(ex);
-            params.onError();
+            params.onError({} as E);
+        } finally {
+            params.onFinally ? params.onFinally() : () => {};
         }
     })(); }, []);
        
