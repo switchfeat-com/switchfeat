@@ -71,20 +71,6 @@ export const sdkAuthRoutesWrapper = (
                 key: apiAuthKey,
             });
 
-            if (!alreadyInDb) {
-                const apiKey = await entityHelper.generateGuid("sk");
-
-                await sdkAuthService.addSdkAuth({
-                    name: keyName,
-                    createdOn: dateHelper.utcNow().toJSDate(),
-                    expiresOn: keyExpiresOn
-                        ? new Date(keyExpiresOn)
-                        : dateHelper.utcNow().plus({ months: 12 }).toJSDate(),
-                    updatedOn: dateHelper.utcNow().toJSDate(),
-                    key: apiAuthKey,
-                    apiKey: apiKey,
-                });
-
             setSuccessResponse(res, ApiResponseCodes.Success, {apiKey: apiKey}, req);
         } else {
             setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);

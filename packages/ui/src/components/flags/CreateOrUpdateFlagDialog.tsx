@@ -12,7 +12,7 @@ import { RulesBoard } from "./RulesBoard";
 import { RulesItem } from "./RulesItem";
 import { toast } from "react-hot-toast";
 import { Toast } from "../shared/NotificationProvider";
-import { useFetch } from "../../hooks/useFetch";
+
 
 export interface CreateOrUpdateFlagDialogProps {
     open: boolean;
@@ -32,7 +32,7 @@ export const CreateOrUpdateFlagDialog: React.FC<
     const [enabled, setEnabled] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [rules, setRules] = useState<RuleModel[]>([]);
-    const { doFetch } = useFetch();
+
 
     useEffect(() => {
         if (!props.flag || !props.open) {
