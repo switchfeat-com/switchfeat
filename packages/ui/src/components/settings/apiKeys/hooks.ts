@@ -45,7 +45,7 @@ export const useApiKeys = (): UseApiKeysProps => {
             setLoading(false);
         };
 
-        doFetch<SdkAuthModel[]>({
+        doFetch<SdkAuthModel[], unknown>({
             onSuccess: onFetchSuccess,
             onError: () => { },
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,
@@ -79,7 +79,7 @@ export const useApiKeys = (): UseApiKeysProps => {
         formData.append("sdkAuthKey", sdkAuthKey);
 
         try {
-            doFetch<SdkAuthModel[]>({
+            doFetch<SdkAuthModel[], unknown>({
                 onSuccess: () => { doRefreshSdkAuths(); onSuccess();},
                 onError: onError,
                 url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,

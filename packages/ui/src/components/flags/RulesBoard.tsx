@@ -5,6 +5,7 @@ import { generateGuid } from "../../helpers/entityHelper";
 import { SegmentModel } from "../../models/SegmentModel";
 import { useEffect, useState } from "react";
 import * as keys from "../../config/keys";
+import { useFetch } from "../../hooks/useFetch";
 
 export type RulesBoardProps = {
     toEditRule?: RuleModel;
@@ -14,6 +15,7 @@ export type RulesBoardProps = {
 export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
     const [selectedSegment, setSelectedSegment] = useState<SegmentModel>();
     const [segments, setSegments] = useState<SegmentModel[]>([]);
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (props.toEditRule) {
@@ -22,23 +24,11 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
     }, [props.toEditRule]);
 
     useEffect(() => {
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
-            },
-        })
-            .then(async (resp) => {
-                return resp.json();
-            })
-            .then((respJson) => {
+        doFetch<SegmentModel[], unknown>({
+            onSuccess: (fetchResp: SegmentModel[]) => {
                 setSegments([]);
                 const allSegments: SegmentModel[] = [];
-                respJson.data.forEach((item: SegmentModel) => {
+                fetchResp.forEach((item: SegmentModel) => {
                     allSegments.push({
                         name: item.name,
                         description: item.description,
@@ -49,14 +39,15 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
                         key: item.key,
                     });
                 });
-
+    
                 setSegments(allSegments);
                 setSelectedSegment(allSegments[0]);
-            })
-            .catch((ex) => {
-                console.log(ex);
-            });
-    }, []);
+            },
+            onError: () => { },
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
+            method: "GET"
+          });
+    }, [doFetch]);
 
     const addRule = () => {
         if (!selectedSegment) {
