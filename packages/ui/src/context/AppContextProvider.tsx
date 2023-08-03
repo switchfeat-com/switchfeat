@@ -32,29 +32,30 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (
             onSuccess: (fetchResp) => {
                 setUserData({
                     authenticated: true,
-                    userData: fetchResp
+                    userData: fetchResp,
                 });
             },
             onError: () => {
                 setUserData({
-                    authenticated: false
+                    authenticated: false,
                 });
             },
             onFinally: () => setLoadingInitial(false),
             url: `${keys.CLIENT_HOME_PAGE_URL}/auth/is-auth/`,
-            method: "GET"
+            method: "GET",
         });
     }, [doFetch]);
 
     return (
-        <appContext.Provider value={{
-            authContext: {
-                userData,
-                loginClick: handleLoginClick,
-                logoutClick: handleLogoutClick
-            }
-
-        }}>
+        <appContext.Provider
+            value={{
+                authContext: {
+                    userData,
+                    loginClick: handleLoginClick,
+                    logoutClick: handleLogoutClick,
+                },
+            }}
+        >
             {!loadingInitial && props.children}
         </appContext.Provider>
     );

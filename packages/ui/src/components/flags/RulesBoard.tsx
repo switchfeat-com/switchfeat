@@ -39,14 +39,14 @@ export const RulesBoard: React.FC<RulesBoardProps> = (props) => {
                         key: item.key,
                     });
                 });
-    
+
                 setSegments(allSegments);
                 setSelectedSegment(allSegments[0]);
             },
-            onError: () => { },
+            onError: () => {},
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
-            method: "GET"
-          });
+            method: "GET",
+        });
     }, [doFetch]);
 
     const addRule = () => {

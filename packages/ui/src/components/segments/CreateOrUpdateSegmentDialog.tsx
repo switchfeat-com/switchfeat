@@ -90,7 +90,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<
 
         doFetch<unknown, { message: string }>({
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
-            method: (props.segment) ? "PUT" : "POST",
+            method: props.segment ? "PUT" : "POST",
             reqBody: formData,
             onError: (respJson) => {
                 let msg = "Generic error occurred, please try again.";
@@ -104,8 +104,10 @@ export const CreateOrUpdateSegmentDialog: React.FC<
             onSuccess: () => {
                 props.refreshAll();
                 props.setOpen(false);
-                toast.success(`Segment operation successful!`, { subMessage: `Segment:  ${props.segment?.name}` } as Toast);
-            }
+                toast.success(`Segment operation successful!`, {
+                    subMessage: `Segment:  ${props.segment?.name}`,
+                } as Toast);
+            },
         });
     };
 
@@ -153,18 +155,18 @@ export const CreateOrUpdateSegmentDialog: React.FC<
         const formData = new FormData();
         formData.append("segmentKey", props.segment.key);
 
-        doFetch<unknown, {message: string}>({
+        doFetch<unknown, { message: string }>({
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: "DELETE",
             reqBody: formData,
             onError: () => {
                 toast.error("Error deleting segment.");
             },
-            onSuccess: () =>{
+            onSuccess: () => {
                 setShowDelete(false);
                 props.refreshAll();
                 toast.success("Segment deleted.");
-            }
+            },
         });
     };
 
@@ -326,21 +328,56 @@ export const CreateOrUpdateSegmentDialog: React.FC<
                                                                     }
                                                                 />
                                                                 <div className="space-y-4 mt-4">
-                                                                    {conditions.length > 0 && conditions.map((item: ConditionModel, idx) => (
-                                                                        <ConditionsItem condition={item} key={idx} removeCondition={() => handleRemoveCondition(item)} >
-                                                                            <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition} />
-                                                                        </ConditionsItem>
-                                                                    ))}
-                                                                    {conditions.length === 0 && (
-                                                                        <div className="text-center text-lg mt-4">No conditions available</div>
+                                                                    {conditions.length >
+                                                                        0 &&
+                                                                        conditions.map(
+                                                                            (
+                                                                                item: ConditionModel,
+                                                                                idx,
+                                                                            ) => (
+                                                                                <ConditionsItem
+                                                                                    condition={
+                                                                                        item
+                                                                                    }
+                                                                                    key={
+                                                                                        idx
+                                                                                    }
+                                                                                    removeCondition={() =>
+                                                                                        handleRemoveCondition(
+                                                                                            item,
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <ConditionsBoard
+                                                                                        toEditCondition={
+                                                                                            item
+                                                                                        }
+                                                                                        handleAddOrUpdateCondition={
+                                                                                            handleEditCondition
+                                                                                        }
+                                                                                    />
+                                                                                </ConditionsItem>
+                                                                            ),
+                                                                        )}
+                                                                    {conditions.length ===
+                                                                        0 && (
+                                                                        <div className="text-center text-lg mt-4">
+                                                                            No
+                                                                            conditions
+                                                                            available
+                                                                        </div>
                                                                     )}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="pb-6 pt-4">
                                                             <div className="mt-4 flex text-base">
-                                                                <a href="https://docs.switchfeat.com/concepts/segments" target="_blank" rel="noreferrer"
-                                                                    className="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                                                <a
+                                                                    href="https://docs.switchfeat.com/concepts/segments"
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    className="group inline-flex items-center text-gray-500 hover:text-gray-900"
+                                                                >
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                                                         aria-hidden="true"

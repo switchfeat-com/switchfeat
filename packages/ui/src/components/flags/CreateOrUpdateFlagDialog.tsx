@@ -14,7 +14,6 @@ import { toast } from "react-hot-toast";
 import { Toast } from "../shared/NotificationProvider";
 import { useFetch } from "../../hooks/useFetch";
 
-
 export interface CreateOrUpdateFlagDialogProps {
     open: boolean;
     setOpen: (state: boolean) => void;
@@ -64,7 +63,7 @@ export const CreateOrUpdateFlagDialog: React.FC<
 
         doFetch<unknown, { message: string }>({
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
-            method: (props.flag) ? "PUT" : "POST",
+            method: props.flag ? "PUT" : "POST",
             reqBody: formData,
             onError: (respJson) => {
                 let msg = "Generic error occurred, please try again.";
@@ -78,8 +77,10 @@ export const CreateOrUpdateFlagDialog: React.FC<
             onSuccess: () => {
                 props.refreshAll();
                 props.setOpen(false);
-                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}` } as Toast);
-            }
+                toast.success(`Flag operation successful!`, {
+                    subMessage: `Flag:  ${props.flag?.name}`,
+                } as Toast);
+            },
         });
     };
 
@@ -100,7 +101,7 @@ export const CreateOrUpdateFlagDialog: React.FC<
                 setShowDelete(false);
                 props.refreshAll();
                 toast.success("Flag deleted.");
-            }
+            },
         });
     };
 
@@ -343,12 +344,12 @@ export const CreateOrUpdateFlagDialog: React.FC<
                                                                         )}
                                                                     {rules.length ===
                                                                         0 && (
-                                                                            <div className="text-center text-lg mt-4">
-                                                                                No
-                                                                                rules
-                                                                                available
-                                                                            </div>
-                                                                        )}
+                                                                        <div className="text-center text-lg mt-4">
+                                                                            No
+                                                                            rules
+                                                                            available
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>

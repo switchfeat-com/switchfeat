@@ -6,9 +6,11 @@ import * as keys from "../config/keys";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { SegmentModel } from "../models/SegmentModel";
 import { SegmentsItem } from "../components/segments/SegmentsItem";
-import { CreateOrUpdateSegmentDialog, CreateOrUpdateSegmentDialogProps } from "../components/segments/CreateOrUpdateSegmentDialog";
+import {
+    CreateOrUpdateSegmentDialog,
+    CreateOrUpdateSegmentDialogProps,
+} from "../components/segments/CreateOrUpdateSegmentDialog";
 import { useFetch } from "../hooks/useFetch";
-
 
 export const Segments: React.FC = () => {
     const [segments, setSegments] = useState<SegmentModel[]>([]);
@@ -45,16 +47,18 @@ export const Segments: React.FC = () => {
         setLoading(true);
         doFetch<SegmentModel[], unknown>({
             onSuccess: onFetchSuccess,
-            onError: () => { },
+            onError: () => {},
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
-            method: "GET"
+            method: "GET",
         });
     }, [doFetch, refreshSegments]);
 
     const createSegmentProps: CreateOrUpdateSegmentDialogProps = {
         open,
         setOpen,
-        onCancel: () => { setOpen(!open); },
+        onCancel: () => {
+            setOpen(!open);
+        },
         title: "Create segment",
         description: "Create a new user segment.",
         refreshAll: handleRefreshSegments,

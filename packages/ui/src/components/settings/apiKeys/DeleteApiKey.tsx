@@ -4,18 +4,25 @@ import { FC, Fragment, useState } from "react";
 import { UseApiKeysProps } from "./hooks";
 import { toast } from "react-hot-toast";
 
-export const DeleteApiKey: FC<{ sdkAuthKey: string, hookState: UseApiKeysProps }> = (props) => {
+export const DeleteApiKey: FC<{
+    sdkAuthKey: string;
+    hookState: UseApiKeysProps;
+}> = (props) => {
     const [open, setOpen] = useState(false);
 
     const handleDeleteApiKey = async () => {
-        await props.hookState.deleteApiKey(props.sdkAuthKey, () => {
-            toast.error("Error deleting API Key, please try again.");
-            setOpen(false);
-        }, () => {
-            toast.success("API Key successfully deleted.");
-            props.hookState.doRefreshSdkAuths();
-            setOpen(false);
-        });
+        await props.hookState.deleteApiKey(
+            props.sdkAuthKey,
+            () => {
+                toast.error("Error deleting API Key, please try again.");
+                setOpen(false);
+            },
+            () => {
+                toast.success("API Key successfully deleted.");
+                props.hookState.doRefreshSdkAuths();
+                setOpen(false);
+            },
+        );
     };
 
     return (
@@ -74,9 +81,11 @@ export const DeleteApiKey: FC<{ sdkAuthKey: string, hookState: UseApiKeysProps }
                                                 Delete API Key
                                             </Dialog.Title>
                                             <p>
-                                                This API key will immediately be disabled.
-                                                API requests made using this key will be rejected,
-                                                which could break any functionality depending on it.
+                                                This API key will immediately be
+                                                disabled. API requests made
+                                                using this key will be rejected,
+                                                which could break any
+                                                functionality depending on it.
                                             </p>
                                         </div>
                                     </div>

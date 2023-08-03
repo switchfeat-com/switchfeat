@@ -15,14 +15,18 @@ export const CreateApiKey: FC<{ hookState: UseApiKeysProps }> = (props) => {
             return;
         }
 
-        await props.hookState.generateApiKey(nameRef.current.value, () => {
-            toast.error("Error creating API Key, please try again.");
-            setOpen(false);
-        }, (key: SdkAuthModel) => {
-            console.log(key);
-            setKeyGenerated(key.apiKey);
-            toast.success("New API key successfully created.");
-        });
+        await props.hookState.generateApiKey(
+            nameRef.current.value,
+            () => {
+                toast.error("Error creating API Key, please try again.");
+                setOpen(false);
+            },
+            (key: SdkAuthModel) => {
+                console.log(key);
+                setKeyGenerated(key.apiKey);
+                toast.success("New API key successfully created.");
+            },
+        );
     };
 
     const handleGeneratedKeyOnClose = () => {

@@ -62,8 +62,10 @@ export const FlagsItem: React.FC<{
                 setEnabled(pendingSwitchEnabled);
                 props.flag.status = pendingSwitchEnabled;
                 setShowConfirmation(false);
-                toast.success(`Flag status updated!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
-            }
+                toast.success(`Flag status updated!`, {
+                    subMessage: `Flag:  ${props.flag?.name}`,
+                } as Toast);
+            },
         });
     };
 
