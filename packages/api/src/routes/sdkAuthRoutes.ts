@@ -6,6 +6,7 @@ import * as auth from "../managers/auth/passportAuth";
 import {
     ApiResponseCodes,
     dbManager,
+    dateHelper,
     entityHelper,
 } from "@switchfeat/core";
 import {
@@ -53,7 +54,7 @@ export const sdkAuthRoutesWrapper = (
     apiAuthRoutes.post("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
         console.log("received sdkAuth add: " + JSON.stringify(req.body));
         const keyName = req.body.keyName;
-        // const keyExpiresOn = req.body.keyExpiresOn;
+        const keyExpiresOn = req.body.keyExpiresOn;
 
         if (!keyName) {
             setErrorResponse(res, ApiResponseCodes.InputMissing);
@@ -66,8 +67,27 @@ export const sdkAuthRoutesWrapper = (
             key: apiAuthKey,
         });
 
-        if (alreadyInDb) {
-            setSuccessResponse(res, ApiResponseCodes.Success, { apiKey: alreadyInDb.apiKey }, req);
+
+        if (!alreadyInDb) {
+            const apiKey = await entityHelper.generateGuid("sk");
+
+            await sdkAuthService.addSdkAuth({
+                name: keyName,
+                createdOn: dateHelper.utcNow().toJSDate(),
+                expiresOn: keyExpiresOn
+                    ? new Date(keyExpiresOn)
+                    : dateHelper.utcNow().plus({ months: 12 }).toJSDate(),
+                updatedOn: dateHelper.utcNow().toJSDate(),
+                key: apiAuthKey,
+                apiKey: apiKey,
+            });
+
+            setSuccessResponse(
+                res,
+                ApiResponseCodes.Success,
+                { apiKey: apiKey },
+                req,
+            );
         } else {
             setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
         }
