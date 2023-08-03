@@ -5,7 +5,6 @@ import * as sdkAuthService from "../services/sdkAuthService";
 import * as auth from "../managers/auth/passportAuth";
 import {
     ApiResponseCodes,
-    dateHelper,
     dbManager,
     entityHelper,
 } from "@switchfeat/core";
@@ -51,56 +50,52 @@ export const sdkAuthRoutesWrapper = (
         },
     );
 
-    apiAuthRoutes.post(
-        "/api/sdk/auth/",
-        upload.any(),
-        auth.isAuthenticated,
-        async (req: Request, res: Response) => {
-            console.log("received sdkAuth add: " + JSON.stringify(req.body));
-            const keyName = req.body.keyName;
-            const keyExpiresOn = req.body.keyExpiresOn;
+    apiAuthRoutes.post("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
+        console.log("received sdkAuth add: " + JSON.stringify(req.body));
+        const keyName = req.body.keyName;
+        // const keyExpiresOn = req.body.keyExpiresOn;
 
-            if (!keyName) {
-                setErrorResponse(res, ApiResponseCodes.InputMissing);
-                return;
-            }
+        if (!keyName) {
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
+            return;
+        }
 
-            const apiAuthKey = entityHelper.generateGuid("apikey");
+        const apiAuthKey = entityHelper.generateGuid("apikey");
 
-            const alreadyInDb = await sdkAuthService.getSdkAuth({
-                key: apiAuthKey,
-            });
+        const alreadyInDb = await sdkAuthService.getSdkAuth({
+            key: apiAuthKey,
+        });
 
-            setSuccessResponse(res, ApiResponseCodes.Success, {apiKey: apiKey}, req);
+        if (alreadyInDb) {
+            setSuccessResponse(res, ApiResponseCodes.Success, { apiKey: alreadyInDb.apiKey }, req);
         } else {
             setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
         }
-    }); 
-   
+    });
+
 
     apiAuthRoutes.delete("/api/sdk/auth/", upload.any(), auth.isAuthenticated, async (req: Request, res: Response) => {
 
         console.log("received sdkAuth delete: " + JSON.stringify(req.body));
 
-            const apiAuthKey = req.body.sdkAuthKey;
+        const apiAuthKey = req.body.sdkAuthKey;
 
-            if (!apiAuthKey) {
-                setErrorResponse(res, ApiResponseCodes.InputMissing);
-                return;
-            }
+        if (!apiAuthKey) {
+            setErrorResponse(res, ApiResponseCodes.InputMissing);
+            return;
+        }
 
-            const alreadyInDb = await sdkAuthService.getSdkAuth({
-                key: apiAuthKey,
-            });
+        const alreadyInDb = await sdkAuthService.getSdkAuth({
+            key: apiAuthKey,
+        });
 
-            if (alreadyInDb) {
-                await sdkAuthService.deleteSdkAuth(alreadyInDb);
-                setSuccessResponse(res, ApiResponseCodes.Success, null, req);
-            } else {
-                setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
-            }
-        },
-    );
+        if (alreadyInDb) {
+            await sdkAuthService.deleteSdkAuth(alreadyInDb);
+            setSuccessResponse(res, ApiResponseCodes.Success, null, req);
+        } else {
+            setErrorResponse(res, ApiResponseCodes.SdkAuthKeyNotFound);
+        }
+    });
 
     return apiAuthRoutes;
 };

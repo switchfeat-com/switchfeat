@@ -12,6 +12,7 @@ import { RulesBoard } from "./RulesBoard";
 import { RulesItem } from "./RulesItem";
 import { toast } from "react-hot-toast";
 import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 
 export interface CreateOrUpdateFlagDialogProps {
@@ -32,7 +33,7 @@ export const CreateOrUpdateFlagDialog: React.FC<
     const [enabled, setEnabled] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [rules, setRules] = useState<RuleModel[]>([]);
-
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (!props.flag || !props.open) {
@@ -61,7 +62,7 @@ export const CreateOrUpdateFlagDialog: React.FC<
             formData.append("flagDescription", descriptionRef.current.value);
         }
 
-        doFetch<unknown, {message: string}>({
+        doFetch<unknown, { message: string }>({
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: (props.flag) ? "PUT" : "POST",
             reqBody: formData,
@@ -74,10 +75,10 @@ export const CreateOrUpdateFlagDialog: React.FC<
                 }
                 toast.error(msg);
             },
-            onSuccess: () =>{
+            onSuccess: () => {
                 props.refreshAll();
                 props.setOpen(false);
-                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}`} as Toast);
+                toast.success(`Flag operation successful!`, { subMessage: `Flag:  ${props.flag?.name}` } as Toast);
             }
         });
     };
@@ -88,14 +89,14 @@ export const CreateOrUpdateFlagDialog: React.FC<
             formData.append("flagKey", props.flag.key);
         }
 
-        doFetch<unknown, {message: string}>({
+        doFetch<unknown, { message: string }>({
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: "DELETE",
             reqBody: formData,
             onError: () => {
                 toast.error("Error deleting flag.");
             },
-            onSuccess: () =>{
+            onSuccess: () => {
                 setShowDelete(false);
                 props.refreshAll();
                 toast.success("Flag deleted.");
@@ -342,12 +343,12 @@ export const CreateOrUpdateFlagDialog: React.FC<
                                                                         )}
                                                                     {rules.length ===
                                                                         0 && (
-                                                                        <div className="text-center text-lg mt-4">
-                                                                            No
-                                                                            rules
-                                                                            available
-                                                                        </div>
-                                                                    )}
+                                                                            <div className="text-center text-lg mt-4">
+                                                                                No
+                                                                                rules
+                                                                                available
+                                                                            </div>
+                                                                        )}
                                                                 </div>
                                                             </div>
                                                         </div>

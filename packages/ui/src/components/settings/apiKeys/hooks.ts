@@ -21,33 +21,25 @@ export const useApiKeys = (): UseApiKeysProps => {
 
     useEffect(() => {
         setLoading(true);
-
-        const onFetchSuccess = (fetchResp: SdkAuthModel[]) => {
-            setSdkAuths([]);
-            const allData: SdkAuthModel[] = [];
-            fetchResp.forEach((item: SdkAuthModel) => {
-                allData.push({
-                    name: item.name,
-                    description: item.description,
-                    createdOn: item.createdOn,
-                    updatedOn: item.updatedOn,
-                    key: item.key,
-                    expiresOn: item.expiresOn,
-                    apiKey: item.apiKey
-                });
-                setSdkAuths([...allData]);
-                setLoading(false);
-            })
-            .catch((ex) => {
-                console.log(ex);
-            });
-            setSdkAuths([...allData]);
-            setLoading(false);
-        };
-
         doFetch<SdkAuthModel[], unknown>({
-            onSuccess: onFetchSuccess,
+            onSuccess: (fetchResp: SdkAuthModel[]) => {
+                setSdkAuths([]);
+                const allData: SdkAuthModel[] = [];
+                fetchResp.forEach((item: SdkAuthModel) => {
+                    allData.push({
+                        name: item.name,
+                        description: item.description,
+                        createdOn: item.createdOn,
+                        updatedOn: item.updatedOn,
+                        key: item.key,
+                        expiresOn: item.expiresOn,
+                        apiKey: item.apiKey
+                    });
+                    setSdkAuths([...allData]);
+                })
+            },
             onError: () => { },
+            onFinally: () => setLoading(false),
             url: `${keys.CLIENT_HOME_PAGE_URL}/api/sdk/auth/`,
             method: "GET"
         });

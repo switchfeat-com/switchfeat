@@ -11,71 +11,50 @@ import { useFetch } from "../hooks/useFetch";
 
 
 export const Segments: React.FC = () => {
-  const [segments, setSegments] = useState<SegmentModel[]>([]);
-  const [refreshSegments, setRefreshSegments] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState(false);
-  const { doFetch } = useFetch();
+    const [segments, setSegments] = useState<SegmentModel[]>([]);
+    const [refreshSegments, setRefreshSegments] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [open, setOpen] = useState(false);
+    const { doFetch } = useFetch();
 
     const handleRefreshSegments = (): void => {
         setRefreshSegments(!refreshSegments);
     };
 
-  const onFetchSuccess = (fetchResp: SegmentModel[]) => {
-    setSegments([]);
-      const allSegments: SegmentModel[] = [];
-      fetchResp.forEach((item: SegmentModel) => {
-        allSegments.push({
-          name: item.name,
-          description: item.description,
-          matching: item.matching,
-          conditions: item.conditions,
-          createdOn: item.createdOn,
-          updatedOn: item.updatedOn,
-          key: item.key,
+    const onFetchSuccess = (fetchResp: SegmentModel[]) => {
+        setSegments([]);
+        const allSegments: SegmentModel[] = [];
+        fetchResp.forEach((item: SegmentModel) => {
+            allSegments.push({
+                name: item.name,
+                description: item.description,
+                matching: item.matching,
+                conditions: item.conditions,
+                createdOn: item.createdOn,
+                updatedOn: item.updatedOn,
+                key: item.key,
+            });
         });
-      });
 
-                setSegments(allSegments);
+        setSegments(allSegments);
 
-      setLoading(false);
-  };
+        setLoading(false);
+    };
 
-  useEffect(() => {
-    setLoading(true);
-    doFetch<SegmentModel[], unknown>({
-      onSuccess: onFetchSuccess,
-      onError: () => { },
-      url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
-      method: "GET"
-    });
-  }, [doFetch, refreshSegments]); 
-
-  const createSegmentProps: CreateOrUpdateSegmentDialogProps = {
-    open,
-    setOpen,
-    onCancel: () => { setOpen(!open); },
-    title: "Create segment",
-    description: "Create a new user segment.",
-    refreshAll: handleRefreshSegments,
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    doFetch<SegmentModel[], unknown>({
-      onSuccess: onFetchSuccess,
-      onError: () => { },
-      url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
-      method: "GET"
-    });
-  }, [doFetch, refreshSegments]); 
+    useEffect(() => {
+        setLoading(true);
+        doFetch<SegmentModel[], unknown>({
+            onSuccess: onFetchSuccess,
+            onError: () => { },
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
+            method: "GET"
+        });
+    }, [doFetch, refreshSegments]);
 
     const createSegmentProps: CreateOrUpdateSegmentDialogProps = {
         open,
         setOpen,
-        onCancel: () => {
-            setOpen(!open);
-        },
+        onCancel: () => { setOpen(!open); },
         title: "Create segment",
         description: "Create a new user segment.",
         refreshAll: handleRefreshSegments,

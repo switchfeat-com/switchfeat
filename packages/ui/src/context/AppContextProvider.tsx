@@ -37,8 +37,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = (
             },
             onError: () => {
                 setUserData({
-                    authenticated: true,
-                    userData: fetchResp
+                    authenticated: false
                 });
             },
             onFinally: () => setLoadingInitial(false),
