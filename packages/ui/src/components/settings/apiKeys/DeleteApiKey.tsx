@@ -11,16 +11,18 @@ export const DeleteApiKey: FC<{
     const [open, setOpen] = useState(false);
 
     const handleDeleteApiKey = async () => {
-        const success = await props.hookState.deleteApiKey(props.sdkAuthKey);
-
-        if (success) {
-            toast.success("API Key successfully deleted.");
-            props.hookState.doRefreshSdkAuths();
-        } else {
-            toast.error("Error deleting API Key, please try again.");
-        }
-
-        setOpen(false);
+        await props.hookState.deleteApiKey(
+            props.sdkAuthKey,
+            () => {
+                toast.error("Error deleting API Key, please try again.");
+                setOpen(false);
+            },
+            () => {
+                toast.success("API Key successfully deleted.");
+                props.hookState.doRefreshSdkAuths();
+                setOpen(false);
+            },
+        );
     };
 
     return (

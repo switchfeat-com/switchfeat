@@ -11,6 +11,7 @@ import {
 } from "../shared/ConfirmationDialog";
 import { toast } from "react-hot-toast";
 import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 export type CreateOrUpdateSegmentDialogProps = {
     open: boolean;
@@ -30,6 +31,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
     const [showDelete, setShowDelete] = useState(false);
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (props.segment) {
@@ -86,39 +88,27 @@ export const CreateOrUpdateSegmentDialog: React.FC<
             formData.append("segmentDescription", descriptionRef.current.value);
         }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: props.segment ? "PUT" : "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
-            },
-            body: formData,
-        })
-            .then(async (resp) => {
-                return resp.json();
-            })
-            .then((respJson) => {
-                if (respJson.success as boolean) {
-                    props.refreshAll();
-                    props.setOpen(false);
-                    toast.success(`Segment operation successful!`, {
-                        subMessage: `Segment:  ${props.segment?.name}`,
-                    } as Toast);
-                } else {
-                    let msg = "Generic error occurred, please try again.";
-                    if (respJson.errorCode === "error_input") {
-                        msg = "One or more required information are missing.";
-                    } else if (respJson.errorCode === "error_alreadysaved") {
-                        msg = "There is already a flag with the same name.";
-                    }
-                    toast.error(msg);
+            reqBody: formData,
+            onError: (respJson) => {
+                let msg = "Generic error occurred, please try again.";
+                if (respJson.message === "error_input") {
+                    msg = "One or more required information are missing.";
+                } else if (respJson.message === "error_alreadysaved") {
+                    msg = "There is already a flag with the same name.";
                 }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                toast.error(msg);
+            },
+            onSuccess: () => {
+                props.refreshAll();
+                props.setOpen(false);
+                toast.success(`Segment operation successful!`, {
+                    subMessage: `Segment:  ${props.segment?.name}`,
+                } as Toast);
+            },
+        });
     };
 
     const MatchingRadio = () => {
@@ -165,30 +155,19 @@ export const CreateOrUpdateSegmentDialog: React.FC<
         const formData = new FormData();
         formData.append("segmentKey", props.segment.key);
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: "DELETE",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
+            reqBody: formData,
+            onError: () => {
+                toast.error("Error deleting segment.");
             },
-            body: formData,
-        })
-            .then(async (resp) => {
-                return resp.json();
-            })
-            .then((respJson) => {
-                if (respJson.success as boolean) {
-                    setShowDelete(false);
-                    props.refreshAll();
-                    toast.success("Segment deleted.");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                toast.error("Error deleting segment");
-            });
+            onSuccess: () => {
+                setShowDelete(false);
+                props.refreshAll();
+                toast.success("Segment deleted.");
+            },
+        });
     };
 
     const deleteSegmentProps: ConfirmationDialogProps = {

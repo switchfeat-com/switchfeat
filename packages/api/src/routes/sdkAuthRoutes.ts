@@ -5,8 +5,8 @@ import * as sdkAuthService from "../services/sdkAuthService";
 import * as auth from "../managers/auth/passportAuth";
 import {
     ApiResponseCodes,
-    dateHelper,
     dbManager,
+    dateHelper,
     entityHelper,
 } from "@switchfeat/core";
 import {
@@ -88,7 +88,7 @@ export const sdkAuthRoutesWrapper = (
                 setSuccessResponse(
                     res,
                     ApiResponseCodes.Success,
-                    { apikey: apiKey },
+                    { apiKey: apiKey },
                     req,
                 );
             } else {

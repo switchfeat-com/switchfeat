@@ -10,12 +10,33 @@ import {
     CreateOrUpdateFlagDialogProps,
 } from "../components/flags/CreateOrUpdateFlagDialog";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { useFetch } from "../hooks/useFetch";
 
 export const Flags: React.FC = () => {
     const [flags, setFlags] = useState<FlagModel[]>([]);
     const [refreshFlags, setRefreshFlags] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState(false);
+    const { doFetch } = useFetch();
+
+    const onFetchSuccess = (fetchResp: FlagModel[]) => {
+        setFlags([]);
+        const allFlags: FlagModel[] = [];
+        fetchResp.forEach((item: FlagModel) => {
+            allFlags.push({
+                name: item.name,
+                description: item.description,
+                status: item.status,
+                createdOn: item.createdOn,
+                updatedOn: item.updatedOn,
+                key: item.key,
+                rules: item.rules,
+            });
+        });
+
+        setFlags(allFlags);
+        setLoading(false);
+    };
 
     const handleRefreshFlags = (): void => {
         setRefreshFlags(!refreshFlags);
@@ -23,41 +44,13 @@ export const Flags: React.FC = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+        doFetch<FlagModel[], unknown>({
+            onSuccess: onFetchSuccess,
+            onError: () => {},
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
-            },
-        })
-            .then(async (resp) => {
-                return resp.json();
-            })
-            .then((respJson) => {
-                setFlags([]);
-                const allFlags: FlagModel[] = [];
-                respJson.data.forEach((item: FlagModel) => {
-                    allFlags.push({
-                        name: item.name,
-                        description: item.description,
-                        status: item.status,
-                        createdOn: item.createdOn,
-                        updatedOn: item.updatedOn,
-                        key: item.key,
-                        rules: item.rules,
-                    });
-                });
-
-                setFlags(allFlags);
-                setLoading(false);
-            })
-            .catch((ex) => {
-                console.log(ex);
-            });
-    }, [refreshFlags]);
+        });
+    }, [doFetch, refreshFlags]);
 
     const createFlagProps: CreateOrUpdateFlagDialogProps = {
         open,
