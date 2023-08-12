@@ -1,19 +1,17 @@
 {
     "compilerOptions": {
-      "module": "nodenext",
-      "declaration": true,
-      "noImplicitAny": false,
-      "removeComments": true,
-      "noLib": false,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "target": "es2022",
-      "moduleResolution": "node",
-      "strict": true,
-      "sourceMap": true
+        "module": "nodenext",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "ES2022",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "esModuleInterop": true
     },
-    "exclude": [
-      "node_modules",
-      "**/*.spec.ts"
-    ]
-  }
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}

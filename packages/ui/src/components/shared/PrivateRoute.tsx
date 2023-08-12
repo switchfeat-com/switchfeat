@@ -4,15 +4,13 @@ import { Navigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContextProvider";
 
 const PrivateRoute: React.FC<{ children: ReactElement }> = ({ children }) => {
-  const { authContext } = useAppContext();
+    const { authContext } = useAppContext();
 
-  return !(authContext.userData?.authenticated as boolean)
-? (
+    return !(authContext.userData?.authenticated as boolean) ? (
         <Navigate replace to={"/unauthorized"} />
-    )
-: (
-    children
-  );
+    ) : (
+        children
+    );
 };
 
 export default PrivateRoute;

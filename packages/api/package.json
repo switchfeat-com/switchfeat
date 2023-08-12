@@ -1,50 +1,48 @@
 {
-  "name": "@switchfeat/api",
-  "version": "0.0.1",
-  "description": "The api package for switchfeat",
-  "author": "dev-bre <hey@devbre.com>",
-  "homepage": "https://github.com/switchfeat-com/switchfeat#readme",
-  "license": "ISC",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/switchfeat-com/switchfeat.git"
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "start": "node dist/index.js",
-    "dev:start": "SET NODE_ENV=dev& node dist/index.js",
-    "test": "node ./__tests__/api.test.js",
-    "lint": "eslint . --ext .ts"
-  },
-  "bugs": {
-    "url": "https://github.com/switchfeat-com/switchfeat/issues"
-  },
-  "dependencies": {
-    "@switchfeat/core": "0.0.1",
-    "@types/express": "^4.17.17",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "multer": "^1.4.5-lts.1",
-    "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.3",
-    "@types/cors": "^2.8.13",
-    "@types/express-session": "^1.17.7",
-    "@types/multer": "^1.4.7",
-    "@types/passport": "^1.0.12",
-    "@types/passport-google-oauth20": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.44.0"
-  }
+    "name": "@switchfeat/api",
+    "version": "0.0.1",
+    "description": "The api package for switchfeat",
+    "author": "dev-bre <hey@devbre.com>",
+    "homepage": "https://github.com/switchfeat-com/switchfeat#readme",
+    "license": "ISC",
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/switchfeat-com/switchfeat.git"
+    },
+    "scripts": {
+        "tsc": "tsc",
+        "start": "node dist/index.js",
+        "dev:start": "SET NODE_ENV=dev& node dist/index.js",
+        "test": "node ./__tests__/api.test.js",
+        "lint": "eslint . --ext .ts",
+        "format": "prettier --write \"src/**/*.{js,ts}\""
+    },
+    "bugs": {
+        "url": "https://github.com/switchfeat-com/switchfeat/issues"
+    },
+    "dependencies": {
+        "@switchfeat/core": "0.0.1",
+        "@types/express": "^4.17.17",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-session": "^1.17.3",
+        "multer": "^1.4.5-lts.1",
+        "passport": "^0.6.0",
+        "passport-google-oauth20": "^2.0.0",
+        "path": "^0.12.7"
+    },
+    "devDependencies": {
+        "@types/cookie-parser": "^1.4.3",
+        "@types/cors": "^2.8.13",
+        "@types/express-session": "^1.17.7",
+        "@types/multer": "^1.4.7",
+        "@types/passport": "^1.0.12",
+        "@types/passport-google-oauth20": "^2.0.11"
+    }
 }

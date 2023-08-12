@@ -5,26 +5,33 @@ import { QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as keys from "../../config/keys";
 import { ConditionsBoard } from "./ConditionsBoard";
 import { ConditionsItem } from "./ConditionsItem";
-import { ConfirmationDialog, ConfirmationDialogProps } from "../shared/ConfirmationDialog";
-
+import {
+    ConfirmationDialog,
+    ConfirmationDialogProps,
+} from "../shared/ConfirmationDialog";
+import { toast } from "react-hot-toast";
+import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
 export type CreateOrUpdateSegmentDialogProps = {
-    open: boolean,
-    setOpen: (state: boolean) => void,
-    onCancel: () => void,
-    title: string,
-    description: ReactNode,
-    segment?: SegmentModel,
-    refreshAll: () => void
+    open: boolean;
+    setOpen: (state: boolean) => void;
+    onCancel: () => void;
+    title: string;
+    description: ReactNode;
+    segment?: SegmentModel;
+    refreshAll: () => void;
 };
 
-
-export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogProps> = (props) => {
+export const CreateOrUpdateSegmentDialog: React.FC<
+    CreateOrUpdateSegmentDialogProps
+> = (props) => {
     const nameRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
     const [matching, setMatching] = useState("all");
     const [conditions, setConditions] = useState<ConditionModel[]>([]);
     const [showDelete, setShowDelete] = useState(false);
+    const { doFetch } = useFetch();
 
     useEffect(() => {
         if (props.segment) {
@@ -41,7 +48,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
 
     const handleEditCondition = (currCondition: ConditionModel) => {
         const temp = [...conditions];
-        const found = conditions.find(x => x.key === currCondition.key);
+        const found = conditions.find((x) => x.key === currCondition.key);
         if (found) {
             found.context = currCondition.context;
             found.conditionType = currCondition.conditionType;
@@ -55,12 +62,12 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     const handleRemoveCondition = (item: ConditionModel) => {
         console.log("remove condition");
         const temp = [...conditions];
-        setConditions([...temp.filter(x => x !== item)]);
+        setConditions([...temp.filter((x) => x !== item)]);
     };
 
     const supportedMatching = [
-        { id: 'all', title: 'All conditions' },
-        { id: 'any', title: 'Any condition' },
+        { id: "all", title: "All conditions" },
+        { id: "any", title: "Any condition" },
     ];
 
     const handleCreateOrUpdateSegment = (): void => {
@@ -69,50 +76,50 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
         }
 
         const formData = new FormData();
-        formData.append('segmentName', nameRef.current.value);
-        formData.append('segmentMatching', matching);
-        formData.append('segmentConditions', JSON.stringify(conditions));
+        formData.append("segmentName", nameRef.current.value);
+        formData.append("segmentMatching", matching);
+        formData.append("segmentConditions", JSON.stringify(conditions));
 
         if (props.segment) {
-            formData.append('segmentKey', props.segment.key);
+            formData.append("segmentKey", props.segment.key);
         }
 
         if (descriptionRef.current) {
-            formData.append('segmentDescription', descriptionRef.current.value);
+            formData.append("segmentDescription", descriptionRef.current.value);
         }
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
-            method: (props.segment) ? "PUT" : "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
-            },
-            body: formData
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
-                props.refreshAll();
-                props.setOpen(false);
-            } else {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
+            method: props.segment ? "PUT" : "POST",
+            reqBody: formData,
+            onError: (respJson) => {
                 let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
+                if (respJson.message === "error_input") {
                     msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
+                } else if (respJson.message === "error_alreadysaved") {
                     msg = "There is already a flag with the same name.";
                 }
-                console.log(msg);
-            }
-        }).catch(error => { console.log(error); });
+                toast.error(msg);
+            },
+            onSuccess: () => {
+                props.refreshAll();
+                props.setOpen(false);
+                toast.success(`Segment operation successful!`, {
+                    subMessage: `Segment:  ${props.segment?.name}`,
+                } as Toast);
+            },
+        });
     };
 
     const MatchingRadio = () => {
         return (
             <div className="mt-6">
-                <label className="text-base font-semibold text-gray-900 py-4">Matching</label>
-                <p className="text-sm text-gray-500">Select a matching criteria for your segment conditions.</p>
+                <label className="text-base font-semibold text-gray-900 py-4">
+                    Matching
+                </label>
+                <p className="text-sm text-gray-500">
+                    Select a matching criteria for your segment conditions.
+                </p>
                 <fieldset className="mt-4">
                     <legend className="sr-only">Matching conditions</legend>
                     <div className=" sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
@@ -126,7 +133,10 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                     checked={matching === item.id}
                                     className="h-4 w-4 border-gray-300 text-emerald-600 focus:ring-emerald-600"
                                 />
-                                <label htmlFor={item.id} className="ml-3 block text-base font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor={item.id}
+                                    className="ml-3 block text-base font-medium leading-6 text-gray-900"
+                                >
                                     {item.title}
                                 </label>
                             </div>
@@ -138,53 +148,70 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
     };
 
     const onConfirmDelete = (): void => {
-
         if (!props.segment) {
             return;
         }
 
         const formData = new FormData();
-        formData.append('segmentKey', props.segment.key);
+        formData.append("segmentKey", props.segment.key);
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/segments/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/segments/`,
             method: "DELETE",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true",
+            reqBody: formData,
+            onError: () => {
+                toast.error("Error deleting segment.");
             },
-            body: formData,
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
+            onSuccess: () => {
                 setShowDelete(false);
                 props.refreshAll();
-            }
-        }).catch(error => { console.log(error); });
+                toast.success("Segment deleted.");
+            },
+        });
     };
 
     const deleteSegmentProps: ConfirmationDialogProps = {
         show: showDelete,
         setShow: setShowDelete,
         onConfirm: onConfirmDelete,
-        onCancel: () => { setShowDelete(false); },
+        onCancel: () => {
+            setShowDelete(false);
+        },
         title: "Confirm segment delete",
-        description: <>
-            <span>Are you sure you want to </span>
-            <span className="font-bold">delete</span><span> this segment?</span>
-            <div className="py-3"><code className="bg-slate-100 px-2 py-1 rounded-md text-sm">{props.segment?.key}</code></div>
-            <div>This segment will be removed from any flag currently using it.</div>
-        </>,
-        icon: <QuestionMarkCircleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />,
+        description: (
+            <>
+                <span>Are you sure you want to </span>
+                <span className="font-bold">delete</span>
+                <span> this segment?</span>
+                <div className="py-3">
+                    <code className="bg-slate-100 px-2 py-1 rounded-md text-sm">
+                        {props.segment?.key}
+                    </code>
+                </div>
+                <div>
+                    This segment will be removed from any flag currently using
+                    it.
+                </div>
+            </>
+        ),
+        icon: (
+            <QuestionMarkCircleIcon
+                className="h-6 w-6 text-red-600"
+                aria-hidden="true"
+            />
+        ),
         accent: "red",
     };
 
     return (
         <>
             <Transition.Root show={props.open} as={Fragment}>
-                <Dialog as="div" className="relative z-50" onClose={props.setOpen} initialFocus={nameRef}>
+                <Dialog
+                    as="div"
+                    className="relative z-50"
+                    onClose={props.setOpen}
+                    initialFocus={nameRef}
+                >
                     <div className="fixed inset-0" />
 
                     <div className="fixed inset-0 overflow-hidden">
@@ -211,10 +238,19 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                             <button
                                                                 type="button"
                                                                 className="rounded-md bg-emerald-500 text-emerald-200 hover:text-white focus:outline-none focus:ring-2"
-                                                                onClick={() => { props.setOpen(false); }}
+                                                                onClick={() => {
+                                                                    props.setOpen(
+                                                                        false,
+                                                                    );
+                                                                }}
                                                             >
-                                                                <span className="sr-only">Close panel</span>
-                                                                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                                                                <span className="sr-only">
+                                                                    Close panel
+                                                                </span>
+                                                                <XMarkIcon
+                                                                    className="h-6 w-6"
+                                                                    aria-hidden="true"
+                                                                />
                                                             </button>
                                                         </div>
                                                     </div>
@@ -227,15 +263,19 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 <div className="flex flex-1 flex-col justify-between">
                                                     <div className="divide-y divide-gray-400 px-4 sm:px-6">
                                                         <div className="mt-3">
-
                                                             <label
                                                                 htmlFor="project-name"
-                                                                className="block text-base font-medium leading-6 text-gray-900 py-3">
+                                                                className="block text-base font-medium leading-6 text-gray-900 py-3"
+                                                            >
                                                                 Name
                                                             </label>
                                                             <input
                                                                 type="text"
-                                                                defaultValue={props.segment?.name}
+                                                                defaultValue={
+                                                                    props
+                                                                        .segment
+                                                                        ?.name
+                                                                }
                                                                 ref={nameRef}
                                                                 className="block w-full rounded-md border-0 py-2 px-2 text-gray-900
                                                                 shadow-sm ring-1 ring-inset ring-gray-300
@@ -245,49 +285,109 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
 
                                                             <label
                                                                 htmlFor="project-name"
-                                                                className="block text-base font-medium leading-6 text-gray-900 py-3">
-                                                                Description <span className="text-gray-400">(optional)</span>
+                                                                className="block text-base font-medium leading-6 text-gray-900 py-3"
+                                                            >
+                                                                Description{" "}
+                                                                <span className="text-gray-400">
+                                                                    (optional)
+                                                                </span>
                                                             </label>
                                                             <input
                                                                 type="text"
-                                                                defaultValue={props.segment?.name}
-                                                                ref={descriptionRef}
+                                                                defaultValue={
+                                                                    props
+                                                                        .segment
+                                                                        ?.name
+                                                                }
+                                                                ref={
+                                                                    descriptionRef
+                                                                }
                                                                 className="block w-full rounded-md border-0 py-2 px-2 text-gray-900
                                                                 shadow-sm ring-1 ring-inset ring-gray-300
                                                                  placeholder:text-gray-400 focus:ring-2 focus:ring-inset
                                                                  focus:ring-emerald-600 sm:text-base sm:leading-6"
                                                             />
 
-
                                                             <MatchingRadio />
 
                                                             <div className="mt-6">
-                                                                <label className="text-base font-semibold text-gray-900">Conditions</label>
-                                                                <p className="text-sm text-gray-500">Conditions get evaluate based on the selected matching criteria.</p>
-                                                                <ConditionsBoard handleAddOrUpdateCondition={handleAddCondition} />
+                                                                <label className="text-base font-semibold text-gray-900">
+                                                                    Conditions
+                                                                </label>
+                                                                <p className="text-sm text-gray-500">
+                                                                    Conditions
+                                                                    get evaluate
+                                                                    based on the
+                                                                    selected
+                                                                    matching
+                                                                    criteria.
+                                                                </p>
+                                                                <ConditionsBoard
+                                                                    handleAddOrUpdateCondition={
+                                                                        handleAddCondition
+                                                                    }
+                                                                />
                                                                 <div className="space-y-4 mt-4">
-                                                                    {conditions.length > 0 && conditions.map((item: ConditionModel, idx) => (
-                                                                        <ConditionsItem condition={item} key={idx} removeCondition={() => handleRemoveCondition(item)} >
-                                                                            <ConditionsBoard toEditCondition={item} handleAddOrUpdateCondition={handleEditCondition} />
-                                                                        </ConditionsItem>
-                                                                    ))}
-                                                                     {conditions.length === 0 && (
-                                                                        <div className="text-center text-lg mt-4">No conditions available</div>
+                                                                    {conditions.length >
+                                                                        0 &&
+                                                                        conditions.map(
+                                                                            (
+                                                                                item: ConditionModel,
+                                                                                idx,
+                                                                            ) => (
+                                                                                <ConditionsItem
+                                                                                    condition={
+                                                                                        item
+                                                                                    }
+                                                                                    key={
+                                                                                        idx
+                                                                                    }
+                                                                                    removeCondition={() =>
+                                                                                        handleRemoveCondition(
+                                                                                            item,
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <ConditionsBoard
+                                                                                        toEditCondition={
+                                                                                            item
+                                                                                        }
+                                                                                        handleAddOrUpdateCondition={
+                                                                                            handleEditCondition
+                                                                                        }
+                                                                                    />
+                                                                                </ConditionsItem>
+                                                                            ),
+                                                                        )}
+                                                                    {conditions.length ===
+                                                                        0 && (
+                                                                        <div className="text-center text-lg mt-4">
+                                                                            No
+                                                                            conditions
+                                                                            available
+                                                                        </div>
                                                                     )}
                                                                 </div>
                                                             </div>
-
-
                                                         </div>
                                                         <div className="pb-6 pt-4">
                                                             <div className="mt-4 flex text-base">
-                                                                <a href="https://docs.switchfeat.com/concepts/segments" target="_blank" rel="noreferrer"  
-                                                                className="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                                                <a
+                                                                    href="https://docs.switchfeat.com/concepts/segments"
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    className="group inline-flex items-center text-gray-500 hover:text-gray-900"
+                                                                >
                                                                     <QuestionMarkCircleIcon
                                                                         className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
                                                                         aria-hidden="true"
                                                                     />
-                                                                    <span className="ml-2">Learn more about segments</span>
+                                                                    <span className="ml-2">
+                                                                        Learn
+                                                                        more
+                                                                        about
+                                                                        segments
+                                                                    </span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -295,7 +395,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </div>
                                             </div>
                                             <div className="flex flex-shrink-0 justify-end px-4 py-4">
-                                                <button 
+                                                <button
                                                     type="button"
                                                     className="rounded-md bg-white px-3 py-2 text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                                     onClick={props.onCancel}
@@ -304,7 +404,9 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setShowDelete(true)}
+                                                    onClick={() =>
+                                                        setShowDelete(true)
+                                                    }
                                                     className="ml-4 inline-flex justify-center rounded-md bg-red-700 px-3 py-2
                                                                text-base font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline
                                                                focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
@@ -313,7 +415,9 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={handleCreateOrUpdateSegment}
+                                                    onClick={
+                                                        handleCreateOrUpdateSegment
+                                                    }
                                                     className="ml-4 inline-flex justify-center rounded-md bg-emerald-600 px-3 py-2
                                                                text-base font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline
                                                                focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
@@ -328,7 +432,7 @@ export const CreateOrUpdateSegmentDialog: React.FC<CreateOrUpdateSegmentDialogPr
                         </div>
                     </div>
                 </Dialog>
-            </Transition.Root >
+            </Transition.Root>
 
             <ConfirmationDialog {...deleteSegmentProps} />
         </>

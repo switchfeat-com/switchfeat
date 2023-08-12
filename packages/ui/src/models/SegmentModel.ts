@@ -1,13 +1,9 @@
+import { BaseModel } from "./BaseModel";
 
 export type SegmentModel = {
-    name: string;
-    description?: string;
-    createdOn: string;
-    updatedOn: string;
-    key: string;
     matching: string;
     conditions: ConditionModel[];
-};
+} & BaseModel;
 
 export type ConditionModel = {
     key: string;

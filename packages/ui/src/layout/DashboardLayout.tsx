@@ -1,5 +1,5 @@
-import { Fragment, ReactNode, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, ReactNode, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
     Bars3Icon,
     BellIcon,
@@ -7,30 +7,32 @@ import {
     FlagIcon,
     FolderIcon,
     HomeIcon,
-    XMarkIcon
-} from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+    XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import logo from "../images/logo.png";
-import { classNames } from '../helpers/classHelper';
-import { useLocation } from 'react-router-dom';
+import { classNames } from "../helpers/classHelper";
+import { useLocation } from "react-router-dom";
 
 export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
 
     const navigation = [
-        { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-        { name: 'Flags', href: '/flags', icon: FlagIcon },
-        { name: 'Segments', href: '/segments', icon: FolderIcon },
-        // { name: 'Conditions', href: '/conditions', icon: ArrowsRightLeftIcon }
+        { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
+        { name: "Flags", href: "/flags", icon: FlagIcon },
+        { name: "Segments", href: "/segments", icon: FolderIcon },
     ];
 
     return (
-
-        <div className='max-w-7xl mx-auto'>
+        <div className="max-w-7xl mx-auto">
             {/* Sidebar for mobile component, swap this element with another sidebar if you like */}
             <Transition.Root show={sidebarOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+                <Dialog
+                    as="div"
+                    className="relative z-50 lg:hidden"
+                    onClose={setSidebarOpen}
+                >
                     <Transition.Child
                         as={Fragment}
                         enter="transition-opacity ease-linear duration-300"
@@ -64,9 +66,20 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
                                     leaveTo="opacity-0"
                                 >
                                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                                        <button type="button" className="-m-2.5 p-2.5" onClick={() => { setSidebarOpen(false); }}>
-                                            <span className="sr-only">Close sidebar</span>
-                                            <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                                        <button
+                                            type="button"
+                                            className="-m-2.5 p-2.5"
+                                            onClick={() => {
+                                                setSidebarOpen(false);
+                                            }}
+                                        >
+                                            <span className="sr-only">
+                                                Close sidebar
+                                            </span>
+                                            <XMarkIcon
+                                                className="h-6 w-6 text-white"
+                                                aria-hidden="true"
+                                            />
                                         </button>
                                     </div>
                                 </Transition.Child>
@@ -88,16 +101,20 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
                                                             <a
                                                                 href={item.href}
                                                                 className={classNames(
-                                                                    item.href === location.pathname
-                                                                        ? 'bg-gray-50 text-green-600'
-                                                                        : 'text-gray-700 hover:text-green-600 hover:bg-gray-50',
-                                                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                                                    item.href ===
+                                                                        location.pathname
+                                                                        ? "bg-gray-50 text-green-600"
+                                                                        : "text-gray-700 hover:text-green-600 hover:bg-gray-50",
+                                                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold",
                                                                 )}
                                                             >
                                                                 <item.icon
                                                                     className={classNames(
-                                                                        item.href === location.pathname ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600',
-                                                                        'h-6 w-6 shrink-0'
+                                                                        item.href ===
+                                                                            location.pathname
+                                                                            ? "text-green-600"
+                                                                            : "text-gray-400 group-hover:text-green-600",
+                                                                        "h-6 w-6 shrink-0",
                                                                     )}
                                                                     aria-hidden="true"
                                                                 />
@@ -110,7 +127,7 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
                                             <li className="mt-auto">
                                                 <a
-                                                    href="/dashboard/settings"
+                                                    href="/settings/apikeys"
                                                     className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
                                                 >
                                                     <Cog6ToothIcon
@@ -149,16 +166,20 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
                                             <a
                                                 href={item.href}
                                                 className={classNames(
-                                                    item.href === location.pathname
-                                                        ? 'bg-gray-50 text-green-600'
-                                                        : 'text-gray-700 hover:text-green-600 hover:bg-gray-50',
-                                                    'group flex gap-x-3 rounded-md p-2 text-lg leading-6 font-semibold'
+                                                    item.href ===
+                                                        location.pathname
+                                                        ? "bg-gray-50 text-green-600"
+                                                        : "text-gray-700 hover:text-green-600 hover:bg-gray-50",
+                                                    "group flex gap-x-3 rounded-md p-2 text-lg leading-6 font-semibold",
                                                 )}
                                             >
                                                 <item.icon
                                                     className={classNames(
-                                                        item.href === location.pathname ? 'text-green-600' : 'text-gray-400 group-hover:text-green-600',
-                                                        'h-6 w-6 shrink-0'
+                                                        item.href ===
+                                                            location.pathname
+                                                            ? "text-green-600"
+                                                            : "text-gray-400 group-hover:text-green-600",
+                                                        "h-6 w-6 shrink-0",
                                                     )}
                                                     aria-hidden="true"
                                                 />
@@ -171,8 +192,8 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
                             <li className="mt-auto">
                                 <a
-                                    href="/dashboard/settings"
-                                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
+                                    href="/settings/apikeys"
+                                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-green-600"
                                 >
                                     <Cog6ToothIcon
                                         className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-green-600"
@@ -188,15 +209,28 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
 
             <div className="lg:pl-72 border-r border-gray-200 h-full min-h-screen bg-gray-50">
                 <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4   sm:gap-x-6 sm:px-6 lg:px-8">
-                    <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => { setSidebarOpen(true); }}>
+                    <button
+                        type="button"
+                        className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+                        onClick={() => {
+                            setSidebarOpen(true);
+                        }}
+                    >
                         <span className="sr-only">Open sidebar</span>
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
+                    <div
+                        className="h-6 w-px bg-gray-200 lg:hidden"
+                        aria-hidden="true"
+                    />
 
                     <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                        <form className="relative flex flex-1" action="#" method="GET">
+                        <form
+                            className="relative flex flex-1"
+                            action="#"
+                            method="GET"
+                        >
                             <label htmlFor="search-field" className="sr-only">
                                 Search
                             </label>
@@ -213,17 +247,23 @@ export const DashboardLayout: React.FC<{ children: ReactNode }> = (props) => {
                             />
                         </form>
                         <div className="flex items-center gap-x-4 lg:gap-x-6">
-                            <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-                                <span className="sr-only">View notifications</span>
-                                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                            <button
+                                type="button"
+                                className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                            >
+                                <span className="sr-only">
+                                    View notifications
+                                </span>
+                                <BellIcon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                />
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <main>
-                    {props.children}
-                </main>
+                <main>{props.children}</main>
             </div>
         </div>
     );

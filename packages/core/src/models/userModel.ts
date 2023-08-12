@@ -1,11 +1,7 @@
-import { ObjectId } from 'mongodb';
+import { BaseModel } from "./baseModel";
 
-export interface UserModel {
-    _id?: ObjectId,
-    name: string;
+export type UserModel = {
     email?: string;
-    createdOn: Date;
-    updatedOn: Date;
     isBlocked: boolean;
     imageUrl: string | undefined;
-}
+} & BaseModel;

@@ -5,25 +5,36 @@ import { FlagModel } from "../../models/FlagModel";
 import * as dateHelper from "../../helpers/dateHelper";
 import * as keys from "../../config/keys";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { CreateOrUpdateFlagDialog, CreateOrUpdateFlagDialogProps } from "./CreateOrUpdateFlagDialog";
+import {
+    CreateOrUpdateFlagDialog,
+    CreateOrUpdateFlagDialogProps,
+} from "./CreateOrUpdateFlagDialog";
+import { toast } from "react-hot-toast";
+import { Toast } from "../shared/NotificationProvider";
+import { useFetch } from "../../hooks/useFetch";
 
-export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => void }> = (props) => {
+export const FlagsItem: React.FC<{
+    flag: FlagModel;
+    handleRefreshFlags: () => void;
+}> = (props) => {
     const [enabled, setEnabled] = useState(false);
     const [pendingSwitchEnabled, setPendingSwitchEnabled] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const cancelButtonRef = useRef(null);
+    const { doFetch } = useFetch();
 
     const [openEdit, setOpenEdit] = useState(false);
 
     const editFlagProps: CreateOrUpdateFlagDialogProps = {
         open: openEdit,
         setOpen: setOpenEdit,
-        onCancel: () => { setOpenEdit(false); },
+        onCancel: () => {
+            setOpenEdit(false);
+        },
         title: "Edit flag",
         description: "Update your feature flag.",
         refreshAll: props.handleRefreshFlags,
     };
-
 
     useEffect(() => {
         setEnabled(props.flag.status);
@@ -31,35 +42,31 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
 
     const confirmFlagUpdate = (): void => {
         const formData = new FormData();
-        formData.append('flagKey', props.flag.key);
-        formData.append('flagStatus', pendingSwitchEnabled.toString());
+        formData.append("flagKey", props.flag.key);
+        formData.append("flagStatus", pendingSwitchEnabled.toString());
 
-        fetch(`${keys.CLIENT_HOME_PAGE_URL}/api/flags/`, {
+        doFetch<unknown, { message: string }>({
+            url: `${keys.CLIENT_HOME_PAGE_URL}/api/flags/`,
             method: "PUT",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Allow-Origin": "true"
+            reqBody: formData,
+            onError: (respJson) => {
+                let msg = "Generic error occurred, please try again.";
+                if (respJson.message === "error_input") {
+                    msg = "One or more required information are missing.";
+                } else if (respJson.message === "error_alreadysaved") {
+                    msg = "There is already a flag with the same name.";
+                }
+                toast.error(msg);
             },
-            body: formData
-        }).then(async resp => {
-            return resp.json();
-        }).then(respJson => {
-            if (respJson.success as boolean) {
+            onSuccess: () => {
                 setEnabled(pendingSwitchEnabled);
                 props.flag.status = pendingSwitchEnabled;
                 setShowConfirmation(false);
-            } else {
-                let msg = "Generic error occurred, please try again.";
-                if (respJson.errorCode === "error_input") {
-                    msg = "One or more required information are missing.";
-                } else if (respJson.errorCode === "error_alreadysaved") {
-                    msg = "There is already a flag with the same name.";
-                }
-                console.log(msg);
-            }
-        }).catch(error => { console.log(error); });
+                toast.success(`Flag status updated!`, {
+                    subMessage: `Flag:  ${props.flag?.name}`,
+                } as Toast);
+            },
+        });
     };
 
     const cancelFlagUpdate = (): void => {
@@ -73,40 +80,57 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
 
     return (
         <>
-            <div className="w-full hover:cursor-pointer" onClick={() => setOpenEdit(!openEdit)} >
+            <div
+                className="w-full hover:cursor-pointer"
+                onClick={() => setOpenEdit(!openEdit)}
+            >
                 <div className="bg-white shadow sm:rounded-lg m-4">
                     <Switch.Group as="div" className="px-4 py-5 sm:p-6">
-
                         <div className=" sm:flex sm:items-start sm:justify-between">
                             <div className="max-w-xl text-base text-gray-500">
-                                <div className="text-base  leading-6 text-gray-900">
-                                    <span className="font-semibold">{props.flag.name}</span> <span> ({props.flag.description})</span>
+                                <div className="text-lg  leading-6 text-gray-900">
+                                    <span className="font-semibold">
+                                        {props.flag.name}
+                                    </span>{" "}
+                                    <span> ({props.flag.description})</span>
                                 </div>
                                 <div className="mt-3 text-left">
-                                    <code className="py-1 rounded-md text-sm">key: {props.flag.key}</code>
-
-
+                                    <code className="py-1 rounded-md text-base">
+                                        key: {props.flag.key}
+                                    </code>
                                 </div>
                             </div>
                             <div className=" sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
                                 <div className="flex flex-col">
-                                    <div className="text-sm text-gray-500"> {dateHelper.formatDateTime(props.flag.createdOn)}</div>
+                                    <div className="text-base text-gray-500">
+                                        {" "}
+                                        {dateHelper.formatDateTime(
+                                            props.flag.createdOn,
+                                            true,
+                                        )}
+                                    </div>
                                     <div className="text-right">
                                         <Switch
                                             checked={enabled}
                                             onClick={(e) => e.stopPropagation()}
-                                            onChange={(checked) => { showConfirmationDialog(checked); }}
+                                            onChange={(checked) => {
+                                                showConfirmationDialog(checked);
+                                            }}
                                             className={classNames(
-                                                enabled ? 'bg-green-600' : 'bg-gray-200',
-                                                'mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2',
-                                                'border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2'
+                                                enabled
+                                                    ? "bg-green-600"
+                                                    : "bg-gray-200",
+                                                "mt-3 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2",
+                                                "border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2",
                                             )}
                                         >
                                             <span
                                                 aria-hidden="true"
                                                 className={classNames(
-                                                    enabled ? 'translate-x-5' : 'translate-x-0',
-                                                    'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                                    enabled
+                                                        ? "translate-x-5"
+                                                        : "translate-x-0",
+                                                    "inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
                                                 )}
                                             />
                                         </Switch>
@@ -120,7 +144,12 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
             <CreateOrUpdateFlagDialog {...editFlagProps} flag={props.flag} />
 
             <Transition.Root show={showConfirmation} as={Fragment}>
-                <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setShowConfirmation}>
+                <Dialog
+                    as="div"
+                    className="relative z-50"
+                    initialFocus={cancelButtonRef}
+                    onClose={setShowConfirmation}
+                >
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -148,17 +177,38 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                         <div className="sm:flex sm:items-start">
                                             <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 sm:mx-0 sm:h-10 sm:w-10">
-                                                <QuestionMarkCircleIcon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
+                                                <QuestionMarkCircleIcon
+                                                    className="h-6 w-6 text-emerald-600"
+                                                    aria-hidden="true"
+                                                />
                                             </div>
                                             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                                                <Dialog.Title
+                                                    as="h3"
+                                                    className="text-lg font-medium leading-6 text-gray-900"
+                                                >
                                                     Confirm flag update
                                                 </Dialog.Title>
                                                 <div className="mt-2">
                                                     <p className="text-base text-gray-500">
-                                                        <span>Are you sure you want to</span> <span className="font-bold"> {`${pendingSwitchEnabled ? 'activate' : 'deactivate'}`}</span>  <span>this feature? Your changes will be immediately applied.</span>
+                                                        <span>
+                                                            Are you sure you
+                                                            want to
+                                                        </span>{" "}
+                                                        <span className="font-bold">
+                                                            {" "}
+                                                            {`${
+                                                                pendingSwitchEnabled
+                                                                    ? "activate"
+                                                                    : "deactivate"
+                                                            }`}
+                                                        </span>{" "}
+                                                        <span>
+                                                            this feature? Your
+                                                            changes will be
+                                                            immediately applied.
+                                                        </span>
                                                     </p>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +219,9 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                                             className="inline-flex w-full justify-center rounded-md border border-transparent
                                             bg-emerald-600 px-4 py-2 text-base font-medium text-white shadow-sm
                                             hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                            onClick={() => { confirmFlagUpdate(); }}
+                                            onClick={() => {
+                                                confirmFlagUpdate();
+                                            }}
                                         >
                                             Apply
                                         </button>
@@ -178,7 +230,9 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                                             className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2
                                             text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2
                                             focus:ring-emerald-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                            onClick={() => { cancelFlagUpdate(); }}
+                                            onClick={() => {
+                                                cancelFlagUpdate();
+                                            }}
                                             ref={cancelButtonRef}
                                         >
                                             Cancel
@@ -190,7 +244,6 @@ export const FlagsItem: React.FC<{ flag: FlagModel, handleRefreshFlags: () => vo
                     </div>
                 </Dialog>
             </Transition.Root>
-
         </>
     );
 };

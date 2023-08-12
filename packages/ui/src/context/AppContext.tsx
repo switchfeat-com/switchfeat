@@ -21,7 +21,11 @@ export const initialState: AppContext = {
         userData: {
             authenticated: false,
         },
-        loginClick: () => { throw Error(); },
-        logoutClick: () => { throw Error(); },
-    }
+        loginClick: () => {
+            throw Error();
+        },
+        logoutClick: () => {
+            throw Error();
+        },
+    },
 };

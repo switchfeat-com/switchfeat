@@ -2,12 +2,16 @@ import { dbManager, UserModel } from "@switchfeat/core";
 
 let dataStoreManager: dbManager.DataStoreManager;
 
-export const setDataStoreManager = (manager: Promise<dbManager.DataStoreManager>) => {
-    manager.then(data => dataStoreManager = data);
+export const setDataStoreManager = (
+    manager: Promise<dbManager.DataStoreManager>,
+) => {
+    manager.then((data) => (dataStoreManager = data));
 };
 
-export const getUser = async (search: { userId?: string, email?: string }): Promise<UserModel | null> => {
-
+export const getUser = async (search: {
+    userId?: string;
+    email?: string;
+}): Promise<UserModel | null> => {
     if (search.userId) {
         return await dataStoreManager.getUser(search.userId);
     }
@@ -19,18 +23,16 @@ export const getUser = async (search: { userId?: string, email?: string }): Prom
     return null;
 };
 
-export const addUser = async (user: UserModel ) : Promise<boolean> => {
-     
-    if (!await getUser({email: user.email})) {
+export const addUser = async (user: UserModel): Promise<boolean> => {
+    if (!(await getUser({ email: user.email }))) {
         return await dataStoreManager.addUser(user);
     }
 
     return false;
 };
 
-export const updateUser = async (user: UserModel ) : Promise<boolean> => {
-     
-    if (await getUser({email: user.email})) {
+export const updateUser = async (user: UserModel): Promise<boolean> => {
+    if (await getUser({ email: user.email })) {
         return await dataStoreManager.updateUser(user);
     }
 
