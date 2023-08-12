@@ -10,7 +10,7 @@ const AuthLayout = () => {
                     <Sidebar />
                 </div>
             </aside>
-            <div className="w-[calc(100vw_-_240px)] p-6">
+            <div className="w-[calc(100vw_-_240px)] p-6 max-w-6xl mx-auto">
                 <Outlet />
             </div>
         </div>
