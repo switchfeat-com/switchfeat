@@ -8,6 +8,8 @@ import { Dashboard } from "./pages/Dashboard";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import { NotificationProvider } from "./components/shared/NotificationProvider";
 import { ApiKeys } from "./components/settings/apiKeys/ApiKeys";
+import Dashboard1 from "./pages/Dashboard1";
+import AuthLayout from "./components/shared/AuthLayout";
 
 const App: React.FC = () => {
     return (
@@ -48,6 +50,9 @@ const App: React.FC = () => {
                                 </PrivateRoute>
                             }
                         />
+                        <Route element={<AuthLayout />}>
+                            <Route path="dashboard1" element={<Dashboard1 />} />
+                        </Route>
                     </Routes>
                 </BrowserRouter>
             </NotificationProvider>
