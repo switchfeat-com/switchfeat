@@ -51,7 +51,10 @@ const App: React.FC = () => {
                             }
                         />
                         <Route element={<AuthLayout />}>
-                            <Route path="dashboard1" element={<Dashboard1 />} />
+                            <Route
+                                path="/dashboard1"
+                                element={<Dashboard1 />}
+                            />
                         </Route>
                     </Routes>
                 </BrowserRouter>
