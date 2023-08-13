@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
-import { DashboardLayout } from "../layout/DashboardLayout";
 import { SectionEmptyState } from "../components/shared/SectionEmptyState";
 import { FlagModel } from "../models/FlagModel";
 import * as keys from "../config/keys";
@@ -81,37 +80,35 @@ export const Flags: React.FC = () => {
     };
 
     return (
-        <DashboardLayout>
-            <>
-                {" "}
-                {!loading && (
-                    <>
-                        {flags.length === 0 && (
-                            <SectionEmptyState type="flags">
+        <>
+            {" "}
+            {!loading && (
+                <>
+                    {flags.length === 0 && (
+                        <SectionEmptyState type="flags">
+                            {" "}
+                            <CreateFlagButton />{" "}
+                        </SectionEmptyState>
+                    )}
+                    {flags.length > 0 && (
+                        <>
+                            <SectionHeader title="Flags">
                                 {" "}
-                                <CreateFlagButton />{" "}
-                            </SectionEmptyState>
-                        )}
-                        {flags.length > 0 && (
-                            <>
-                                <SectionHeader title="Flags">
-                                    {" "}
-                                    <CreateFlagButton />
-                                </SectionHeader>
+                                <CreateFlagButton />
+                            </SectionHeader>
 
-                                {flags.map((item, idx) => (
-                                    <FlagsItem
-                                        key={idx}
-                                        flag={item}
-                                        handleRefreshFlags={handleRefreshFlags}
-                                    />
-                                ))}
-                            </>
-                        )}{" "}
-                    </>
-                )}
-                <CreateOrUpdateFlagDialog {...createFlagProps} />
-            </>
-        </DashboardLayout>
+                            {flags.map((item, idx) => (
+                                <FlagsItem
+                                    key={idx}
+                                    flag={item}
+                                    handleRefreshFlags={handleRefreshFlags}
+                                />
+                            ))}
+                        </>
+                    )}{" "}
+                </>
+            )}
+            <CreateOrUpdateFlagDialog {...createFlagProps} />
+        </>
     );
 };

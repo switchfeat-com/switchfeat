@@ -1,44 +1,67 @@
-import { DashboardLayout } from "../layout/DashboardLayout";
-import logo from "../images/logo.png";
-import { useNavigate } from "react-router-dom";
+import {
+    PresentationChartLineIcon,
+    ShoppingCartIcon,
+    UsersIcon,
+} from "@heroicons/react/20/solid";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
-export const Dashboard: React.FC = () => {
-    const navigate = useNavigate();
-
+const Dashboard = () => {
+    const cards = [
+        {
+            id: 1,
+            statNo: 513,
+            title: "Segments",
+            stat: "12%",
+            icon: <UsersIcon className="w-10 text-emerald-500" />,
+        },
+        {
+            id: 1,
+            statNo: "$7,770",
+            title: "Flags",
+            stat: "16%",
+            icon: <ShoppingCartIcon className="w-10 text-blue-500" />,
+        },
+        {
+            id: 1,
+            statNo: "256%",
+            title: "Rules",
+            stat: "Overflow",
+            icon: <PresentationChartLineIcon className="w-10 text-red-500" />,
+        },
+    ];
     return (
-        <DashboardLayout>
-            <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-                    <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-                        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                                <img
-                                    className="mx-auto h-20 w-20"
-                                    src={logo}
-                                    alt="SwitchFeat"
-                                />
-                                <h2 className="mt-6 text-center text-xl   leading-9 tracking-tight text-gray-900">
-                                    SwitchFeat Dashboard (WIP)
-                                </h2>
-
-                                <div className="mx-auto flex justify-center mt-4">
-                                    <button
-                                        onClick={() => {
-                                            navigate("/flags");
-                                        }}
-                                        type="button"
-                                        className="  items-center rounded-md border
-                                                border-transparent bg-emerald-500 px-3 py-2
-                                                text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-                                    >
-                                        Start from Flags
-                                    </button>
-                                </div>
-                            </div>
+        <div className="flex justify-between gap-6 flex-wrap">
+            {cards.map((el) => (
+                <div className="p-6 bg-white rounded-2xl flex-1" key={el.id}>
+                    <div
+                        className={`text-white bg-${
+                            el.title === "Segments"
+                                ? "emerald"
+                                : el.title === "Flags"
+                                ? "red"
+                                : el.title === "Rules"
+                                ? "yellow"
+                                : ""
+                        }-500 text-xs rounded-full px-3 py-1 flex items-center capitalize gap-2 w-fit mb-3 `}
+                    >
+                        <ChevronUpIcon className="w-[12px] h-[12px]" />
+                        <span>{el.stat}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <p className="text-lg leading-tight text-gray-500">
+                                {el.title}
+                            </p>
+                            <p className="text-3xl leading-tight font-semibold">
+                                {el.statNo}
+                            </p>
                         </div>
+                        {el.icon}
                     </div>
                 </div>
-            </div>
-        </DashboardLayout>
+            ))}
+        </div>
     );
 };
+
+export default Dashboard;
