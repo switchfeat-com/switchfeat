@@ -7,7 +7,7 @@ import DashboardLayout from "../../layout/DashboardLayout";
 const PrivateRoute: React.FC<{ children: ReactElement }> = ({ children }) => {
     const { authContext } = useAppContext();
 
-    return (authContext.userData?.authenticated as boolean) ? (
+    return !(authContext.userData?.authenticated as boolean) ? (
         <Navigate replace to={"/unauthorized"} />
     ) : (
         <DashboardLayout>{children}</DashboardLayout>
