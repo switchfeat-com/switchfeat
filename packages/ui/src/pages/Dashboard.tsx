@@ -10,21 +10,21 @@ const Dashboard = () => {
         {
             id: 1,
             statNo: 513,
-            title: "Clients",
+            title: "Segments",
             stat: "12%",
             icon: <UsersIcon className="w-10 text-emerald-500" />,
         },
         {
             id: 1,
             statNo: "$7,770",
-            title: "Sales",
+            title: "Flags",
             stat: "16%",
             icon: <ShoppingCartIcon className="w-10 text-blue-500" />,
         },
         {
             id: 1,
             statNo: "256%",
-            title: "Performance",
+            title: "Rules",
             stat: "Overflow",
             icon: <PresentationChartLineIcon className="w-10 text-red-500" />,
         },
@@ -35,14 +35,14 @@ const Dashboard = () => {
                 <div className="p-6 bg-white rounded-2xl flex-1" key={el.id}>
                     <div
                         className={`text-white bg-${
-                            el.title === "Clients"
+                            el.title === "Segments"
                                 ? "emerald"
-                                : el.title === "Sales"
+                                : el.title === "Flags"
                                 ? "red"
-                                : el.title === "Performance"
+                                : el.title === "Rules"
                                 ? "yellow"
                                 : ""
-                        }-500 text-xs rounded-full px-3 py-1 flex items-center capitalize gap-2 w-fit  mb-3`}
+                        }-500 text-xs rounded-full px-3 py-1 flex items-center capitalize gap-2 w-fit mb-3 `}
                     >
                         <ChevronUpIcon className="w-[12px] h-[12px]" />
                         <span>{el.stat}</span>
