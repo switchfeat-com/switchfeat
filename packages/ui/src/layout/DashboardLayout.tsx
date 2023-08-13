@@ -1,8 +1,11 @@
-import { Outlet } from "react-router-dom";
-
+import React from "react";
 import Sidebar from "../components/shared/Sidebar";
 
-const DashboardLayout = () => {
+interface DashboardLayoutProps {
+    children: React.ReactNode;
+}
+
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     return (
         <div className="flex w-screen bg-[#F9FAFB]">
             <aside className="pl-2 py-2 w-60 h-screen">
@@ -11,7 +14,7 @@ const DashboardLayout = () => {
                 </div>
             </aside>
             <div className="w-[calc(100vw_-_240px)] p-6 max-w-6xl mx-auto">
-                <Outlet />
+                {children}
             </div>
         </div>
     );

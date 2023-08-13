@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import { NotificationProvider } from "./components/shared/NotificationProvider";
 import { ApiKeys } from "./components/settings/apiKeys/ApiKeys";
-import DashboardLayout from "./layout/DashboardLayout";
 
 const App: React.FC = () => {
     return (
@@ -18,40 +17,38 @@ const App: React.FC = () => {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
 
-                        <Route element={<DashboardLayout />}>
-                            <Route
-                                path="/dashboard"
-                                element={
-                                    <PrivateRoute>
-                                        <Dashboard />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                path="/flags"
-                                element={
-                                    <PrivateRoute>
-                                        <Flags />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                path="/segments"
-                                element={
-                                    <PrivateRoute>
-                                        <Segments />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                path="/settings/apikeys"
-                                element={
-                                    <PrivateRoute>
-                                        <ApiKeys />
-                                    </PrivateRoute>
-                                }
-                            />
-                        </Route>
+                        <Route
+                            path="/dashboard"
+                            element={
+                                <PrivateRoute>
+                                    <Dashboard />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/flags"
+                            element={
+                                <PrivateRoute>
+                                    <Flags />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/segments"
+                            element={
+                                <PrivateRoute>
+                                    <Segments />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/settings/apikeys"
+                            element={
+                                <PrivateRoute>
+                                    <ApiKeys />
+                                </PrivateRoute>
+                            }
+                        />
                     </Routes>
                 </BrowserRouter>
             </NotificationProvider>
