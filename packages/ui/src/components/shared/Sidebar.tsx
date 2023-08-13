@@ -1,76 +1,39 @@
+import { Link, useLocation } from "react-router-dom";
 import {
     ArrowLeftOnRectangleIcon,
-    ExclamationCircleIcon,
-    LockClosedIcon,
-    PencilSquareIcon,
-    SwatchIcon,
-    TableCellsIcon,
-    TvIcon,
-    UserIcon,
+    Cog6ToothIcon,
+    FlagIcon,
+    FolderIcon,
+    HomeIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+    const location = useLocation();
+
     const routes = [
         {
             id: 1,
-            link: "/",
+            link: "/dashboard",
             name: "Dashboard",
-            icon: <TvIcon className="h-5 w-5 font-extrabold" />,
+            icon: <HomeIcon className="h-5 w-5 font-extrabold" />,
         },
         {
             id: 2,
-            link: "/",
-            name: "Tables",
-            icon: <TableCellsIcon className="h-5 w-5 font-extrabold" />,
+            link: "/flags",
+            name: "Flags",
+            icon: <FlagIcon className="h-5 w-5 font-extrabold" />,
         },
         {
             id: 3,
-            link: "/",
-            name: "Forms",
-            icon: <PencilSquareIcon className="h-5 w-5 font-extrabold" />,
+            link: "/segments",
+            name: "Segments",
+            icon: <FolderIcon className="h-5 w-5 font-extrabold" />,
         },
         {
             id: 4,
-            link: "/",
-            name: "UI",
-            icon: <TvIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 5,
-            link: "/",
-            name: "Responsive",
-            icon: <TvIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 6,
-            link: "/",
-            name: "Dashboard",
-            icon: <TvIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 7,
-            link: "/",
-            name: "Styles",
-            icon: <SwatchIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 8,
-            link: "/",
-            name: "Profile",
-            icon: <UserIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 9,
-            link: "/",
-            name: "Login",
-            icon: <LockClosedIcon className="h-5 w-5 font-extrabold" />,
-        },
-        {
-            id: 10,
-            link: "/",
-            name: "Error",
-            icon: <ExclamationCircleIcon className="h-5 w-5 font-extrabold" />,
+            link: "/settings/apikeys",
+            name: "Settings",
+            icon: <Cog6ToothIcon className="h-5 w-5 font-extrabold" />,
         },
     ];
 
@@ -81,7 +44,11 @@ const Sidebar = () => {
                     <li key={el.id}>
                         <Link
                             to={el.link}
-                            className="flex items-center text-base gap-4 pl-8 text-[#2563EB] hover:text-black "
+                            className={`flex items-center text-base gap-4 pl-8 ${
+                                el.link === location.pathname
+                                    ? "text-black font-bold"
+                                    : "text-[#2563EB]"
+                            } hover:text-black`}
                         >
                             {el.icon}
                             <span>{el.name}</span>
