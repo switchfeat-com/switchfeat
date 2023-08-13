@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SectionHeader } from "../components/SectionHeader";
-import { DashboardLayout } from "../layout/DashboardLayout";
 import { SectionEmptyState } from "../components/shared/SectionEmptyState";
 import * as keys from "../config/keys";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -82,39 +81,37 @@ export const Segments: React.FC = () => {
     };
 
     return (
-        <DashboardLayout>
-            <>
-                {" "}
-                {!loading && (
-                    <>
-                        {segments.length === 0 && (
-                            <SectionEmptyState type="segments">
+        <>
+            {" "}
+            {!loading && (
+                <>
+                    {segments.length === 0 && (
+                        <SectionEmptyState type="segments">
+                            {" "}
+                            <CreateSegmentButton />{" "}
+                        </SectionEmptyState>
+                    )}
+                    {segments.length > 0 && (
+                        <>
+                            <SectionHeader title="Segments">
                                 {" "}
-                                <CreateSegmentButton />{" "}
-                            </SectionEmptyState>
-                        )}
-                        {segments.length > 0 && (
-                            <>
-                                <SectionHeader title="Segments">
-                                    {" "}
-                                    <CreateSegmentButton />
-                                </SectionHeader>
+                                <CreateSegmentButton />
+                            </SectionHeader>
 
-                                {segments.map((item, idx) => (
-                                    <SegmentsItem
-                                        key={idx}
-                                        segment={item}
-                                        handleRefreshSegments={
-                                            handleRefreshSegments
-                                        }
-                                    />
-                                ))}
-                            </>
-                        )}
-                    </>
-                )}
-                <CreateOrUpdateSegmentDialog {...createSegmentProps} />
-            </>
-        </DashboardLayout>
+                            {segments.map((item, idx) => (
+                                <SegmentsItem
+                                    key={idx}
+                                    segment={item}
+                                    handleRefreshSegments={
+                                        handleRefreshSegments
+                                    }
+                                />
+                            ))}
+                        </>
+                    )}
+                </>
+            )}
+            <CreateOrUpdateSegmentDialog {...createSegmentProps} />
+        </>
     );
 };
