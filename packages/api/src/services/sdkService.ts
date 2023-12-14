@@ -19,6 +19,41 @@ export type EvaluateResponse = {
     responseId: string;
 };
 
+// New condition matcher for datetime conditions
+const datetimeConditionMatcher = (
+    condition: ConditionModel,
+    contextValue: string, // Assuming contextValue is a string representing a datetime
+): boolean => {
+    // Convert context and condition values to Date objects
+    const contextDate = new Date(contextValue);
+    const conditionDate = new Date(condition.value);
+
+    // Evaluate the datetime condition
+    switch (condition.operator) {
+        case "before": {
+            return contextDate < conditionDate;
+        }
+        case "after": {
+            return contextDate > conditionDate;
+        }
+        case "beforeOrAt": {
+            return contextDate <= conditionDate;
+        }
+        case "afterOrAt": {
+            return contextDate >= conditionDate;
+        }
+        case "equals": {
+            return contextDate.getTime() === conditionDate.getTime();
+        }
+        case "notEquals": {
+            return contextDate.getTime() !== conditionDate.getTime();
+        }
+        default: {
+            return false; // Unsupported datetime condition
+        }
+    }
+};
+
 export const evaluateFlag = async (
     flag: FlagModel,
     context: Record<string, string>,
@@ -52,15 +87,27 @@ export const evaluateFlag = async (
                     (y) => y.context === firstContextKey,
                 )[0];
                 if (matchCondition) {
-                    const hasMatch = getMatchByCondition(
-                        matchCondition,
-                        contextValue,
-                    );
-                    response.match = hasMatch;
-                    response.meta.segment = x.segment.key;
-                    response.meta.condition = matchCondition.key;
-                    foundMatchCondition = true;
-                    response.reason = ApiResponseCodes.FlagMatch;
+                    if (matchCondition.conditionType === "string") {
+                        const hasMatch = getMatchByCondition(
+                            matchCondition,
+                            contextValue,
+                        );
+                        response.match = hasMatch;
+                        response.meta.segment = x.segment.key;
+                        response.meta.condition = matchCondition.key;
+                        foundMatchCondition = true;
+                        response.reason = ApiResponseCodes.FlagMatch;
+                    } else if (matchCondition.conditionType === "datetime") {
+                        const hasMatch = datetimeConditionMatcher(
+                            matchCondition,
+                            contextValue,
+                        );
+                        response.match = hasMatch;
+                        response.meta.segment = x.segment.key;
+                        response.meta.condition = matchCondition.key;
+                        foundMatchCondition = true;
+                        response.reason = ApiResponseCodes.FlagMatch;
+                    }
                 }
             }
         });
