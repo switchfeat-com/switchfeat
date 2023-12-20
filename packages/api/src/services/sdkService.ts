@@ -88,6 +88,9 @@ const getMatchByCondition = (
         case "string": {
             return stringConditionMatcher(condition, contextValue);
         }
+        case "datetime": {
+            return datetimeConditionMatcher(condition, contextValue);
+        }
     }
 
     return false;
@@ -105,3 +108,40 @@ const stringConditionMatcher = (
 
     return false;
 };
+
+// New condition matcher for datetime conditions
+const datetimeConditionMatcher = (
+    condition: ConditionModel,
+    contextValue: string, // Assuming contextValue is a string representing a datetime
+): boolean => {
+    // Convert context and condition values to Date objects
+    const contextDate = new Date(contextValue);
+    const conditionDate = new Date(condition.value);
+
+    // Evaluate the datetime condition
+    switch (condition.operator) {
+        case "before": {
+            return contextDate < conditionDate;
+        }
+        case "after": {
+            return contextDate > conditionDate;
+        }
+        case "beforeOrAt": {
+            return contextDate <= conditionDate;
+        }
+        case "afterOrAt": {
+            return contextDate >= conditionDate;
+        }
+        case "equals": {
+            return contextDate.getTime() === conditionDate.getTime();
+        }
+        case "notEquals": {
+            return contextDate.getTime() !== conditionDate.getTime();
+        }
+        default: {
+            return false; 
+        }
+    }
+};
+
+//Final commit
